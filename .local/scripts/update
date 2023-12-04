@@ -1,0 +1,59 @@
+#!/bin/sh
+
+if command -v pacman &> /dev/null; then
+    echo "Pacman updates..."
+    sudo pacman -Syyu --noconfirm
+    sudo pacman -Scc --noconfirm
+fi
+
+if command -v yay &> /dev/null; then
+    echo "Yay updates..."
+    sudo yay -Syyu --noconfirm
+    yay -Syyu
+    yay -Ycc
+fi
+
+if command -v brew &> /dev/null; then
+    sudo softwareupdate -ia --verbose
+
+    echo "Brew updates..."
+    CUR_DIR=`pwd`
+    cd $HOME/Applications/src/brew && git pull
+    brew cleanup
+    brew update
+    brew upgrade
+    brew update --cask
+    brew upgrade --cask
+    brew doctor
+    brew cleanup
+    cd $CUR_DIR
+
+    if command -v mas &> /dev/null; then
+        mas upgrade
+    fi
+fi
+
+if command -v apk &> /dev/null; then
+    echo "APK updates..."
+    sudo apk update
+    sudo apk upgrade
+fi
+
+if [[ "$OS_NAME" == "Linux" ]] && command -v apt &> /dev/null; then
+    echo "APT updates..."
+    sudo apt update
+    sudo apt upgrade
+    sudo apt autoremove
+fi
+
+GIT_UPDATES=(
+    "$HOME/Applications/src/zsh-autocomplete"
+    "$HOME/Applications/src/zsh-autosuggestions"
+)
+
+for folder in "${GIT_UPDATES[@]}"; do
+    if [ -d $folder ]; then
+        git -C $folder pull
+    fi
+done
+

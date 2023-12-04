@@ -1,0 +1,7 @@
+#!/bin/sh
+
+if command -v nordvpn > /dev/null 2>&1; then
+    if [[ `nordvpn status` == *"Connected"* ]]; then
+        echo -e "\uf023"
+    fi
+fi

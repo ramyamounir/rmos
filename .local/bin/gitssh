@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# Get the current directory name
+dir_name=$(basename "$PWD")
+
+# Set the new remote URL
+remote_url="git@github.com:ramyamounir/$dir_name.git"
+
+# Change the remote URL
+git remote set-url origin "$remote_url"
+
+# Verify the change
+git remote -v

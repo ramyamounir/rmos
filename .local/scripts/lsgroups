@@ -1,0 +1,17 @@
+#!/bin/bash
+
+groups=$(getent group | cut -d: -f1)
+
+printf "%0.s-" {1..42}
+echo ""
+printf "%-20s | %-20s\n" "Group" "User(s)"
+printf "%0.s-" {1..42}
+echo ""
+
+while IFS= read -r group; do
+  users=$(getent group $group | cut -d: -f4)
+  printf "%-20s | %20s\n" "$group" "$users"
+done <<< "$groups" | sort
+
+printf "%0.s-" {1..42}
+echo ""

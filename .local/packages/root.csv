@@ -1,0 +1,13 @@
+Manager,    Package,                                Comments
+p,          dialog,                                 dialogue package
+p,          efibootmgr,                             bootloader manager
+p,          git,                                    git
+p,          grub,                                   bootloader
+p,          ntp,                                    Network Time Protocol
+p,          networkmanager,                         network manager
+p,          openssh,                                ssh tool
+p,          unzip,                                  archive decompression
+p,          vi,                                     text editor
+p,          neovim,                                 text editor
+p,          wget,                                   web getter
+p,          arch-install-scripts,                   Arch Linux install utility scripts

@@ -1,0 +1,37 @@
+#!/bin/sh
+
+# download configuration files and move them to appropriate locations
+echo "Cloning GitHub repository and organising"
+git clone https://github.com/ramyamounir/rmos
+mv rmos/.git $HOME/.rmos
+mv rmos/* $HOME
+mv rmos/.* $HOME
+rm -rf rmos
+
+CFG=$HOME/.config
+LOC=$HOME/.local
+
+# link files and folders
+ln -sf $HOME/.config/x11/xprofile $HOME/
+ln -sf $HOME/.config/shell/profile $HOME/zprofile
+
+# instal packages
+echo "Installing user packages"
+sh $LOC/scripts/instalfromcsv $LOC/packages/user.csv
+
+# make suckless apps
+sh $LOC/bin/make_suckless
+
+# get wallpapers
+echo "Getting wallpapers"
+git clone https://github.com/ramyamounir/wallpapers.git $LOC/wallpapers
+
+# instal fonts
+echo "Installing fonts"
+fc-cache -fv
+
+rmos config --local status.showuntrackedfiles no
+rmos config --local pull.rebase off
+rmos config --local pull.default current
+rmos config --local push.default current
+echo "User setup finished."

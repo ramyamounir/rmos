@@ -1,0 +1,4 @@
+Manager,    Package,                                               Comments
+p,          lightdm,                                               display manager
+p,          lightdm-webkit2-greeter,                               display manager theme
+y,          xinit-xsession,                                        xsession for display manager

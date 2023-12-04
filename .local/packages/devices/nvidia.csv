@@ -1,0 +1,3 @@
+Manager,    Package,                                               Comments
+p,          nvidia,                                                NVIDIA driver
+p,          nvidia-utils,                                          NVIDIA driver utilities

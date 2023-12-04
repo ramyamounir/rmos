@@ -1,0 +1,10 @@
+Manager,    Package,                                               Comments
+p,          baobab,                                                gaphical directory tree analyser
+p,          cheese,                                                camera capture
+p,          gnome-calendar,                                        calendar
+p,          gnome-contacts,                                        contacts
+p,          gnome-font-viewer,                                     Gnome font viewer
+y,          gnome-software-packagekit-plugin,                      Gnome package kit plugin
+p,          gnome-sudoku,                                          Sudoku
+p,          nautilus,                                              File explorer
+p,          newsflash,                                             RSS news feeds

@@ -1,0 +1,143 @@
+#!/bin/python3
+
+import subprocess
+
+def parse_result(result):
+  parsed_results = []
+
+  for r in result[1:]:
+    items = r.split('|')
+
+    d = {
+      'AVAIL': items[0],
+      'ACTIVE_FEATURES': items[1],
+      'CPUS': items[2],
+      'TMP_DISK': items[3],
+      'FREE_MEM': items[4],
+      'AVAIL_FEATURES': items[5],
+      'GROUPS': items[6],
+      'OVERSUBSCRIBE': items[7],
+      'TIMELIMIT': items[8],
+      'MEMORY': items[9],
+      'HOSTNAMES': items[10],
+      'NODE_ADDR': items[11],
+      'PRIO_TIER': items[12],
+      'ROOT': items[13],
+      'JOB_SIZE': items[14],
+      'STATE': items[15],
+      'USER': items[16],
+      'VERSION': items[17],
+      'WEIGHT': items[18],
+      'S:C:T': items[19],
+      'NODES(A/I)': items[20],
+      'MAX_CPUS_PER_NODE': items[21],
+      'CPUS(A/I/O/T)': items[22],
+      'NODES': items[23],
+      'REASON': items[24],
+      'NODES(A/I/O/T)': items[25],
+      'GRES': items[26],
+      'TIMESTAMP': items[27],
+      'PRIO_JOB_FACTOR': items[28],
+      'DEFAULTTIME': items[29],
+      'PREEMPT_MODE': items[30],
+      'NODELIST': items[31],
+      'CPU_LOAD': items[32],
+      'PARTITION': items[33],
+      'PARTITION': items[34],
+      'ALLOCNODES': items[35],
+      'STATE': items[36],
+      'USER': items[37],
+      'CLUSTER': items[38],
+      'SOCKETS': items[39],
+      'CORES': items[40],
+      'THREADS': items[41],
+    }
+    parsed_results.append(d)
+
+  return parsed_results
+
+
+def get_status_icon(d):
+  if d == 'up':
+    return ' '
+  return '? '
+
+
+def format_memory(m):
+  unit_idx = 1
+  unit = ['KB', 'MB', 'GB', 'TB']
+  a = m
+  while True:
+    a, b = divmod(int(a), 1000)
+    unit_idx += 1
+    if a < 1000: break
+  return '.'.join([str(a),str(b)]) + f' {unit[unit_idx]}'
+  
+
+def get_state_icon(d):
+  d = d.replace(" ", "")
+  
+  if d == 'idle': return ' '
+  if d == 'allocated': return '💻'
+  if d == 'reserved': return '🔒'
+  if d == 'inval': return ' '
+  if d == 'down*': return '! '
+  if d == 'draining': return ' '
+  if d == 'drained*': return ' '
+  return '? '
+
+
+def printer(parsed_result):
+  print('-' * 125)
+  
+  print(
+    ''.ljust(2),
+    'PARTITION'.ljust(20),
+    'NODE'.ljust(10),
+    '# CPUs'.ljust(7),
+    'MEMORY'.ljust(12),
+    'MEM FREE'.ljust(12),
+    'GPUs'.ljust(30),
+    'SOCKETS'.ljust(7),
+    'CORES'.ljust(7),
+    'THREADS'.ljust(7),
+  )
+  
+  print('-' * 125)
+  
+  def get_gpu_info(row):
+    s = row.split(':')
+    name = s[1] if len(s) > 1 else ''
+    count = s[2].split("(")[0] if len(s) > 2 else 0
+    return { 'name': name, 'count': int(count) }
+  
+  for p in parsed_result:
+    gpus = p['GRES'].split(',')
+    if len(gpus):
+      gpus = list(map(get_gpu_info, gpus))
+    
+    print(
+      get_status_icon(p['AVAIL']).ljust(2),
+      p['PARTITION'].ljust(20),
+      get_state_icon(p["STATE"]) + ' ' + p['NODELIST'].ljust(7),
+      p['CPUS'].ljust(6),
+      format_memory(p['MEMORY']).ljust(12),
+      format_memory(p['FREE_MEM'] if p['FREE_MEM'] != 'N/A' else 0).ljust(12),
+      ', '.join(list(map(lambda g: f'{g["name"]} ({g["count"]})', gpus))).ljust(30),
+      p['SOCKETS'].ljust(7),
+      p['CORES'].ljust(7),
+      str(int(p['THREADS']))
+    )
+
+
+  print('-' * 125)
+  
+def main():
+  pipe = subprocess.Popen(["sinfo", "-N", '--format', '%all'], stdout=subprocess.PIPE)
+  result = list(map(lambda item: item.decode(), pipe.stdout.readlines()))
+  p = parse_result(result)
+  printer(p)
+
+
+if __name__ == '__main__':
+  main()

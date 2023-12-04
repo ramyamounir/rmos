@@ -1,0 +1,38 @@
+#!/bin/sh
+
+battery_notify() {
+    if [[ `cat $1/status` == "Discharging" ]]; then
+        if [[ $2 -le 10 ]]; then
+            notify-send \
+                "Battery low" \
+                "Battery charge at $2%" \
+                --urgency critical \
+                --icon=/usr/share/icons/Adwaita/32x32/status/battery-level-10-charging-symbolic.symbolic.png
+        fi
+    else
+        if [[ $2 -ge 95 ]]; then
+            notify-send \
+                "Battery sufficient" \
+                "Battery charge at $2%" \
+                --urgency low \
+                --icon=/usr/share/icons/Adwaita/32x32/status/battery-level-100-charged-symbolic.symbolic.png
+        fi
+    fi
+}
+
+function show_battery() {
+    if [ -f $1/charge_now ] && [ -f $1/charge_full ]; then
+        charge_now=$(cat $1/charge_now)
+        charge_full=$(cat $1/charge_full)
+
+        percentage=$(( 100 * charge_now / charge_full ))
+
+        echo -e "\uf240 $percentage%"
+
+        battery_notify $1 $percentage
+    fi
+}
+
+show_battery "/sys/class/power_supply/BAT0"
+show_battery "/sys/class/power_supply/macsmc-battery"
+

@@ -1,0 +1,87 @@
+#!/bin/bash
+
+convert_memory() {
+  local memory="$1"
+  local unit="$2"
+  if [[ "$unit" == "MB" ]]; then
+    echo "$memory"
+  else
+    echo "scale=2; $memory/ 1024" | bc
+  fi
+}
+
+# Get processor information
+CPU_INFO=$(lscpu)
+PROCESSOR_NAME=`echo "$CPU_INFO" | grep "Model name" | awk -F ':' '{print $2}'`
+ARCHITECTURE=`uname -m`
+CPU=`echo "$CPU_INFO" | grep "^CPU(s):" | awk -F ':' '{print $2}'`
+CPU_SPEED_MAX=`echo "$CPU_INFO" | grep "^CPU max MHz:" | awk -F ':' '{print $2}'`
+CPU_SPEED_MIN=`echo "$CPU_INFO" | grep "^CPU min MHz:" | awk -F ':' '{print $2}'`
+CPU_TYPE=$(getconf LONG_BIT)
+
+printf "  CPU "; echo ""
+echo -e "  ├─ Processor\t\t\t" $PROCESSOR_NAME
+echo -e "  ├─ CPUs\t\t\t" $CPU
+echo -e "  ├─ Architecture\t\t" $ARCHITECTURE
+echo -e "  ├─ Operation mode\t\t" $CPU_TYPE bit
+echo -e "  ├─ CPU speed (max)\t\t" $CPU_SPEED_MAX"MHz"
+echo -e "  └─ CPU speed (min)\t\t" $CPU_SPEED_MIN"MHz"
+
+
+# Get RAM information
+CPU_RAM=`lsmem | grep "^Total online" | awk -F ':' '{print $2}'`
+
+printf "  RAM "; echo ""
+echo -e "  └─ Memory\t\t\t" $CPU_RAM
+
+# Get storage information
+STORAGES=`lsblk -ad | sed -n '2, $p' | awk -F ' ' '{
+    if ($4 != "0B" && $4 != "0" && $4 != "1") {
+        printf "  ├─ %-27s %-5s\n", $1, $4
+    }
+}'`
+
+printf "  Storage "; echo ""
+echo -e "$STORAGES"
+
+# Get OS information
+OS=$(uname -o)
+OS_DISTRO=$(cat /etc/os-release | grep "PRETTY_NAME" | awk -F '=' '{print $2}' | sed 's/"//g')
+DISTRO_VERSION=$(uname -r)
+HOST_NAME=$(uname -n)
+
+printf "  OS "; echo ""
+echo -e "  ├─ Operating system\t\t" $OS
+echo -e "  ├─ Distribution\t\t" $OS_DISTRO "($DISTRO_VERSION)"
+echo -e "  └─ Host\t\t\t" $HOST_NAME
+
+# Check if nvidia-smi is available
+if command -v nvidia-smi &> /dev/null; then
+    printf "  GPU "; echo ""
+
+    # Run nvidia-smi and store the output in a variable
+    gpu_info=$(nvidia-smi --query-gpu=gpu_name,memory.total --format=csv,noheader,nounits)
+
+    # Check if nvidia-smi is available
+    if [[ $? -eq 0 ]]; then
+      # Split the GPU info into an array by line
+      IFS=$'\n' read -d '' -r -a gpu_array <<< "$gpu_info"
+
+      # Loop through the array, format and print the GPU info
+      for gpu in "${gpu_array[@]}"; do
+        IFS=',' read -ra gpu_parts <<< "$gpu"
+        gpu_name="${gpu_parts[0]}"
+        memory_total="${gpu_parts[1]}"
+        formatted_memory=""
+        
+        if (( $(bc <<< "$memory_total > 1024") )); then
+          formatted_memory="$(convert_memory "$memory_total" "GB") GB"
+        else
+          formatted_memory="$(convert_memory "$memory_total" "MB") MB"
+        fi
+
+        printf "  ├─ %-27s %-5s\n" "$gpu_name" "$formatted_memory"
+      done
+    fi
+fi
+

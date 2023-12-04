@@ -1,0 +1,71 @@
+Manager,    Package,                                               Comments
+a,          https://aur.archlinux.org/yay.git,                     Yay package manager
+p,          alacritty,                                             terminal emulator
+p,          aria2,                                                 multiple protocol download (including via torrents)
+p,          bc,                                                    precision calculator
+p,          bluez,                                                 Bluetooth controller
+p,          bluez-utils,                                           Bluetooth utilities
+p,          certbot,                                               SSL certification tool
+p,          certbot-nginx,                                         certbot plugin for nginx
+y,          ctpv,                                                  Previewer for lf
+p,          cups,                                                  printing system
+p,          cups-pdf,                                              PDF printer for CUPS
+y,          dpkg,                                                  Debian package manager
+p,          dunst,                                                 Notifications manager
+p,          feh,                                                   background image setter
+p,          ffmpeg,                                                Solution to record; convert and stream audio and video
+p,          fzf,                                                   fuzzy search
+p,          github-cli,                                            github cli
+p,          gnome-keyring,                                         Gnome keyring
+p,          htop,                                                  process viewer
+p,          lf,                                                    CLI file explorer
+p,          libxinerama,                                           Libxinerama extension library (used by dwm)
+p,          maim,                                                  Make image (screenshot tool)
+p,          man-db,                                                manual pages
+p,          man-pages,                                             manual pages
+p,          mpv,                                                   video player
+y,          ncmatrix,                                              terminal matrix-like screensaver
+p,          nginx,                                                 reverse proyx server
+p,          p7zip,                                                 7z extractor
+p,          pass,                                                  Password manager
+p,          passff-host,                                           Password manager host client
+p,          pinentry,                                              PIN dialogues
+p,          pipewire-pulse,                                        Pipewire Pulse
+p,          pciutils,                                              PCI utilities
+p,          poppler,                                               PDF manipulator and previewer
+p,          pulsemixer,                                            CLI and curses mixer for pulseaudio
+p,          qt5-x11extras,                                         QT5 for X
+p,          reptyr,                                                reparent a process' terminal (move process from one terminal to another)
+p,          rsync,                                                 ssh remote sync
+p,          seahorse,                                              Keys manager
+p,          slock,                                                 screen lock
+p,          sof-firmware,                                          sound card
+p,          speedtest-cli,                                         a CLI tool to test Internet speed
+p,          system-config-printer,                                 printer configuration toolbox (GUI)
+p,          sxiv,                                                  image viewer
+p,          tldr,                                                  tldr manual pages
+p,          tmux,                                                  tmux
+p,          ueberzug,                                              previewer for lf
+p,          ufw,                                                   firewall
+p,          unison,                                                file synchronisation tool
+p,          xterm,                                                 x terminal emulator
+p,          xclip,                                                 x clipboard
+p,          xorg-xinit,                                            xorg initialisation program
+p,          xorg-server,                                           graphics hardware manager
+p,          xorg-xrandr,                                           interface to RandR
+p,          xorg-xinput,                                           input device manager
+p,          xorg-xbacklight,                                       RandR-based backlight control application
+p,          xorg-xprop,                                            Property displayer for X
+p,          xorg-xwininfo,                                         utility to print information about windows on an X server
+p,          xdotool,                                               Command-line X11 automation tool
+p,          xcompmgr,                                              The X compositing manager
+p,          zathura,                                               PDF viewer
+p,          zathura-pdf-mupdf,                                     MuPDF compatibility
+p,          zsh,                                                   shell
+p,          ntfs-3g,                                               New Technology File System (NTFS)
+p,          fuse2,                                                 User-space file system (FUSE)
+y,          apfs-fuse-git,                                         Apple file system (APFS)
+y,          simple-mtpfs,                                          Simple MTP File System (Simple MTPFS) that supports reading/writing from MTP devices (cell phones)
+p,          exfat-utils,                                           exFAT file system
+p,          sshfs,                                                 SSH file system (SSHFS)
+p,          nfs-utils,                                             Network file system (NFS)

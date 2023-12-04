@@ -1,0 +1,10 @@
+#!/bin/bash
+
+PTH_VRS=$(echo $PATH)
+
+IFS=':'
+read -ra PTH_VRS_LST <<< $PTH_VRS
+
+for P in ${PTH_VRS_LST[@]}; do
+    echo -e "   $P"
+done

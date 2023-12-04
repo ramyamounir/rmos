@@ -1,0 +1,3 @@
+#!/bin/sh
+
+srun --pty --jobid $1 --interactive /bin/bash

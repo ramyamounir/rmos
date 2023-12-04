@@ -1,0 +1,25 @@
+Manager,    Package,                                                Comments
+y,          bibtex-tidy,                                            CLI to tidy up BibTeX files
+p,          firefox,			                                    Firefox browser
+p,          libreoffice-fresh,                                      Libre Office
+p,          nextcloud-client,                                       client tool for next cloud
+y,          nordvpn-bin,                                            Nord VPN
+p,          pandoc-cli,                                             Pandoc CLI
+y,          plex-media-player,                                      Plex media player
+y,          simplex-chat-bin,                                       SimpleX chat (CLI)
+y,          teams-for-linux,                                        Microsoft Teams
+p,          texlive-basic,
+p,          texlive-bibtexextra,
+p,          texlive-binextra,
+p,          texlive-fontsextra,
+p,          texlive-fontsrecommended,
+p,          texlive-latex,
+p,          texlive-latexextra,
+p,          texlive-latexrecommended,
+p,          texlive-luatex,
+p,          texlive-plaingeneric,
+p,          texlive-science,
+p,          texlive-xetex,
+y,          twitter,                                                Twitter
+p,          thunderbird,                                            Mail client
+y,          zoom,                                                   Zoom US

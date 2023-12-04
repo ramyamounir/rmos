@@ -1,0 +1,78 @@
+gitpush()
+{
+git add .
+git commit -m "$1"
+git push
+}
+
+gitclone()
+{
+git clone https://github.com/ramyamounir/"$1".git
+}
+
+gitupdate()
+{
+cd ~/linux_files
+git pull > /dev/null 2>&1
+cd ~/
+source ~/linux_files/.aliases
+source ~/linux_files/.functions
+}
+
+gittemplate()
+{
+gitclone Template; 
+mv Template/ "$1"/ 
+cd "$1"
+git remote set-url origin https://github.com/ramyamounir/"$1".git; 
+gitpush "Template Copied"
+}
+
+a()
+{
+conda activate $1
+}
+
+nbc()
+{
+conda activate utils
+ipython nbconvert --to script $1
+conda deactivate
+}
+
+trash()
+{
+mv $1 ~/.local/share/Trash/files/
+}
+
+get_seeded_random()
+{
+  seed="$1"
+  openssl enc -aes-256-ctr -pass pass:"$seed" -nosalt \
+    </dev/zero 2>/dev/null
+}
+
+crun()
+{
+gcc -g $1 -o program
+./program
+}
+
+get_file()
+{
+sshpass -p q scp -Cvr -P 22042 $1 localhost:~/Desktop/
+}
+
+frsub()
+{
+  while IFS="" read -r p || [ -n "$p" ]
+  do
+    rsub "$p"
+  done < $1
+}
+
+chmode()
+{
+  find $1 -type d -exec chmod 700 {} \;
+  find $1 -type f -exec chmod 600 {} \;
+}

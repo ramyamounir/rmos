@@ -1,0 +1,15 @@
+#!/bin/bash
+
+AT=$1
+if [ -z $AT ]; then
+    AT="."
+fi
+
+conda env export --no-build --from-history | grep -v "^prefix: " > $AT/environment.yaml
+conda env export --no-build | sed -n '/\- pip\:/,$p' | grep -v "^prefix: " >> $AT/environment.yaml
+
+if [ -z $2 ]; then
+    conda env export --no-build | sed -n '/\- pip\:/,$p' | grep -v "^prefix: " | tail -n +2 | sed 's/^.\{8\}//' > $AT/requirements.txt
+elif [[ "$2" = "all" ]]; then
+    pip list --format=freeze > $AT/requirements.txt # all pip packages
+fi

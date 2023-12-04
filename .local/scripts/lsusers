@@ -1,0 +1,17 @@
+#!/bin/bash
+
+users=$(getent passwd | cut -d: -f1)
+
+printf "%0.s-" {1..42}
+echo ""
+printf "%-20s | %-20s\n" "User" "Group(s)"
+printf "%0.s-" {1..42}
+echo ""
+
+while IFS= read -r user; do
+  groups=$(id -Gn $user | tr ' ' ',')
+  printf "%-20s | %-20s\n" "$user" "$groups"
+done <<< "$users" | sort
+
+printf "%0.s-" {1..42}
+echo ""

@@ -1,0 +1,32 @@
+#!/bin/bash
+install_with_make() {
+    BIN_DST=$HOME/.local/bin
+    mkdir -p $BIN_DST
+
+    FOLDER_NAME=$1
+
+    if [ -d $FOLDER_NAME ]; then
+        cd $FOLDER_NAME
+
+        sudo make clean install
+
+        cd ..
+    fi;
+}
+
+
+BASE_DIR=$HOME/.local/src/
+
+PKGS=(
+    dwm
+    dmenu
+    dwm_blocks
+    st
+)
+
+for PKG in ${PKGS[@]}; do
+    o_pkg=(${PKG//\// })
+    install_with_make $BASE_DIR/$PKG
+done
+
+

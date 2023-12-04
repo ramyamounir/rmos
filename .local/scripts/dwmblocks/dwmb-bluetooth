@@ -1,0 +1,7 @@
+#!/bin/sh
+
+BLUETOOTH_CONNECTED=`bluetoothctl info | grep "Connected" | awk '{print $2}'`
+
+if [[ $BLUETOOTH_CONNECTED = "yes" ]]; then
+    echo -e "\uf293"
+fi

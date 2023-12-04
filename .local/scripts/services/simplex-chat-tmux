@@ -1,0 +1,7 @@
+#!/bin/sh
+
+CHAT_SESSION_NAME="simplex-chat"
+
+if ! tmux has-session -t "$CHAT_SESSION_NAME" &> /dev/null; then
+    tmux new -s $CHAT_SESSION_NAME -d simplex-chat
+fi

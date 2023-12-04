@@ -1,0 +1,130 @@
+#!/bin/sh
+
+MESSAGE="\n
+\bWelcome to RMOS. The following is a list of shell commands and aliases\n
+\balong with a brief description of each explicitly provided by RMOS.\n
+"
+
+SETTINGS_OPTIONS="
+\t\t\t $ applysettings all \t\t # Applies to all the settings below\n
+\t\t\t $ applysettings patch \t\t # Applies to configured patches\n
+\t\t\t $ applysettings code|vscode \t # Applies to VS Code settings
+"
+
+ALIASES_CMDS=(
+    "addkeys            \t\tAdds SSH keys to the ssh agent\n
+                        \t\t\t $ addkeys"
+    "applysettings      \t\tApply saved patches to apps and repositories\n
+                        $SETTINGS_OPTIONS"
+    "bpr                \t\t\tOpens the bash profile file (if using bash)\n
+                        \t\t\t $ bpr"
+    "bsr                \t\t\tSource the bash profile file (if using bash)\n
+                        \t\t\t $ bsr"
+    "ca                 \t\t\tconda activate\n
+                        \t\t\t $ ca"
+    "cdd                \t\t\tConda deactivate\n
+                        \t\t\t $ cdd"
+    "cm                 \t\t\tncmatrix\n
+                        \t\t\t $ cm"
+    "cmatrix            \t\tncmatrix\n
+                        \t\t\t $ cmatrix"
+    "cpk                \t\t\tPick colour and copy it to the clipboard\n
+                        \t\t\t $ cpk \t\t\t # hex\n
+                        \t\t\t $ cpk [ANY_TEXT] \t # long format"
+    "freeze             \t\t\tFreeze the current conda environment into files\n
+                        \t\t\tin the specified directory or, if not specified,\n
+                        \t\t\tthe current working directory. \n
+                        \t\t\t $ freeze [DST] [all]\n
+                        \t\t\t $ freeze \n
+                        \t\t\t $ freeze ./src \t # freeze explicitly installed\n
+                                                \t\t\t\t\t\t\tpip packages\n
+                        \t\t\t $ freeze ./src all \t # freeze all pip packages"
+    "gc                 \t\t\tgit add, commit, and push in one command\n
+                        \t\t\t $ gc -a [PATTERN] -m [MESSAGE] -b [BRANCH]"
+    "getarchsetupscripts\tGet scripts for setting up Arch Linux afresh\n
+                        \t\t\t $ getarchsetupscripts"
+    "getjupyternodes    \tGet SLURM nodes with Jupyter Notebook\n
+                        \t\t\t $ getjupyternodes"
+    "getnodes           \t\tGet interactive SLURM nodes\n
+                        \t\t\t $ getnodes"
+    "instal_omsh        \t\tInstal \"Oh My ZSH/Bash\" theme\n
+                        \t\t\t $ instal_omsh \t\t # default: zsh\n
+                        \t\t\t $ instal_omsh 0 \t # zsh\n
+                        \t\t\t $ instal_omsh 1 \t # bash"
+    "instalfromcsv      \t\tInstal packages with system package manager\n
+                        \t\t\t $ instalfromcsv [FILENAME] \t # instal without sudo\n
+                        \t\t\t $ instalfromcsv -s [FILENAME] \t # instal with sudo"
+    "killgpu            \t\tKill processes on GPU(s)\n
+                        \t\t\t $ killgpu"
+    "linkafresh         \t\tCreates links to files across the system\n
+                        \t\t\t $ linkafresh \t\t # skip sudo steps\n
+                        \t\t\t $ linkafresh sudo \t # perform sudo steps"
+    "ll                 \t\t\tEquivalent to ls -l\n
+                        \t\t\t $ ll"
+    "lla                \t\t\tEquivalent to ls -la\n
+                        \t\t\t $ lla"
+    "lsdisplaymonitors  \tList display monitors (for X)\n
+                        \t\t\t $ lsdisplaymonitors"
+    "lsgroups           \t\tList groups in the system\n
+                        \t\t\t $ lsgroups"
+    "lsjobs             \t\t\tList ongoing SLURM jobs\n
+                        \t\t\t $ lsjobs [SQUEUE OPTIONS]"
+    "lsnodes            \t\tList SLURM nodes\n
+                        \t\t\t $ lsnodes"
+    "lspth              \t\t\tList path variables as a list\n
+                        \t\t\t $ lspth"
+    "lssys              \t\t\tA brief system information\n
+                        \t\t\t $ lssys"
+    "lsusers            \t\tList users in the system\n
+                        \t\t\t $ lsusers"
+    "notifyme           \t\tSends a slack message; requires environment variables.\n
+                        \t\t\t $ notifyme [MESSAGE]"
+    "portal             \t\t\tsshfs to a host (portal HOST SRC DST)\n
+                        \t\t\t $ portal [DST_HOST] [DST_DIR] [LOCAL_DIR]"
+    "resettvsos         \t\tIgnore local changes, reset RMOS git to HEAD\n
+                        \t\t\t $ resettvsos"
+    "s                  \t\t\tStart the X server\n
+                        \t\t\t $ s"
+    "sa                 \t\t\tSource activate\n
+                        \t\t\t $ sa"
+    "savesettings       \t\tSave patches applied to apps\n
+                        $SETTINGS_OPTIONS"
+    "setpermissions     \t\tSet special file and folder permissions (SSH, GPG)\n
+                        \t\t\t $ setpermissions"
+    "setuparchuser      \t\tSet up a user on Arch Linux (with DWM and co)\n
+                        \t\t\t $ setuparchuser"
+    "shellatnode        \t\tOpens the Bash shell in an interactive SLURM node\n
+                        \t\t\t $ shellatnode [JOBID]"
+    "update             \t\t\tUpdate the OS, system packages, and apps\n
+                        \t\t\t $ update"
+    "tacp               \t\t\ttvsos add, commit, push\n
+                        \t\t\t $ tacp [MESSAGE]"
+    "to                 \t\t\tssh to configured hosts\n
+                        \t\t\t $ to [DST_HOST]"
+    "toggle_alacritty_theme \tToggles terminal theme\n
+                        \t\t\t $ theme_shell"
+    "tvsos              \t\t\tGit CLI for RMOS; can be used like \"git\"\n
+                        \t\t\t $ tvsos"
+    "tvsos_help         \t\tPrint this help message and exit\n
+                        \t\t\t $ tvsos_help"
+    "vpn-nord-connect   \tConnect to NORD VPN\n
+                        \t\t\t $ vpn-nord-connect"
+    "vpn-nord-disconnect\tDisconnect from NORD VPN\n
+                        \t\t\t $ vpn-nord-disconnect"
+    "vpn-gp-connect     \t\tConnect to Global Protect VPN\n
+                        \t\t\t $ vpn-gp-connect"
+    "vpn-gp-disconnect  \tDisconnect from Global Protect VPN\n
+                        \t\t\t $ vpn-gp-disconnect"
+    "zpr                \t\t\tOpens the zsh profile file (if using zsh)\n
+                        \t\t\t $ zpr"
+    "zsr                \t\t\tSource the zsh profile file (if using zsh)\n
+                        \t\t\t $ zsr"
+)
+
+echo -e $MESSAGE
+
+echo -e "Aliases and commands.\n"
+for CMD in "${ALIASES_CMDS[@]}"; do
+    echo -e $CMD
+done
+

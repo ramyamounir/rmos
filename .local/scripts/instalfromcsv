@@ -1,0 +1,185 @@
+#!/bin/bash
+
+# for Arch Linux (Arch, Arch Linux ARM (ALARM), Asahi, etc.)
+install_aur() {
+    GIT_URL=$1
+    FOLDER_NAME=${GIT_URL##*/}
+    FOLDER_NAME=$HOME/.local/src/${FOLDER_NAME%.git*}
+    if [ ! -d $FOLDER_NAME ]; then
+        mkdir -p $FOLDER_NAME
+
+        git clone $GIT_URL $FOLDER_NAME
+        cd $FOLDER_NAME
+        makepkg -si --noconfirm
+    fi
+}
+
+
+install_with_pacstrap() {
+    pacstrap -K /mnt $1
+}
+
+
+install_with_pacman() {
+    if ! pacman -Q $1 >/dev/null 2>&1; then
+        # to sudo or not sudo
+        if [[ $2 -eq 1 ]]; then
+            sudo pacman -S $1 -y --noconfirm
+        else
+            pacman -S $1 -y --noconfirm
+        fi
+    fi
+}
+
+
+install_with_yay() {
+    if ! yay -Q $1 >/dev/null 2>&1; then
+        yay -S $1 --noconfirm
+    fi
+}
+
+
+# for Alpine
+install_with_apk() {
+    if ! apk -e info "$1" >/dev/null 2>&1; then
+        sudo apk add $1
+    fi
+}
+
+
+# for MacOS (OSX)
+install_with_brew() {
+    # if 0, install from brew; if 1, install from cask
+    if [[ $2 -eq 0 ]]; then
+        if ! brew list $1 >/dev/null 2>&1; then
+            brew install $1
+        fi
+    elif [[ $2 -eq 1 ]]; then
+        if ! brew list --cask $1 >/dev/null 2>&1; then
+            brew install --cask $1
+        fi
+    fi
+}
+
+
+install_from_appstore() {
+    mas install $1
+}
+
+
+# for Ubuntu, Debian, etc.
+install_with_apt() {
+    if ! dpkg-query -W -f='${Status}' "$1" 2>/dev/null | grep -q "installed"; then
+        # to sudo or not sudo
+        if [[ $2 -eq 1 ]]; then
+            sudo apt install $1
+        else
+            apt install $1
+        fi
+    fi
+}
+
+
+# general
+clone_from_git() {
+    GIT_URL=$1
+    FOLDER_NAME=${GIT_URL##*/}
+    FOLDER_NAME=$HOME/.local/src/${FOLDER_NAME%.git*}
+    if [ ! -d $FOLDER_NAME ]; then
+        mkdir -p $FOLDER_NAME
+
+        git clone $GIT_URL $FOLDER_NAME
+        cd $FOLDER_NAME
+    fi
+}
+
+
+install_with_make() {
+    BIN_DST=$HOME/.local/bin
+    mkdir -p $BIN_DST
+
+    GIT_URL=$1
+    FOLDER_NAME=${GIT_URL##*/}
+    FOLDER_NAME=$HOME/.local/src/${FOLDER_NAME%.git*}
+    PATCHES=$HOME/.config/patches/$FOLDER_NAME.patch
+
+    if [ ! -d $FOLDER_NAME ]; then
+        mkdir -p $FOLDER_NAME
+        
+        git clone $GIT_URL $FOLDER_NAME
+        cd $FOLDER_NAME
+
+        if [ -f "$PATCHES" ]; then
+            patch -p1 < $PATCHES
+        fi
+
+        make
+
+        # to sudo or not sudo
+        if [[ $2 -eq 1 ]]; then
+            sudo make clean install DESTDIR=$BIN_DST
+        else
+            make clean install DESTDIR=$BIN_DST
+        fi
+
+        cd ..
+    fi;
+}
+
+
+install_from_file() {
+    ROW_COUNT=0
+    IS_SUDO=0
+    if [[ "$1" = "-s" ]] || [[ "$2" = "-s" ]]; then
+        IS_SUDO=1
+    fi
+
+    while IFS=',' read -r MANAGER PACKAGE _; do
+        if [[ $ROW_COUNT -eq 0 ]]; then
+            ((ROW_COUNT++))
+            continue
+        fi
+
+        case $MANAGER in
+            "a")
+                install_aur $PACKAGE $IS_SUDO
+                ;;
+            "apk")
+                install_with_apk $PACKAGE $IS_SUDO
+                ;;
+            "apt")
+                install_with_apt $PACKAGE 1
+                ;;
+            "b")
+                install_with_brew $PACKAGE 0
+                ;;
+            "bc")
+                install_with_brew $PACKAGE 1
+                ;;
+            "g")
+                clone_from_git $PACKAGE
+                ;;
+            "m")
+                install_with_make $PACKAGE $IS_SUDO
+                ;;
+            "mas")
+                install_from_appstore $PACKAGE
+                ;;
+            "p")
+                install_with_pacman $PACKAGE $IS_SUDO
+                ;;
+            "ps")
+                install_with_pacstrap $PACKAGE
+                ;;
+            "y")
+                install_with_yay $PACKAGE
+                ;;
+            *)
+                echo "Unknown package manager from $PACKAGE"
+                ;;
+        esac
+    done < $1
+}
+
+install_from_file $@
+

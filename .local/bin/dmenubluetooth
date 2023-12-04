@@ -1,0 +1,78 @@
+#!/usr/bin/python
+
+import subprocess
+import dmenu
+
+def bashSend(command):
+    process = subprocess.Popen(command.split(), stdout=subprocess.PIPE)
+    output, error = process.communicate()
+    return output.decode('UTF-8')
+
+def get_dmenu(options, prompt):
+    out = dmenu.show(options, prompt=prompt)
+
+    if not out:
+        return None, None
+
+    if out in options:
+        ind = options.index(out)
+        return out, ind
+    else:
+        return out, None
+
+def connect_device(device_name, mac):
+    out, ind = get_dmenu(['Yes', 'No'], f'connect device {device_name}')
+
+    if ind==0:
+        bashSend(f'bluetoothctl connect {mac}')
+        print('device connected')
+
+def disconnect_device(device_name, mac):
+    out, ind = get_dmenu(['Yes', 'No'], f'disconnect device {device_name}')
+
+    if ind==0:
+        bashSend(f'bluetoothctl disconnect {mac}')
+        print('device disconnected')
+
+
+
+def get_info():
+
+    devices = bashSend('bluetoothctl devices').split('\n')[:-1]
+    device_names = [' '.join(name.split(' ')[2:]) for name in devices]
+    device_macs = [name.split(' ')[1] for name in devices]
+
+    device_connected = []
+    for mac in device_macs:
+        info = bashSend(f'bluetoothctl info {mac}')
+        if info.split('\n')[8].split(':')[1][1:] == 'yes':
+            device_connected.append(True)
+        else:
+            device_connected.append(False)
+
+    device_options = []
+    for name, con in zip(device_names, device_connected):
+        if con:
+            device_options.append(f'{name} (Connected)')
+        else:
+            device_options.append(f'{name}')
+
+    return device_names, device_macs, device_connected, device_options
+
+if __name__ == '__main__':
+
+    device_names, device_macs, device_connected, device_options = get_info()
+    out, ind = get_dmenu(device_options, 'Choose a device to toggle')
+    if out == None:
+        quit('Nothing chosen')
+
+    if ind == None:
+        quit('Device not available')
+
+    if device_connected[ind]:
+        disconnect_device(device_names[ind], device_macs[ind])
+    else:
+        connect_device(device_names[ind], device_macs[ind])
+
+
+

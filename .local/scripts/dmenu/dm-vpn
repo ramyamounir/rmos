@@ -1,0 +1,32 @@
+#!/bin/sh
+
+DMENU_OPTIONS=`dwm -m`
+
+OPTIONS=(
+    "Global Protect (USF)"
+    "Nord VPN"
+    "Off"
+)
+
+PROMPT=""
+for O in "${OPTIONS[@]}"; do
+    PROMPT="$PROMPT$O\n"
+done
+
+CHOICE=$(printf "$PROMPT" | dmenu $DMENU_OPTIONS -i)
+
+case $CHOICE in
+    ${OPTIONS[0]})
+        nordvpn disconnect
+        globalprotect connect
+        ;;
+    ${OPTIONS[1]})
+        nordvpn connect
+        ;;
+    ${OPTIONS[2]})
+        globalprotect disconnect
+        nordvpn disconnect
+        ;;
+    *)
+        ;;
+esac

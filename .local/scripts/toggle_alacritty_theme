@@ -1,0 +1,17 @@
+#!/bin/sh
+
+# the file to which Alacritty configuration refers
+THEME_FILE=$HOME/.config/alacritty/theme.yaml
+
+# light and dark theme files
+LIGHT_THEME=$HOME/.config/alacritty/github_light.yaml
+DARK_THEME=$HOME/.config/alacritty/github_dark.yaml
+
+# toggle the theme
+CURRENT_THEME=`readlink $THEME_FILE`
+if [[ $CURRENT_THEME =~ "github_dark" ]]; then
+    ln -sf $LIGHT_THEME $THEME_FILE
+else
+    ln -sf $DARK_THEME $THEME_FILE
+fi
+

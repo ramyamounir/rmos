@@ -1,0 +1,48 @@
+#!/bin/sh
+
+mkdir -p $3
+
+case $1 in
+  h | help)
+    echo "GAIVI\tto gaivi [or] to gv"
+    echo "Beast\tto bst [or] to beast"
+    echo "Puppy\tto ppy [or] to puppy"
+    echo "Hypergator\tto hpg [or] to hypergator"
+    echo "RC Cluster\tto rc [or] to rccluster"
+    echo "Desk (MacBook Pro 2015)\tto desk"
+    echo "Lab (NEC 200A)\tto lab"
+    echo "Lab 2 (NEC 200A)\tto lab2"
+    ;;
+
+  gv | gaivi)
+    sshfs -o cache=no -o IdentityFile=~/.ssh/keys/gaivi.pk sujal@gaivi.cse.usf.edu:$2 $3
+    ;;
+
+  bst | beast)
+    sshfs -o cache=no -o IdentityFile=~/.ssh/keys/beast.pk sujal@beast.sawyer0.com:$2 $3
+    ;;
+  
+  ppy | puppy)
+    sshfs -o cache=no -o IdentityFile=~/.ssh/keys/puppy.pk sujal@puppy.sawyer0.com:$2 $3
+    ;;
+
+  hpg | hypergator)
+    sshfs -o cache=no -o IdentityFile=~/.ssh/keys/hypergator.pk svijayaraghavan@hpg.rc.ufl.edu:$2 $3
+    ;;
+
+  rc | rccluster)
+    sshfs -o cache=no -o IdentityFile=~/.ssh/keys/rc-cluster.pk rra-sujal@rra.rc.usf.edu:$2 $3
+    ;;
+
+  desk)
+    sshfs -o cache=no -o IdentityFile=~/.ssh/keys/mbp15.pk -p 4242 sujal@home.ssh.sujal.tv:$2 $3
+    ;;
+
+  lab)
+    sshfs -o cache=no -o IdentityFile=~/.ssh/keys/lab.pk sujal@nec200a.ssh.sujal.tv:$2 $3
+    ;;
+
+  lab2)
+    sshfs -o cache=no -o IdentityFile=~/.ssh/keys/lab2.pk sujal@2.nec200a.ssh.sujal.tv:$2 $3
+    ;;
+esac

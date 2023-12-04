@@ -1,0 +1,9 @@
+Manager,    Package,                                                Comments
+p,          aws-cli,                                                AWS CLI
+p,          docker,			                                        docker
+p,          docker-compose,                                         docker compose
+p,          github-cli,                                             GitHub CLI tool
+p,          nodejs,                                                 nodejs engine
+p,          npm,                                                    node package manager
+y,          postman-bin,                                            POSTMAN tool
+y,          visual-studio-code-bin,                                 Visual Studio Code

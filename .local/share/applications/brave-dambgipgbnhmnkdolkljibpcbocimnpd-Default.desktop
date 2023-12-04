@@ -1,0 +1,9 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Version=1.0
+Terminal=false
+Type=Application
+Name=H.265 / HEVC player
+Exec=/opt/brave-bin/brave --profile-directory=Default --app-id=dambgipgbnhmnkdolkljibpcbocimnpd
+Icon=brave-dambgipgbnhmnkdolkljibpcbocimnpd-Default
+StartupWMClass=crx_dambgipgbnhmnkdolkljibpcbocimnpd

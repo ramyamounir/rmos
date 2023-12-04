@@ -1,0 +1,55 @@
+---
+import:
+  - ~/.config/alacritty/theme.yaml
+live_config_reload: true
+env:
+  TERM: xterm-256color
+  WINIT_X11_SCALE_FACTOR: "1.0"
+window:
+  opacity: 1.0
+  startup_mode: Maximized
+  title: Terminal
+  dynamic_title: true
+  padding:
+    x: 5
+    y: 0
+  scrolling:
+    history: 10000
+  dimensions:
+    columns: 120
+    lines: 30
+selection:
+  save_to_clipboard: true
+cursor:
+  style:
+    blinking: Always
+font:
+  size: 11.5
+  normal:
+    family: SF Mono
+    style: Medium
+  bold:
+    family: SF Mono
+    style: Bold
+  italic:
+    family: SF Mono
+    style: Medium Italic
+  bold_italic:
+    family: SF Mono
+    style: Bold Italic
+  offset:
+    x: 0
+    y: 5
+shell:
+  program: zsh
+key_bindings:
+  - key: T
+    mods: Command
+    action: CreateNewWindow
+  - key: D
+    mods: Shift|Control
+    command: {
+      program: "sh",
+      args: ["-c", "toggle_alacritty_theme"]
+    }
+...

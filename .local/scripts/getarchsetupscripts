@@ -1,0 +1,16 @@
+#!/bin/sh
+
+BASE_URL=https://raw.githubusercontent.com/sujaltv/tvsos/master/.local/
+
+FILES=(
+    scripts/instalfromcsv
+    scripts/setuparchuser
+    packages/base.csv
+    packages/root.csv
+    packages/user.csv
+)
+
+for file in ${FILES[@]}; do
+    o_file=(${file//\// })
+    curl $BASE_URL/$file > ${o_file[-1]}
+done

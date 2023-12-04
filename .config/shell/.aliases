@@ -1,0 +1,68 @@
+### NAVIGATION & HELPER ###
+alias lsl='ls -lh'
+alias c='clear'
+alias h='history'
+alias hg='history | grep -P'
+alias lsa='ls -alh'
+alias show='nautilus .'
+alias ipe='curl ipinfo.io/ip;echo ""'
+alias ipi="ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1'"
+alias nbc='nbc "*.ipynb"'
+alias empty-trash='rm -r ~/.local/share/Trash/files/*'
+alias psg='ps -eaf | grep -P'
+alias sedre='sed -r'
+alias grepre='grep -P'
+alias cursor='find-cursor --repeat 0 --follow --distance 1 --line-width 16 --size 16 --color red'
+alias pen='sudo ~/Downloads/Linux_Pentablet_V1.2.14.1/Pentablet_Driver.sh'
+alias MI='mediainfo --Inform="Video;Width=%Width%, Height=%Height%, Duration=%Duration%, FPS=%FrameRate%, NumFrames=%FrameCount%"'
+alias wifi='sudo service network-manager restart'
+alias ols='ols --store-path ~/.config/olsync/.olauth -i ~/.config/olsync/.olignore'
+alias time='sudo ntpd -qg'
+### NAVIGATION & HELPER ###
+
+### OPENING FILES ###
+alias open='xdg-open'
+alias targz='tar xzf'
+alias tarbz2='tar xjf'
+alias extract='dtrx'
+alias deb='sudo dpkg -i'
+### OPENING FILES ###
+
+### CONDA ###
+alias aa='a torch'
+alias aaa='a ramy_torch'
+alias d='conda deactivate'
+alias tb='tensorboard --samples_per_plugin="images=0" --logdir'
+### CONDA ###
+
+### GIT ###
+alias gitclean='git clean -xdf'
+alias config='/usr/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'
+
+### XVFB ###
+alias fakeX='xvfb-run -a -s "-screen 0 1024x768x24 -ac +extension GLX +render -noreset"'
+
+### GP ###
+alias gpc='globalprotect connect'
+alias gpd='globalprotect disconnect'
+
+### NGROK ###
+alias ngbot='aaa; python ~/apps/ngrok-bot.py; d'
+alias nga='~/apps/ngrok start -all'
+alias ng='~/apps/ngrok start'
+alias ngp='~/apps/ngrok http'
+
+### SSH ###
+alias deepv='ssh deepv'
+alias beast='ssh beast'
+alias puppy='ssh puppy'
+alias gaivi='ssh gaivi'
+alias hpg='ssh hpg'
+alias seedbox='ssh seedbox'
+alias margoz='ssh margoz'
+alias rpi='ssh rpi'
+alias lab='ssh lab'
+
+### mounting ###
+alias MSujal='sudo mount nec200a.ssh.sujal.tv:/storage/hdd/shared /data/D1/sujal --mkdir'
+alias USujal='sudo umount /data/D1/sujal && rm -rf /data/D1/sujal'

@@ -1,0 +1,8 @@
+#!/bin/sh
+
+MODE="--short"
+if [ ! -z $1 ]; then
+    MODE=""
+fi
+
+colorpicker --one-shot $MODE | xclip -sel clip

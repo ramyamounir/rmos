@@ -1,0 +1,7 @@
+#!/bin/sh
+
+if command -v globalprotect &> /dev/null; then
+    if [[ `globalprotect show --status` == *"Connected"* ]]; then
+        echo -e "\ue4d8"
+    fi
+fi

@@ -1,0 +1,6 @@
+auto_activate_base: False
+channels:
+  - defaults
+  - conda-forge
+report_errors: False
+ssl_verify: True
