@@ -17,7 +17,7 @@ ln -sf $HOME/.config/shell/profile $HOME/zprofile
 
 # instal packages
 echo "Installing user packages"
-sh $LOC/scripts/instalfromcsv $LOC/packages/user.csv
+sh $LOC/scripts/instalfromcsv $LOC/packages/user.csv -s
 
 # make suckless apps
 sh $LOC/bin/make_suckless
@@ -30,8 +30,8 @@ git clone https://github.com/ramyamounir/wallpapers.git $LOC/wallpapers
 echo "Installing fonts"
 fc-cache -fv
 
-rmos config --local status.showuntrackedfiles no
-rmos config --local pull.rebase off
-rmos config --local pull.default current
-rmos config --local push.default current
+git --git-dir $HOME/.rmos config --local status.showuntrackedfiles no
+git --git-dir $HOME/.rmos config --local pull.rebase off
+git --git-dir $HOME/.rmos config --local pull.default current
+git --git-dir $HOME/.rmos config --local push.default current
 echo "User setup finished."
