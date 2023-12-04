@@ -12,8 +12,8 @@ CFG=$HOME/.config
 LOC=$HOME/.local
 
 # link files and folders
-ln -sf $HOME/.config/x11/xprofile $HOME/
-ln -sf $HOME/.config/shell/profile $HOME/zprofile
+ln -sf $HOME/.config/x11/xprofile $HOME/.xprofile
+ln -sf $HOME/.config/shell/profile $HOME/.zprofile
 
 # instal packages
 echo "Installing user packages"

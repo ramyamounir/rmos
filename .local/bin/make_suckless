@@ -8,6 +8,7 @@ install_with_make() {
     if [ -d $FOLDER_NAME ]; then
         cd $FOLDER_NAME
 
+        make
         sudo make clean install
 
         cd ..
