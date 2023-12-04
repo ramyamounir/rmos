@@ -69,3 +69,4 @@ y,          simple-mtpfs,                                          Simple MTP Fi
 p,          exfat-utils,                                           exFAT file system
 p,          sshfs,                                                 SSH file system (SSHFS)
 p,          nfs-utils,                                             Network file system (NFS)
+p,          xwallpaper,                                            Sets the wallpaper
