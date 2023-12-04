@@ -38,6 +38,8 @@ alias tb='tensorboard --samples_per_plugin="images=0" --logdir'
 ### GIT ###
 alias gitclean='git clean -xdf'
 alias config='/usr/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'
+alias rmos='git --git-dir $HOME/.rmos --work-tree $HOME'
+
 
 ### XVFB ###
 alias fakeX='xvfb-run -a -s "-screen 0 1024x768x24 -ac +extension GLX +render -noreset"'
