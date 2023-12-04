@@ -8,6 +8,10 @@ install_with_make() {
     if [ -d $FOLDER_NAME ]; then
         cd $FOLDER_NAME
 
+        if ! [ -d $FOLDER_NAME/.git ]; then
+            git init
+        fi;
+
         make
         sudo make clean install
 
