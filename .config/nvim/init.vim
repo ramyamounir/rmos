@@ -27,7 +27,7 @@ set clipboard=unnamedplus
 
 highlight ColorColumn ctermbg=0 guibg=lightgrey
 
-call plug#begin('~/.vim/plugged')
+call plug#begin('~/.config/nvim/plugged')
 
 " Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets' 
 " Plug 'puremourning/vimspector'
@@ -49,7 +49,6 @@ Plug 'vimwiki/vimwiki'
 Plug 'michal-h21/vimwiki-sync'
 Plug 'tpope/vim-fugitive'
 Plug 'lervag/vimtex'
-Plug 'ThePrimeagen/vim-be-good'
 Plug 'github/copilot.vim'
 Plug 'mreppen/vim-scholar'
 
@@ -72,18 +71,18 @@ let &t_EI = "\e[2 q"
 
 
 " source plugin configs
-source ~/.config/vim/vim_confs/coc.vim
-" source ~/.config/vim/vim_confs/snippets.vim
-" source ~/.config/vim/vim_confs/vimspector.vim
-source ~/.config/vim/vim_confs/sandwich.vim
-source ~/.config/vim/vim_confs/highlightedyank.vim
-source ~/.config/vim/vim_confs/lightline.vim
-source ~/.config/vim/vim_confs/sessions.vim
-source ~/.config/vim/vim_confs/ctrlp.vim
-source ~/.config/vim/vim_confs/nerdtree.vim
-source ~/.config/vim/vim_confs/vimwiki.vim
-source ~/.config/vim/vim_confs/fugitive.vim
-source ~/.config/vim/vim_confs/vimtex.vim
+source ~/.config/nvim/vim_confs/coc.vim
+" source ~/.config/nvim/vim_confs/snippets.vim
+" source ~/.config/nvim/vim_confs/vimspector.vim
+source ~/.config/nvim/vim_confs/sandwich.vim
+source ~/.config/nvim/vim_confs/highlightedyank.vim
+source ~/.config/nvim/vim_confs/lightline.vim
+source ~/.config/nvim/vim_confs/sessions.vim
+source ~/.config/nvim/vim_confs/ctrlp.vim
+source ~/.config/nvim/vim_confs/nerdtree.vim
+source ~/.config/nvim/vim_confs/vimwiki.vim
+source ~/.config/nvim/vim_confs/fugitive.vim
+source ~/.config/nvim/vim_confs/vimtex.vim
 
 " Splits and tabs
 nnoremap <C-h> <C-w>h
