@@ -70,3 +70,5 @@ p,          exfat-utils,                                           exFAT file sy
 p,          sshfs,                                                 SSH file system (SSHFS)
 p,          nfs-utils,                                             Network file system (NFS)
 p,          xwallpaper,                                            Sets the wallpaper
+p,          unzip,                                                 Unzip and compress files and folders
+y,          brave-bin,                                             brave browser
