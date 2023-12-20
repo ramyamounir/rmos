@@ -73,3 +73,4 @@ p,          xwallpaper,                                            Sets the wall
 p,          unzip,                                                 Unzip and compress files and folders
 y,          brave-bin,                                             brave browser
 y,          teams-for-linux,                                       Microsoft teams application
+p,          xcape,                                                 Map different key when pressed once
