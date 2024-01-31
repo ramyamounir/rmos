@@ -71,6 +71,6 @@ p,          sshfs,                                                 SSH file syst
 p,          nfs-utils,                                             Network file system (NFS)
 p,          xwallpaper,                                            Sets the wallpaper
 p,          unzip,                                                 Unzip and compress files and folders
-y,          brave-bin,                                             brave browser
 y,          teams-for-linux,                                       Microsoft teams application
 p,          xcape,                                                 Map different key when pressed once
+p,          firefox,                                               Firefox browser
