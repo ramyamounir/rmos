@@ -70,6 +70,7 @@ p,          exfat-utils,                                           exFAT file sy
 p,          sshfs,                                                 SSH file system (SSHFS)
 p,          nfs-utils,                                             Network file system (NFS)
 p,          xwallpaper,                                            Sets the wallpaper
+p,          zip,                                                   compress files and folders
 p,          unzip,                                                 Unzip and compress files and folders
 y,          teams-for-linux,                                       Microsoft teams application
 p,          xcape,                                                 Map different key when pressed once
