@@ -51,6 +51,8 @@ Plug 'tpope/vim-fugitive'
 Plug 'lervag/vimtex'
 Plug 'github/copilot.vim'
 Plug 'mreppen/vim-scholar'
+Plug 'fisadev/vim-isort'
+Plug 'psf/black', { 'branch': 'main' }
 
 
 call plug#end()
@@ -99,4 +101,13 @@ map <Leader>j :q<CR>
 map <Leader>k :tabnew<CR>
 map <Leader>n <C-w>N<CR>
 map <Leader>tt :term<CR>
+
+" Enable isort and black on save
+" autocmd BufWritePre *.py execute ':Isort!' | execute ':Black'
+" autocmd BufWritePost *.py :!isort %
+" autocmd BufWritePre *.py :!isort %
+" autocmd BufWritePre *.py :!isort %
+autocmd BufWritePre *.py execute  ':Isort' | execute ':Black'
+
+" autocmd BufWritePre *.py execute ':!isort %' | execute ':Black'
 
