@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+
+if [[ "$1" = "crop" ]]; then
+    ffcast -s rec "$HOME/downloads/recording-%s.mp4"
+else
+    ffcast -w rec "$HOME/downloads/recording-%s.mp4"
+fi

@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+
+xrandr -q | grep " connected" | cut -d ' ' -f1

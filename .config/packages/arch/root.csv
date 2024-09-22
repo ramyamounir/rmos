@@ -1,0 +1,10 @@
+Manager,    Package,                                Comments
+p,          efibootmgr,                             bootloader manager
+p,          git,                                    git
+p,          grub,                                   bootloader
+p,          ntp,                                    Network Time Protocol
+p,          networkmanager,                         network manager
+p,          openssh,                                ssh tool
+p,          gvim,                                   vim text editor
+p,          neovim,                                 neovim text editor
+p,          wget,                                   web getter

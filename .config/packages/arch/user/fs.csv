@@ -1,0 +1,10 @@
+Manager,    Package,                                               Comments
+y,          apfs-fuse-git,                                         Apple file system (APFS)
+p,          cdrtools,                                              ISO and other CD/DVD/BluRay image maker
+p,          dosfstools,                                            FAT formatting
+p,          exfat-utils,                                           exFAT file system
+y,          fuse-ext2,                                             User-space file system (FUSE)
+p,          nfs-utils,                                             Network file system (NFS)
+p,          ntfs-3g,                                               New Technology File System (NTFS)
+y,          simple-mtpfs,                                          Simple MTP File System (Simple MTPFS) that supports reading/writing from MTP devices (cell phones)
+p,          sshfs,                                                 SSH file system (SSHFS)

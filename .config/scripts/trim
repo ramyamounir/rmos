@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+
+if [[ -z $1 || -z $2 || -z $3 || -z $4 ]]; then
+    echo "trim FILENAME START END DST"
+else
+    ffmpeg -ss $2 -to $3 -i $1 -c copy $4
+fi

@@ -1,0 +1,24 @@
+#!/bin/sh
+
+WINDOW_MANAGER=${WINDOW_MANAGER:-"dwm"}
+
+case "$WINDOW_MANAGER" in
+    "gnome")
+        export XDG_SESSION_TYPE=x11
+        export GDK_BACKEND=x11
+        exec gnome-session
+        ;;
+    *)
+        # touchpad
+        TOUCH_PAD_ID=`xinput --list | grep "bcm5974" | grep "id=[0-9]*" -o | awk '{split($0, a, "="); print a[2]}'`
+        xinput set-prop $TOUCH_PAD_ID 314 0.25  			    # acceleration speed
+        xinput set-prop $TOUCH_PAD_ID 303 1  					# scrolling direction
+        xinput set-prop $TOUCH_PAD_ID 332 1 					# tapping enabled/disabled
+
+        [ -f $XDG_CONFIG_HOME/x11/xprofile ] && . $XDG_CONFIG_HOME/x11/xprofile
+
+        dwmblocks &                             # dmenu blocks
+
+        exec dwm                                # start dwm
+        ;;
+esac

@@ -1,0 +1,5 @@
+Manager,    Package,                    Comments
+ps,         base,                       base packages
+ps,         base-devel,                 developer mode package manager
+ps,         linux,                      Linux kernel
+ps,         linux-firmware,             Linux firmware

@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+
+FILE=$XDG_CONFIG_HOME/conda/environment.yaml
+if ! [ -f $FILE ]; then
+    exit 0
+fi
+
+DST="$HOME/.local/bin"
+if ! [ -z $1 ]; then
+    DST=$1
+fi
+mkdir -p $DST
+
+skip_package() {
+    local TARGET_STRING=$1
+    shift
+    local IGNORE_PACKAGES=("ncurses")
+    local FOUND=false
+
+    for ELEMENT in "${IGNORE_PACKAGES[@]}"; do
+        if [ "$ELEMENT" == "$TARGET_STRING" ]; then
+            FOUND=true
+            break
+        fi
+    done
+
+    echo "$FOUND"
+}
+
+# Read the file line by line
+while IFS= read -r LINE; do
+    # Check if the line contains the pattern "dependencies"
+    if [[ "$LINE" == *"dependencies"* ]]; then
+        START_PROCESSING=true
+        continue
+    fi
+
+    # Process lines after the "dependencies" pattern
+    if [ "$START_PROCESSING" = true ]; then
+        # Remove leading " - " and trim spaces
+        PACKAGE=$(echo "$LINE" | sed 's/^[[:space:]]*-\s*//;s/[[:space:]]*$//')
+
+        if ! [ "$(skip_package $PACKAGE)" = true ]; then
+            ln -sf $HOME/.local/src/anaconda3/bin/$PACKAGE $DST/
+        fi
+    fi
+done < "$FILE"
+

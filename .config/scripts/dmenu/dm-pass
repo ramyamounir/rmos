@@ -1,0 +1,14 @@
+#!/usr/bin/env sh
+
+DMENU_OPTIONS=`dwm -m`
+ITEMS="$(pass show | sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g')"
+
+OPTIONS=""
+while IFS= read -r LINE; do
+    read -ra TOKENS <<< $LINE
+    OPTIONS="$OPTIONS${TOKENS[@]:1}\n"
+done <<< ${ITEMS[@]:1}
+
+CHOICE=$(printf "$OPTIONS" | dmenu $DMENU_OPTIONS -i -p "")
+
+pass -c "$CHOICE"

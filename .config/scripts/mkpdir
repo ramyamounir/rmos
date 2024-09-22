@@ -1,0 +1,57 @@
+#!/usr/bin/env sh
+
+PROJECT_DIR=$1
+PROJECT_DIR=$(realpath ${PROJECT_DIR:-$(pwd)})
+PROJECT=$(basename $PROJECT_DIR)
+
+if [ -n "$2" ]; then
+    STORAGE_DIR=$(realpath $2)
+
+    INTERMEDIATE="$STORAGE_DIR/projects/$PROJECT"
+    IN_DIR=$INTERMEDIATE/inputs
+    OUT_DIR=$INTERMEDIATE/outputs
+
+    echo "Project name: $PROJECT"
+    echo "Project directory: $PROJECT_DIR"
+    echo "Storage directory: $STORAGE_DIR"
+
+    # inputs
+    mkdir -p $STORAGE_DIR/assets
+    mkdir -p $STORAGE_DIR/datasets
+    mkdir -p $STORAGE_DIR/weights
+    # outputs
+    mkdir -p $STORAGE_DIR/checkpoints/$PROJECT
+    mkdir -p $STORAGE_DIR/logs/console/$PROJECT
+    mkdir -p $STORAGE_DIR/logs/performance/$PROJECT
+    mkdir -p $STORAGE_DIR/logs/tensorboard/$PROJECT
+    mkdir -p $INTERMEDIATE
+    mkdir -p $STORAGE_DIR/visualisations/manim/$PROJECT
+    mkdir -p $STORAGE_DIR/visualisations/plots/$PROJECT
+    mkdir -p $STORAGE_DIR/visualisations/misc/$PROJECT
+
+    mkdir -p $IN_DIR $OUT_DIR;
+
+    mkdir -p $PROJECT_DIR
+    ln -sf $OUT_DIR $PROJECT_DIR
+    ln -sf $IN_DIR $PROJECT_DIR
+
+    ln -sf $STORAGE_DIR/assets $IN_DIR
+    ln -sf $STORAGE_DIR/datasets $IN_DIR
+    ln -sf $STORAGE_DIR/weights $IN_DIR
+
+    ln -sf $STORAGE_DIR/checkpoints/$PROJECT $OUT_DIR/checkpoints
+    mkdir -p $OUT_DIR/logs $OUT_DIR/paper $OUT_DIR/visualisations
+
+    ln -sf $STORAGE_DIR/logs/console/$PROJECT $OUT_DIR/logs/console
+    ln -sf $STORAGE_DIR/logs/performance/$PROJECT $OUT_DIR/logs/performance
+    ln -sf $STORAGE_DIR/logs/tensorboard/$PROJECT $OUT_DIR/logs/tensorboard
+    ln -sf $STORAGE_DIR/visualisations/manim/$PROJECT $OUT_DIR/visualisations/manim
+    ln -sf $STORAGE_DIR/visualisations/plots/$PROJECT $OUT_DIR/visualisations/plots
+    ln -sf $STORAGE_DIR/visualisations/misc/$PROJECT $OUT_DIR/visualisations/misc
+else
+    mkdir -p $PROJECT_DIR/inputs/assets $PROJECT_DIR/inputs/datasets $PROJECT_DIR/inputs/datasets
+    mkdir -p $PROJECT_DIR/outputs/checkpoints $PROJECT_DIR/outputs/logs $PROJECT_DIR/outputs/paper $PROJECT_DIR/outputs/visualisations
+    mkdir -p $PROJECT_DIR/outputs/logs/console $PROJECT_DIR/outputs/logs/performance $PROJECT_DIR/outputs/logs/tensorboard
+    mkdir -p $PROJECT_DIR/outputs/visualisations/manim $PROJECT_DIR/outputs/visualisations/plots $PROJECT_DIR/outputs/visualisations/misc 
+fi
+

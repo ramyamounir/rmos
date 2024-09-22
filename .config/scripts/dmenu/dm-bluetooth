@@ -1,0 +1,30 @@
+#!/usr/bin/env sh
+
+DMENU_OPTIONS=`dwm -m`
+
+if bluetoothctl show | grep "Powered: no" &> /dev/null; then 
+    bluetoothctl power on
+fi
+
+if command -v bluetoothctl &> /dev/null; then
+    DEVICES=`bluetoothctl devices`
+    N="${#DEVICES[@]}"
+
+    if [ -z $N ]; then
+        printf "OK" | dmenu $DMENU_OPTIONS -i -p "No Bluetooth devices added"
+        exit 0
+    else
+        OPTIONS=""
+        while IFS= read DEVICE; do
+            OPTIONS="$OPTIONS$DEVICE\n"
+        done <<< $DEVICES
+        OPTIONS="$OPTIONS""Off"
+        CHOICE=$(printf "$OPTIONS" | dmenu $DMENU_OPTIONS -i)
+        if [[ "$CHOICE" == "Off" ]]; then
+            bluetoothctl power off
+        else
+            read -ra TOKENS <<< $CHOICE
+            bluetoothctl connect ${TOKENS[1]}
+        fi
+    fi
+fi

@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+
+. $XDG_CONFIG_HOME/scripts/utils.sh
+
+# yay packages
+if command -v yay &> /dev/null; then
+    PACKAGES_YAY=$(yay -Qe | cut -d' ' -f1)
+fi
+
+# pacman packages
+if command -v pacman &> /dev/null; then
+    # PACKAGES_PACMAN=$(comm -23 <(pacman -Qqe | sort) <(pacman -Qqg base base-devel | sort))
+    PACKAGES_PACMAN=$(comm -23 <(pacman -Qqe | sort) <(pacman -Qqg | sort))
+fi
+
+
+# merge and sort the lists
+PACKAGES=$(echo -e "$PACKAGES_PACMAN\n$PACKAGES_YAY" | sort | uniq)
+
+# Output table header
+echo "╭───────────────────────────────┬────────────────────────────┬───────────────┬────────────────────────────────╮"
+printf "│%30s %-30s %-15s %-22s\t\t\b\b│\n" "Name" "│Version" "│Installed Size" "│Date installed"
+echo "├───────────────────────────────┼────────────────────────────┼───────────────┼────────────────────────────────┤"
+
+# Iterate through the explicitly installed packages
+for PACKAGE in $PACKAGES; do
+    PACKAGE_INFO=$(pacman -Qi "$PACKAGE")
+    name=$(echo "$PACKAGE_INFO" | awk '/^Name/ {print $3}')
+    version=$(echo "$PACKAGE_INFO" | awk '/^Version/ {print $3}')
+    size=$(echo "$PACKAGE_INFO" | awk '/^Installed Size/ {print $4$5}')
+    install_date=$(echo "$PACKAGE_INFO" | awk '/^Install Date/ {printf("%s, %s %s %s", $4, $5, $6, $7)}')
+
+    # Output package information in a formatted table
+    printf "│%30s │%-27s │%-14s │%-22s\t\t\b\b│\n" $(padclip "$name" 30) "$(padclip $version 27)" "$(padclip $size 14)" "$(padclip "$install_date" 22)"
+done
+
+echo "╰───────────────────────────────┴────────────────────────────┴───────────────┴────────────────────────────────╯"
+

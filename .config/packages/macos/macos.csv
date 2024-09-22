@@ -1,0 +1,32 @@
+Manager,    Package,                                                Comments
+g,          https://github.com/Homebrew/brew.git,                   Homebrew
+b,          alacritty,
+bc,         box-drive,
+b,          cmatrix,
+bc,         drawio,
+bc,         firefox,
+b,          freetype,                                               Font conversion tools
+b,          gh,                                                     GitHub CLI
+b,          gpg,
+b,          htop,
+b,          mas,
+bc,         microsoft-teams,
+b,          neovim,
+bc,         nextcloud,
+b,          node,
+bc,         nordvpn,
+b,          pass,
+bc,         plex,
+b,          tldr,
+b,          tmux,
+bc,         visual-studio-code,
+b,          wget,
+bc,         zoom,
+g,          https://github.com/marlonrichert/zsh-autocomplete,      zsh autocomplete
+g,          https://github.com/zsh-users/zsh-autosuggestions,       zsh autosuggestion
+mas,        823766827,                                              OneDrive
+mas,        462062816,                                              Microsoft PowerPoint
+mas,        462054704,                                              Microsoft Word
+mas,        462058435,                                              Microsoft Excel
+mas,        310633997,                                              WhatsApp Messenger
+mas,        497799835,                                              Xcode

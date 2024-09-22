@@ -1,0 +1,16 @@
+#!/usr/bin/env sh
+
+if command -v nextcloudcmd &> /dev/null; then
+    if [[ -z "$CLOUD_USERNAME" || -z "$CLOUD_PASSWORD_FILE" || \
+        -z "$CLOUD_DIR" || -z "$CLOUD_SERVER_URL" ]]; then
+        exit 0
+    fi
+
+    nextcloudcmd \
+        --silent \
+        --user "$CLOUD_USERNAME" \
+        --password "$(pass show $CLOUD_PASSWORD_FILE | head -n 1)" \
+        --path / \
+        "$CLOUD_DIR" \
+        "$CLOUD_SERVER_URL"
+fi

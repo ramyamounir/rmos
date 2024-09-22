@@ -1,0 +1,12 @@
+#!/usr/bin/env sh
+
+if [[ -z $1 || -z $2 ]]; then
+    echo "mp42gif FILENAME DST [SCALE] [FPS]"
+else
+    SCALE="${3:-480}"
+    FPS="${4:-10}"
+    ffmpeg \
+        -i $1 \
+        -vf "fps=$FPS,scale=$SCALE:-1" \
+        $2
+fi

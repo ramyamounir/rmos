@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+OPTION=$1
+
+if [ -z $OPTION ]; then
+    echo "Specify settings type: patch | vscode | all"
+    exit 0
+fi
+
+if [[ "$OPTION" = "patch" || "$OPTION" = "all" ]]; then
+    ROW_COUNT=0
+
+    while IFS="," read -r PACKAGE FILES; do
+        if [[ $ROW_COUNT -eq 0 ]]; then
+            ((ROW_COUNT++))
+            continue
+        fi
+
+        cd $HOME/.local/src/$PACKAGE
+        git add $FILES && git diff --staged > $XDG_CONFIG_HOME/patches/$PACKAGE.patch
+    done < $XDG_CONFIG_HOME/patches/patches.csv
+fi
+
+if [[ "$OPTION" = "vscode" || "$OPTION" = "all" ]]; then
+    if command -v code &> /dev/null; then
+        code --list-extensions > $XDG_CONFIG_HOME/vscode/extensions.txt
+    fi
+fi
+

@@ -1,0 +1,4 @@
+Manager,    Package,                                Comments
+p,          p7zip,                                  7z extractor
+p,          unzip,                                  archive decompression
+p,          zip,                                    Zip archiver

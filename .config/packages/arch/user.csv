@@ -1,0 +1,69 @@
+Manager,    Package,                                               Comments
+a,          https://aur.archlinux.org/yay.git,                     Yay package manager
+p,          aerc,                                                  email client
+p,          alacritty,                                             terminal emulator
+p,          arc-gtk-theme,                                         GTK theme
+p,          aria2,                                                 multiple protocol download (including via torrents)
+p,          bat,                                                   Better cat
+p,          bc,                                                    precision calculator
+p,          bind,                                                  DNS protocol implementation (useful for servers)
+p,          bluez,                                                 Bluetooth controller
+p,          bluez-utils,                                           Bluetooth utilities
+y,          bluetuith,                                             Bluetooth TUI
+p,          bore,                                                  Tunnel
+p,          bpytop,                                                Better htop
+p,          certbot,                                               SSL certification tool
+p,          certbot-nginx,                                         certbot plugin for nginx
+y,          colorpicker,                                           Colour picker
+y,          downgrade,                                             Downgrade packages
+y,          dpkg,                                                  Debian package manager
+p,          dua-cli,                                               Better du (disc usage)
+p,          duf,                                                   Better df 
+p,          evtest,                                                Listening to events--useful for debugging
+p,          fail2ban,                                              Protecting servers with failures to authentication being banned
+y,          ffcast,                                                quick screen recorder
+p,          ffmpeg,                                                Solution to record; convert and stream audio and video
+p,          figlet,                                                figured letters
+p,          fzf,                                                   fuzzy search
+p,          github-cli,                                            github cli
+p,          gptfdisk,                                              Disc partitioning tool for GPT format
+p,          htop,                                                  process viewer
+p,          lf,                                                    CLI file explorer
+p,          lolcat,                                                Colourise terminal text
+p,          lvm2,                                                  Logical volume manager
+p,          man-db,                                                manual pages
+p,          man-pages,                                             manual pages
+p,          mpv,                                                   video player
+y,          ncmatrix,                                              terminal matrix-like screensaver
+p,          nginx,                                                 reverse proyx server
+p,          obs-studio,                                            screen recorder (Open Broadcaster Software)
+p,          openconnect,                                           VPN
+p,          pass,                                                  Password manager
+p,          passff-host,                                           Password manager host client
+p,          pciutils,                                              PCI utilities
+p,          pinentry,                                              PIN dialogues
+p,          pipewire-pulse,                                        Pipewire Pulse
+p,          poppler,                                               PDF manipulator and previewer
+p,          procs,                                                 better ps
+p,          pulsemixer,                                            CLI and curses mixer for pulseaudio
+p,          qrencode,                                              QR code encoder
+p,          qt5-x11extras,                                         QT5 for X
+p,          reptyr,                                                reparent a process' terminal (move process from one terminal to another)
+p,          rsync,                                                 ssh remote sync
+p,          sof-firmware,                                          sound card
+p,          speedtest-cli,                                         a CLI tool to test Internet speed
+p,          system-config-printer,                                 printer configuration toolbox (GUI)
+p,          tldr,                                                  tldr manual pages
+p,          tmux,                                                  tmux
+p,          ufw,                                                   firewall
+p,          unison,                                                file synchronisation tool
+p,          vlc,                                                   VLC media player
+p,          zoxide,                                                Zoxide
+p,          zsh,                                                   shell
+c,          $XDG_CONFIG_HOME/packages/arch/user/apps.csv,          User applications
+c,          $XDG_CONFIG_HOME/packages/arch/user/archivers.csv,     Archiving packages
+c,          $XDG_CONFIG_HOME/packages/arch/user/fs.csv,            File system packages
+c,          $XDG_CONFIG_HOME/packages/arch/user/latex.csv,         TeX packages
+c,          $XDG_CONFIG_HOME/packages/arch/user/x11.csv,           X11 packages
+g,          https://github.com/marlonrichert/zsh-autocomplete,     zsh autocomplete
+g,          https://github.com/zsh-users/zsh-autosuggestions,      zsh autosuggestion

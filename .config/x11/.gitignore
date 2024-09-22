@@ -1,0 +1,7 @@
+*
+
+!.gitignore
+!xinitrc
+!xprofile
+!XCompose
+!XResources

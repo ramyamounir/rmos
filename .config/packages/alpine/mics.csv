@@ -1,0 +1,12 @@
+Manager,    Package,    Comments
+apk,        coreutils,
+apk,        fontconfig,
+apk,        gnupg,
+apk,        openrc,
+apk,        openssh,
+apk,        procps,
+apk,        rsync,
+apk,        shadow,
+apk,        sudo,       
+g,          https://github.com/marlonrichert/zsh-autocomplete,     zsh autocomplete
+g,          https://github.com/zsh-users/zsh-autosuggestions,      zsh autosuggestion

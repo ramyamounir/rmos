@@ -1,0 +1,103 @@
+#!/usr/bin/env bash
+
+. $XDG_CONFIG_HOME/scripts/utils.sh
+
+convert_memory() {
+    local memory="$1"
+    local unit="$2"
+    if [[ "$unit" == "MB" ]]; then
+        echo "$memory"
+    else
+        echo "scale=2; $memory/ 1024" | bc
+    fi
+}
+
+echo "╭──────────────────────────────────────────────────────────────────────────────────╮"
+
+# Section: Get OS information
+OS=$(trim $(uname -o))
+OS_DISTRO=$(trim $(cat /etc/os-release | grep "PRETTY_NAME" | awk -F '=' '{print $2}' | sed 's/"//g'))
+KERNEL=$(uname -rs)
+HOST_NAME=$(trim $(uname -n))
+
+printf "│%-84s│\n" "   OS"
+echo "├──────────────────────────┬───────────────────────────────────────────────────────┤"
+printf "│ %25s│ %-53s │\n" "Kernel" "$(padclip "$KERNEL" 53)"
+printf "│ %25s│ %-53s │\n" "Operating system" "$OS"
+printf "│ %25s│ %-53s │\n" "Distribution" "$(padclip "$OS_DISTRO " 53)"
+# ($DISTRO_VERSION)
+printf "│ %25s│ %-53s │\n" "Host" "$HOST_NAME"
+
+# Get processor information
+CPU_INFO=$(lscpu)
+PROCESSOR_NAME=$(trim `echo "$CPU_INFO" | grep "Model name" | awk -F ':' '{print $2}'`)
+ARCHITECTURE=$(trim `uname -m`)
+CPU=$(trim `echo "$CPU_INFO" | grep "^CPU(s):" | awk -F ':' '{print $2}'`)
+CPU_SPEED_MAX=$(trim `echo "$CPU_INFO" | grep "^CPU max MHz:" | awk -F ':' '{print $2}'`)
+CPU_SPEED_MIN=$(trim `echo "$CPU_INFO" | grep "^CPU min MHz:" | awk -F ':' '{print $2}'`)
+CPU_TYPE=$(trim $(getconf LONG_BIT))
+
+echo "├──────────────────────────┴───────────────────────────────────────────────────────┤"
+printf "│%-84s│\n" "   CPU "
+echo "├──────────────────────────┬───────────────────────────────────────────────────────┤"
+printf "│ %25s│ %-53s │\n" "Processor" "$PROCESSOR_NAME"
+printf "│ %25s│ %-53s │\n" "CPUs" "$CPU"
+printf "│ %25s│ %-53s │\n" "Architecture" "$ARCHITECTURE"
+printf "│ %25s│ %-53s │\n" "Operation mode" "$CPU_TYPE bit"
+printf "│ %25s│ %-53s │\n" "CPU speed (max)" "$CPU_SPEED_MAX MHz"
+printf "│ %25s│ %-53s │\n" "CPU speed (min)" "$CPU_SPEED_MIN MHz"
+
+# Get RAM information
+CPU_RAM=$(trim `lsmem | grep "^Total online" | awk -F ':' '{print $2}'`)
+
+echo "├──────────────────────────┴───────────────────────────────────────────────────────┤"
+printf "│%-85s│\n" " 󰑹  RAM "
+echo "├──────────────────────────┬───────────────────────────────────────────────────────┤"
+printf "│ %25s│ %-53s │\n" "Memory" "$CPU_RAM"
+
+# Get storage information
+STORAGES=`lsblk -ad | sed -n '2, $p' | awk -F ' ' '{
+    if ($4 != "0B" && $4 != "0" && $4 != "1" && $1 !~ /loop/) {
+        printf "│ %25s│ %-53s │\n", $1, $4
+    }
+}'`
+
+echo "├──────────────────────────┴───────────────────────────────────────────────────────┤"
+printf "│%-84s│\n" "   Storage "
+echo "├──────────────────────────┬───────────────────────────────────────────────────────┤"
+echo -e "$STORAGES"
+
+# Check if nvidia-smi is available
+if command -v nvidia-smi &> /dev/null; then
+    echo "├──────────────────────────┴───────────────────────────────────────────────────────┤"
+    printf "│%-84s│\n" "   GPU "
+    echo "├──────────────────────────┬───────────────────────────────────────────────────────┤"
+
+    # Run nvidia-smi and store the output in a variable
+    gpu_info=$(nvidia-smi --query-gpu=gpu_name,memory.total --format=csv,noheader,nounits)
+
+    # Check if nvidia-smi is available
+    if [[ $? -eq 0 ]]; then
+        # Split the GPU info into an array by line
+        IFS=$'\n' read -d '' -r -a gpu_array <<< "$gpu_info"
+
+        # Loop through the array, format and print the GPU info
+        for gpu in "${gpu_array[@]}"; do
+            IFS=',' read -ra gpu_parts <<< "$gpu"
+            gpu_name="${gpu_parts[0]}"
+            memory_total="${gpu_parts[1]}"
+            formatted_memory=""
+
+            if (( $(bc <<< "$memory_total > 1024") )); then
+                formatted_memory="$(convert_memory "$memory_total" "GB") GB"
+            else
+                formatted_memory="$(convert_memory "$memory_total" "MB") MB"
+            fi
+
+            printf "│ %25s│ %-53s │\n" "$gpu_name" "$formatted_memory"
+        done
+    fi
+
+fi
+
+echo "╰──────────────────────────┴───────────────────────────────────────────────────────╯"

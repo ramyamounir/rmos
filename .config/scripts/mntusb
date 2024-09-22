@@ -1,0 +1,113 @@
+#!/usr/bin/env python3
+
+
+from subprocess import run
+from json import loads
+
+
+class DWMPrompt:
+    @staticmethod
+    def prompt(options='', prompt=''):
+        return run(f"echo '{options}' | dmenu $(dwm -m) -i -p '{prompt}'",
+                   shell=True, capture_output=True, text=True)
+
+
+class USBUtils:
+    @staticmethod
+    def list_of_usb_devices():
+        cmd = "/bin/lsblk --json --tree -o PATH,SIZE,UUID,MOUNTPOINT,FSTYPE,MODEL".split()
+
+        usb_list = run(cmd, capture_output=True, text=True)
+
+        if usb_list.returncode != 0: return
+
+        result = loads(usb_list.stdout)
+
+        if 'blockdevices' not in result: return
+
+        blk_devs = result['blockdevices']
+
+        def get_leaf_devs(devs):
+            if 'children' in devs and len(devs['children']) > 0:
+                __devs = get_leaf_devs(devs['children'])
+                for d in __devs: d['model'] = devs['model']
+                return __devs
+            else:
+                return devs
+
+        devices = []
+
+        for d in list(map(get_leaf_devs, blk_devs)):
+            if 'path' not in d: devices.extend(d)
+            else: devices.append(d)
+
+        devices = list(filter(lambda i: i['fstype'], devices))
+
+        return devices
+
+    @staticmethod
+    def str(devices):
+        result = '\n'.join([
+            f'{d["path"]}: {d["model"][:20].rjust(20)} {d["size"].rjust(8)} {("Mounted" if d["mountpoint"] is not None else "Not mounted").rjust(15)}'
+            for d in devices
+        ])
+
+        return result
+
+
+if __name__ == '__main__':
+    STORAGE_DIR = '/media'
+    STORAGE_GROUP = 'media'
+
+    # list of USB devices
+    devices = USBUtils.list_of_usb_devices()
+
+    # choose a device to mount or unmount
+    to_mount = DWMPrompt.prompt(USBUtils.str(devices))
+    if to_mount.returncode != 0: quit()
+
+    # get device details
+    to_mount = to_mount.stdout.strip().split(':')[0]
+    device = list(filter(lambda i: i['path'] == to_mount, devices))
+    if len(device) < 1: quit()
+    device = device[0]
+
+    # device alread mounted; unmount it
+    if device['mountpoint'] is not None:
+        run(f"alacritty -e sh -c \"sudo umount {device['mountpoint']}; sudo rm -r {device['mountpoint']}\"", shell=True)
+
+    # device not mounted; mount it
+    else:
+        # prompt mount path
+        if device['fstype'] == 'crypto_LUKS': prompt = 'Crypt name: '
+        else: prompt=f'Mount path: {STORAGE_DIR}/'
+        mnt_pth = DWMPrompt.prompt(prompt=prompt)
+
+        if mnt_pth.returncode != 0: quit()
+        mnt_pth = mnt_pth.stdout.strip()
+        if device['fstype'] != 'crypto_LUKS':
+            mnt_pth = f'{STORAGE_DIR}/{mnt_pth}'
+
+        options = ''
+        task = ' '.join(f"""
+            sudo mount \
+                {options}\
+                {device['path']} \
+                {mnt_pth} --mkdir """.split())
+        post_cmd = ''
+
+        match device['fstype']:
+            case 'vfat':
+                options = f'--options umask=0003,gid=$(getent group {STORAGE_GROUP} | cut -d : -f 3)'
+            case 'crypto_LUKS':
+                task = f"sudo cryptsetup open {device['path']} {mnt_pth}"
+            case _:
+                post_cmd = ' '.join(f"""
+                    &&
+                    sudo chown root:{STORAGE_GROUP} {mnt_pth} &&
+                    sudo chmod ug+rw {mnt_pth}
+                """.split())
+
+        cmd = f"alacritty -e sh -c \"{task} {post_cmd}\""
+        run(cmd, shell=True)
+

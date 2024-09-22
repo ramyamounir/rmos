@@ -1,0 +1,208 @@
+#!/usr/bin/env python3
+
+from subprocess import Popen, PIPE, run
+from re import compile
+
+class TerminalColours:
+    # Copied from https://pkg.go.dev/github.com/whitedevops/colors
+
+    RESET = "\033[0m"
+
+    BOLD       = "\033[1m"
+    DIM        = "\033[2m"
+    UNDERLINED = "\033[4m"
+    BLINK      = "\033[5m"
+    REVERSE    = "\033[7m"
+    HIDDEN     = "\033[8m"
+    
+    RESETBOLD       = "\033[21m"
+    RESETDIM        = "\033[22m"
+    RESETUNDERLINED = "\033[24m"
+    RESETBLINK      = "\033[25m"
+    RESETREVERSE    = "\033[27m"
+    RESETHIDDEN     = "\033[28m"
+    
+    DEFAULT      = "\033[99m"
+    BLACK        = "\033[90m"
+    RED          = "\033[91m"
+    GREEN        = "\033[92m"
+    YELLOW       = "\033[93m"
+    BLUE         = "\033[94m"
+    MAGENTA      = "\033[95m"
+    CYAN         = "\033[96m"
+    LIGHTGREY    = "\033[97m"
+    DARKGREY     = "\033[90m"
+    LIGHTRED     = "\033[91m"
+    LIGHTGREEN   = "\033[92m"
+    LIGHTYELLOW  = "\033[93m"
+    LIGHTBLUE    = "\033[94m"
+    LIGHTMAGENTA = "\033[95m"
+    LIGHTCYAN    = "\033[96m"
+    WHITE        = "\033[97m"
+    
+    BACKGROUND_DEFAULT      = "\033[49m"
+    BACKGROUND_BLACK        = "\033[40m"
+    BACKGROUND_RED          = "\033[41m"
+    BACKGROUND_GREEN        = "\033[42m"
+    BACKGROUND_YELLOW       = "\033[43m"
+    BACKGROUND_BLUE         = "\033[44m"
+    BACKGROUND_MAGENTA      = "\033[45m"
+    BACKGROUND_CYAN         = "\033[46m"
+    BACKGROUND_LIGHTGREY    = "\033[47m"
+    BACKGROUND_DARKGREY     = "\033[100m"
+    BACKGROUND_LIGHTRED     = "\033[101m"
+    BACKGROUND_LIGHTGREEN   = "\033[102m"
+    BACKGROUND_LIGHTYELLOW  = "\033[103m"
+    BACKGROUND_LIGHTBLUE    = "\033[104m"
+    BACKGROUND_LIGHTMAGENTA = "\033[105m"
+    BACKGROUND_LIGHTCYAN    = "\033[106m"
+    BACKGROUND_WHITE        = "\033[107m"
+
+
+def parse_result(result):
+    parsed_results = []
+
+    for r in result[1:]:
+        items = r.split('|')
+
+        d = {
+            'AVAIL': items[0],
+            'ACTIVE_FEATURES': items[1],
+            'CPUS': items[2],
+            'TMP_DISK': items[3],
+            'FREE_MEM': items[4],
+            'AVAIL_FEATURES': items[5],
+            'GROUPS': items[6],
+            'OVERSUBSCRIBE': items[7],
+            'TIMELIMIT': items[8],
+            'MEMORY': items[9],
+            'HOSTNAMES': items[10],
+            'NODE_ADDR': items[11],
+            'PRIO_TIER': items[12],
+            'ROOT': items[13],
+            'JOB_SIZE': items[14],
+            'STATE': items[15],
+            'USER': items[16],
+            'VERSION': items[17],
+            'WEIGHT': items[18],
+            'S:C:T': items[19],
+            'NODES(A/I)': items[20],
+            'MAX_CPUS_PER_NODE': items[21],
+            'CPUS(A/I/O/T)': items[22],
+            'NODES': items[23],
+            'REASON': items[24],
+            'NODES(A/I/O/T)': items[25],
+            'GRES': items[26],
+            'TIMESTAMP': items[27],
+            'PRIO_JOB_FACTOR': items[28],
+            'DEFAULTTIME': items[29],
+            'PREEMPT_MODE': items[30],
+            'NODELIST': items[31],
+            'CPU_LOAD': items[32],
+            'PARTITION': items[33],
+            'PARTITION': items[34],
+            'ALLOCNODES': items[35],
+            'STATE': items[36],
+            'USER': items[37],
+            'CLUSTER': items[38],
+            'SOCKETS': items[39],
+            'CORES': items[40],
+            'THREADS': items[41],
+        }
+        parsed_results.append(d)
+
+    return parsed_results
+
+
+def get_status_icon(d):
+    if d == 'up':
+        return ' '
+    return '? '
+
+
+def format_memory(m):
+    unit_idx = 1
+    unit = ['KB', 'MB', 'GB', 'TB']
+    a = m
+    while True:
+        a, b = divmod(int(a), 1000)
+        unit_idx += 1
+        if a < 1000: break
+    return '.'.join([str(a),str(b)]) + f' {unit[unit_idx]}'
+  
+
+def get_state_icon_and_colour(d):
+    d = d.replace(" ", "")
+    
+    if d == 'idle': return ' ', f'{TerminalColours.GREEN}{TerminalColours.BOLD}'
+    if d == 'mixed': return ' ', TerminalColours.GREEN
+    if d == 'allocated': return '󰨇 ', TerminalColours.DARKGREY
+    if d == 'maint': return '󰲽 ', TerminalColours.DARKGREY
+    if d == 'reserved': return '󰌾 ', TerminalColours.DARKGREY
+    if d == 'inval': return '󰅜 ', TerminalColours.DARKGREY
+    if d == 'completing': return '󰦖 ', TerminalColours.DARKGREY
+    if compile('^draining*').match(d): return '󰂃', TerminalColours.DARKGREY
+    if compile('^down*').match(d): return '󰚦 ', TerminalColours.DARKGREY
+    if compile('^drained*').match(d): return '󱉞 ', TerminalColours.DARKGREY
+    return '? ', TerminalColours.DARKGREY
+
+
+def printer(parsed_result):
+    print(f"""╭{"─" * 4}┬{"─" * 22}┬{"─" * 28}┬{"─" * 8}┬{"─" * 14}┬{"─" * 14}┬{"─" * 32}┬{"─" * 9}┬{"─" * 9}┬{"─" * 9}╮""")
+
+    c = lambda text, colour: f'{colour}{text}{TerminalColours.RESET}'
+    
+    print(
+        '│', c(''.ljust(2), TerminalColours.BOLD), '│',
+        c('PARTITION'.ljust(20), TerminalColours.BOLD), '│',
+        c('NODE'.ljust(26), TerminalColours.BOLD), '│',
+        c('# CPUs'.ljust(6), TerminalColours.BOLD), '│',
+        c('MEMORY'.ljust(12), TerminalColours.BOLD), '│',
+        c('MEM FREE'.ljust(12), TerminalColours.BOLD), '│',
+        c('GPUs'.ljust(30), TerminalColours.BOLD), '│',
+        c('SOCKETS'.ljust(7), TerminalColours.BOLD), '│',
+        c('CORES'.ljust(7), TerminalColours.BOLD), '│',
+        c('THREADS'.ljust(7), TerminalColours.BOLD), '│'
+    )
+    print(f"""├{"─" * 4}┼{"─" * 22}┼{"─" * 28}┼{"─" * 8}┼{"─" * 14}┼{"─" * 14}┼{"─" * 32}┼{"─" * 9}┼{"─" * 9}┼{"─" * 9}┤""")
+
+    def get_gpu_info(row):
+        s = row.split(':')
+        name = s[1] if len(s) > 1 else ''
+        count = s[2].split("(")[0] if len(s) > 2 else 0
+        return { 'name': name, 'count': int(count) }
+    
+    for p in parsed_result:
+        gpus = p['GRES'].split(',')
+        if len(gpus):
+            gpus = list(map(get_gpu_info, gpus))
+      
+        icon, colour = get_state_icon_and_colour(p["STATE"])
+        print(
+            '│', c(get_status_icon(p['AVAIL']).ljust(2), colour), '│',
+            c(p['PARTITION'].ljust(20), colour), '│',
+            c(icon + ' ' + p['NODELIST'].ljust(23), colour), '│',
+            c(p['CPUS'].ljust(6), colour), '│',
+            c(format_memory(p['MEMORY']).ljust(12), colour), '│',
+            c(format_memory(p['FREE_MEM'] if p['FREE_MEM'] != 'N/A' else 0).ljust(12), colour), '│',
+            c(', '.join(list(map(lambda g: f'{g["name"]} ({g["count"]})', gpus))).ljust(30), colour), '│',
+            c(p['SOCKETS'].ljust(7), colour), '│',
+            c(p['CORES'].ljust(7), colour), '│',
+            c(str(int(p['THREADS'])).ljust(7), colour), '│'
+        )
+
+    print(f"""╰{"─" * 4}┴{"─" * 22}┴{"─" * 28}┴{"─" * 8}┴{"─" * 14}┴{"─" * 14}┴{"─" * 32}┴{"─" * 9}┴{"─" * 9}┴{"─" * 9}╯""")
+
+
+def main():
+    if run(['which', 'sinfo'], stdout=PIPE, stderr=PIPE).returncode == 1: return
+
+    pipe = Popen(["sinfo", "-N", '--format', '%all'], stdout=PIPE)
+    result = list(map(lambda item: item.decode(), pipe.stdout.readlines()))
+    p = parse_result(result)
+    printer(p)
+
+
+if __name__ == '__main__':
+    main()
+

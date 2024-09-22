@@ -1,0 +1,33 @@
+#!/usr/bin/env sh
+
+DMENU_OPTIONS=`dwm -m`
+
+OPTIONS=(
+    "USF"
+    "NordVPN"
+    "Off"
+)
+
+PROMPT=""
+for O in "${OPTIONS[@]}"; do
+    PROMPT="$PROMPT$O\n"
+done
+
+CHOICE=$(printf "$PROMPT" | dmenu $DMENU_OPTIONS -i)
+
+case $CHOICE in
+    ${OPTIONS[0]})
+        nordvpn disconnect;
+        echo -e "$(pass show USF | tail -n 2 | head -n 1 | cut -d ':' -f 2 | xargs)\n$(pass show USF | head -n 1)" | nmcli connection up USF --ask;
+        ;;
+    ${OPTIONS[1]})
+        nmcli connect down USF;
+        nordvpn connect;
+        ;;
+    ${OPTIONS[2]})
+        nmcli connect down USF;
+        nordvpn disconnect;
+        ;;
+    *)
+        ;;
+esac

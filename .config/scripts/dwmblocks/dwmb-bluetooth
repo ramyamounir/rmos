@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+
+BLUETOOTH_CONNECTED=`bluetoothctl info | grep "Connected" | awk '{print $2}'`
+
+[[ $BLUETOOTH_CONNECTED = "yes" ]] && echo -e ""

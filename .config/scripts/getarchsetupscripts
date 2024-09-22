@@ -1,0 +1,21 @@
+#!/usr/bin/env sh
+
+BASE_URL=https://raw.githubusercontent.com/ramyamounir/rmos/main/.config
+
+FILES=(
+    scripts/instalfromcsv
+    scripts/setupuser
+    packages/arch/base.csv
+    packages/arch/root.csv
+    packages/arch/user.csv
+)
+
+for file in ${FILES[@]}; do
+    curl -LO $BASE_URL/$file
+done
+
+chmod +x instalfromcsv
+chmod +x setupuser
+
+pacman-key --init
+pacman-key --populate archlinux

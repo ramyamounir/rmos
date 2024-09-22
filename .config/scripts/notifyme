@@ -1,0 +1,20 @@
+#!/usr/bin/env sh
+
+# Environment variables used:
+# SLACK_SERVER_URL: the URL of the server
+# SLACK_WORKSPACE_TOKEN: Slack API Key
+# SLACK_CHANNEL_ID: channel ID to which to send the slack message
+
+if [ -z $SLACK_SERVER_URL ] || [ -z $SLACK_WORKSPACE_TOKEN ] || [ -z $SLACK_CHANNEL_ID ]; then
+    exit -1
+fi
+
+# POST data
+DATA=$(printf '{"channelID": "%s", "message": "%s"}' "$SLACK_CHANNEL_ID" "$1")
+
+# Slack me
+curl \
+  -X POST $SLACK_SERVER_URL\
+  -H "Content-Type: application/json" \
+  -H "SlackAPIKey: $SLACK_WORKSPACE_TOKEN" \
+  -d "$DATA" &

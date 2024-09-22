@@ -1,0 +1,64 @@
+#!/usr/bin/env bash
+
+# set variables to default values
+TEX_COMPILER=xelatex;
+BIB_COMPILER=bibtex;
+FILENAME=root;
+TASK='' # help by default
+WORK_DIR=`pwd`
+
+# parse options
+while getopts c:b:f:t:p: flag
+do
+    case "${flag}" in
+        c) TEX_COMPILER=${OPTARG};;
+        b) BIB_COMPILER=${OPTARG};;
+        f) FILENAME=${OPTARG};;
+        t) TASK=${OPTARG};;
+        p) WORK_DIR=${OPTARG};;
+    esac
+done
+
+
+# execute the task
+case $TASK in
+  '' | h | help)
+    echo -e "compiletex [flags [values]]\n"
+    echo -e "This command compiles .bib or .tex files in BBL or PDF files
+            \rand saves them in the directory from which the command is invoked.\n"
+    echo -e "Flags:"
+    echo -e "  -t\tTask ([help|cleanup|bbl|full-pdf|pdf] default: \"help\")"
+    echo -e "  \t • help\t\tPrint this help message"
+    echo -e "  \t • cleanup\tCleanup files"
+    echo -e "  \t • bbl\t\tGenerate the .bbl file"
+    echo -e "  \t • full-pdf\tGenerate the .bbl and the PDF"
+    echo -e "  \t • pdf\t\tUse existing .bbl and generate the PDF"
+    echo -e "  -c\tTeX compiler (default: \"xelatex\")"
+    echo -e "  -b\tBib compiler (default: \"bibtex\")"
+    echo -e "  -f\tTeX filename (w/o extension) (default: \"root\" for root.tex)"
+    echo -e "  -p\tWorking directory (default: \"pwd\")\n"
+    echo -e "Examples:\n  > compiletex -t full-pdf"
+    echo -e "  > compiletex -t pdf"
+    echo -e "  > compiletex -t pdf -c xelatex -b bibtex"
+    echo -e "  > compiletex -t bbl -b bibtex\n  > compiletex -t cleanup"
+    ;;
+  cleanup)
+    rm -f **.brf **.pdf **.gz **.aux **.log **.out **.blg **.fls **.xdv \
+      **.fdb_latexmk **.xml **.bcf **.bbl **.dvi **.ilg **.nav **.snm **.toc \
+      *-blx.bib
+    ;;
+  bbl)
+    rm **.bbl
+    $TEX_COMPILER -output-format=full-pdf $WORK_DIR/$FILENAME.tex
+    for file in *.aux; do
+        $BIB_COMPILER $file
+    done
+    ;;
+  p | pdf)
+    $TEX_COMPILER -output-format=pdf $FILENAME.tex;
+    ;;
+  fp | full-pdf)
+    sh $0 -t bbl -c $TEX_COMPILER -b $BIB_COMPILER -f $FILENAME
+    sh $0 -t single -c $TEX_COMPILER -b $BIB_COMPILER -f $FILENAME
+    ;;
+esac

@@ -1,0 +1,11 @@
+#!/usr/bin/env sh
+
+if [[ -z $1 || -z $2 || -z $3 ]]; then
+    echo "vid2img FILENAME DST_DIR [FPS]"
+else
+    IN_VIDEO=$1
+    OUT_DIR=$2
+    FPS=${3:-30}
+
+    ffmpeg -i $IN_VIDEO -vf fps=$FPS $OUT_DIR/frame%d.png
+fi

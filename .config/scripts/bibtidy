@@ -1,0 +1,12 @@
+#!/usr/bin/env sh
+
+bibtex-tidy \
+    --space=4 \
+    --align=15 \
+    --blank-lines \
+    --merge \
+    --modify \
+    --drop-all-caps \
+    --remove-empty-fields \
+    --months \
+    $@

@@ -1,0 +1,5 @@
+Manager,    Package,                                               Comments
+p,          cups,                                                  printing system
+p,          cups-pdf,                                              PDF printer for CUPS
+y,          ink,                                                   Ink information
+p,          sane,                                                  Scanner Access Now Easy

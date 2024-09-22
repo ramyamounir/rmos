@@ -1,0 +1,8 @@
+Manager,    Package,    Comments
+apk,        bash,
+apk,        curl,
+apk,        git,
+apk,        gvim,
+apk,        neovim,
+apk,        nodejs,
+apk,        zsh,

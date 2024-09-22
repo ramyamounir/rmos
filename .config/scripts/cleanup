@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+
+function sudo_cleanups() {
+    sudo pacman -Scc --noconfirm
+    yay -Scc --noconfirm
+    yay -Ycc --noconfirm
+
+    DIRS=(
+        /var/lib/systemd/coredump
+        /var/log
+        /var/cache
+        $XDG_CACHE_HOME
+    )
+
+    for DIR in ${DIRS[@]}; do
+        [ -d $DIR ] && sudo rm -rf $DIR/*
+    done
+
+    sudo mkdir /var/log/nginx
+}
+
+function cleanups() {
+    find ~ \
+        -type f \
+        -name "core.zsh*" -o -name "*.uuid" -o -name "*.zcompdump*" \
+        -exec rm -f {} \;
+    rm -rf \
+        $HOME/.cache $HOME/.coda $HOME/.condarc \
+        $HOME/.dotnet $HOME/.gnupg $HOME/.nv $HOME/.pki \
+        $HOME/.sudo_as_admin_successful $HOME/.viminfo $HOME/.wget-hsts \
+        $XDG_DATA_HOME/Trash;
+    command -v conda 2>&1 > /dev/null  && conda clean --all -y && conda clean --index-cache;
+}
+
+USE_SUDO=$1
+USE_SUDO=${USE_SUDO:-${AM_I_ADMIN:-0}}
+
+[[ $USE_SUDO -eq 1 ]] && sudo_cleanups
+
+cleanups;

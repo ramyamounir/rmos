@@ -1,0 +1,33 @@
+#!/usr/bin/env sh
+
+function toggle_alacritty_theme() {
+    # the file to which Alacritty configuration refers
+    THEME_FILE=$HOME/.config/alacritty/theme.toml
+
+    # light and dark theme files
+    LIGHT_THEME=$HOME/.config/alacritty/github_light.toml
+    DARK_THEME=$HOME/.config/alacritty/none.toml
+
+    # toggle the theme
+    CURRENT_THEME=`readlink $THEME_FILE`
+    if [[ $CURRENT_THEME =~ "none" ]]; then
+        ln -sf $LIGHT_THEME $THEME_FILE
+    else
+        ln -sf $DARK_THEME $THEME_FILE
+    fi
+}
+
+function toggle_vim_theme() {
+    # Find Vim/Neovim processes by window class, name, classname, or role
+    vim_windows=$(xdotool search --class "Vim" || xdotool search --class "Neovim" || xdotool search --name "Vim" || xdotool search --name "Neovim" || xdotool search --classname "Vim" || xdotool search --classname "Neovim" || xdotool search --role "Vim" || xdotool search --role "Neovim")
+
+    # Loop through each Vim/Neovim window
+    for window_id in $vim_windows; do
+        # Use xdotool to send keystrokes to toggle background in Vim/Neovim
+        xdotool windowactivate $window_id --delay 500 key space d # Replace 'Ctrl+d' with the key for toggling background
+    done
+}
+
+toggle_alacritty_theme
+# toggle_vim_theme
+

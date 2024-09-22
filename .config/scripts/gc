@@ -1,0 +1,28 @@
+#!/usr/bin/env sh
+
+# if -a flag is present, use its next argument for git add
+if [[ "$1" == "-a" ]]; then ADD="$2"
+elif [[ "$3" == "-a" ]]; then ADD="$4"
+elif [[ "$5" == "-a" ]]; then ADD="$6"
+fi
+
+
+if [[ "$1" == "-m" ]]; then MSG="$2"
+elif [[ "$3" == "-m" ]]; then MSG="$4"
+elif [[ "$5" == "-m" ]]; then MSG="$6"
+fi
+
+
+if [[ "$1" == "-b" ]]; then BRNCH="$2"
+elif [[ "$3" == "-b" ]]; then BRNCH="$4"
+elif [[ "$5" == "-b" ]]; then BRNCH="$6"
+fi
+
+ADD_FILES=${ADD:-"."}
+COMMIT_MESSAGE=${MSG:-"Committed and pushed by gc.sh"}
+COMMIT_BRANCH=${BRNCH:-"master"}
+
+git add $ADD_FILES
+git commit -S -m "$COMMIT_MESSAGE"
+git push origin $COMMIT_BRANCH
+

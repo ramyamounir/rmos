@@ -1,0 +1,56 @@
+#!/usr/bin/env sh
+
+SSH_MNT_DIR=${SSH_MNT_DIR:-"/media/network"}
+SERVER=$1
+PTH=$2
+
+if [ -z $SERVER ]; then
+    echo -e "portal [SERVER] [DST_DIR]"
+    echo -e "\tMount point: $SSH_MNT_DIR/SERVER-DST_DIR"
+    exit 0
+elif [[ "$SERVER" == "ls" ||  "$SERVER" == "ll" ||  "$SERVER" == "la" ]]; then
+    if [ -d "$SSH_MNT_DIR" ]; then
+        ls -lh --color=auto --group-directories-first $SSH_MNT_DIR
+    fi
+    exit 0
+elif [[ "$SERVER" == "umount" || "$SERVER" == "unmount" ]]; then
+    if [ -d "$SSH_MNT_DIR" ] && [ "$(ls -A "$SSH_MNT_DIR")" ]; then
+        for PORTAL in $SSH_MNT_DIR/*; do
+            umount -q $PORTAL
+            while mountpoint -q $PORTAL; do
+                sleep 1
+            done
+            rm -r $PORTAL
+        done
+    fi
+    # if directory empty, delete it
+    if [ -z "$(ls -A $SSH_MNT_DIR)" ]; then
+        rm -r $SSH_MNT_DIR
+    fi
+    exit 0
+fi
+
+DST="$SSH_MNT_DIR/$SERVER"
+
+if ! [ -z "$PTH" ]; then
+    PTH_DST=$(sed 's/\//\-/g' <<< $PTH)
+    DST="$DST$PTH_DST"
+fi
+
+if [ -d  "$DST" ]; then
+    read -p "Mounted. Unmount [y/n]? " YN
+    if [[ "$YN" == "YES" || "$YN" == "yes" || "$YN" = "y" || "$YN" = "Y" ]]; then
+        echo "Unmounting $SERVER..."
+        umount -q $DST
+        while mountpoint -q $DST; do
+            sleep 1
+        done
+        rm -rf "$DST"
+    fi
+else
+    echo "Mounting $SERVER..."
+    mkdir -p "$DST"
+    sshfs -o uid=$(getent group root | cut -d: -f3) -o gid=$(getent group media | cut -d: -f3) $SERVER:$PTH $DST
+fi
+
+echo "Done"

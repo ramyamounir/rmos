@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+
+if [ -z $1 ] || [ $1 -eq 0 ]; then
+    KEEP_ZSHRC=yes ZSH="$XDG_DATA_HOME/oh-my-zsh" zsh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+else
+    KEEP_BASHRC=yes OSH="$XDG_DATA_HOME/oh-my-bash" bash -c "$(curl -fsSL https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh)" "" --unattended
+fi

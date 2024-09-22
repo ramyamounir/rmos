@@ -1,0 +1,10 @@
+*
+
+# gitignore file
+!.gitignore
+
+# root files
+!README.md
+
+# root folders
+!.config/

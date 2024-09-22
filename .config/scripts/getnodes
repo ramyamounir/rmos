@@ -1,0 +1,59 @@
+#!/usr/bin/env sh
+
+# Prompt the user for the number of nodes
+read -p "Enter the number of nodes (default = 1): " nodes
+
+# Prompt the user for the number of GPUs
+read -p "Enter the number of GPUs per node (default = 2): " gpus
+
+# Prompt the user for the number of CPUs
+read -p "Enter the number of CPUs per node (default = 4): " cpus
+
+# Prompt the user for the amount of memory
+read -p "Enter RAM size in GB (no unit suffix; default = 16): " memory
+
+# Prompt the user for the time limit (in days-hours)
+read -p "Enter the time limit (in days-hours; default = 1-00): " time
+
+# Prompt the user for the partition
+read -p "Enter the partition (optional; default = Contributors): " partition
+
+# Prompt the user for the node name
+read -p "Enter the node names (optional): " nodelist
+
+# Prompt the user for the job name
+read -p "Enter the job name (optional; default = sandbox): " jname
+
+[ -z $nodes ] && nodes=1
+[ -z $gpus ] && gpus=2
+[ -z $cpus ] && cpus=4
+[ -z $memory ] && memory=16
+memory="$memory"GB
+[ -z $time ] && time="1-00"
+[ -z $partition ] && partition="Contributors"
+[ -z $jname ] && jname="sandbox"
+
+# Submit the interactive job to Slurm
+if [ -n "$nodelist" ]; then
+  srun \
+	  --job-name $jname \
+	  --nodes=$nodes \
+	  --ntasks-per-node=$cpus \
+	  --gres=gpu:$gpus \
+	  --mem=$memory \
+	  --partition=$partition \
+	  --time=$time \
+	  --nodelist=$nodelist \
+	  --pty "$SHELL"
+else
+  srun \
+	  --job-name $jname \
+	  --nodes=$nodes \
+	  --ntasks-per-node=$cpus \
+	  --gres=gpu:$gpus \
+	  --mem=$memory \
+	  --partition=$partition \
+	  --time=$time \
+	  --pty "$SHELL"
+fi
+

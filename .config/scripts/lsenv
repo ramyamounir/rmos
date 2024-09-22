@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+. "$XDG_CONFIG_HOME/scripts/utils.sh"
+
+if ! command -v printenv &> /dev/null; then
+    exit 1
+fi
+
+ENVLIST=$(printenv)
+IFS=$'\n' ENVLIST="$(sort <<<"${ENVLIST[*]}")"
+
+echo "╭────────────────────────────────┬────────────────────────────────────────────────────────────────────────╮"
+
+while read -r LINE; do
+    KEY=$(echo "$LINE" | cut -d'=' -f1)
+    VALUE=$(echo "$LINE" | cut -d'=' -f2-)
+    printf "│ %-30s │ %70s │\n" "$(padclip "${KEY}" 30 1)" "$(padclip "${VALUE}" 70)"
+done <<< $ENVLIST
+
+echo "╰────────────────────────────────┴────────────────────────────────────────────────────────────────────────╯"

@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+
+if command -v nvidia-smi &> /dev/null; then
+    gpu_memory_usage=$(nvidia-smi --query-gpu=utilization.memory --format=csv,noheader,nounits)
+
+    echo -e "󰨅 ${gpu_memory_usage}%"
+fi

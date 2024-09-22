@@ -1,0 +1,81 @@
+#!/usr/bin/env bash
+
+USE_SUDO=${AM_I_ADMIN:-0}
+
+if command -v pacman &> /dev/null && ! command -v yay &> /dev/null; then
+    if [[ $USE_SUDO == 1 ]]; then
+        echo "Pacman updates..."
+        sudo pacman -Syyu --noconfirm
+    fi
+fi
+
+if command -v yay &> /dev/null; then
+    if [[ $USE_SUDO == 1 ]]; then
+        echo "Yay updates..."
+        yay -Syyu --noconfirm
+    fi
+fi
+
+if command -v brew &> /dev/null; then
+    if [[ $USE_SUDO == 1 ]]; then
+        sudo softwareupdate -ia --verbose
+    fi
+
+    echo "Brew updates..."
+    cd $HOME/.local/src/brew && git pull
+    brew cleanup
+    brew update
+    brew upgrade
+    brew update --cask
+    brew upgrade --cask
+    brew doctor
+    brew cleanup
+    cd -
+
+    if command -v mas &> /dev/null; then
+        mas upgrade
+    fi
+fi
+
+if command -v apk &> /dev/null; then
+    if [[ $USE_SUDO == 1 ]]; then
+        echo "APK updates..."
+        sudo apk update
+        sudo apk upgrade
+    fi
+fi
+
+if command -v apt &> /dev/null; then
+    if [[ $USE_SUDO == 1 ]]; then
+        echo "APT updates..."
+        sudo apt update
+        sudo apt upgrade
+        sudo apt autoremove
+    fi
+fi
+
+if command -v zimfw &> /dev/null; then
+    zimfw update
+fi
+
+if command -v omz &> /dev/null; then
+    omz update
+fi
+
+if command -v npm &> /dev/null; then
+    npm update --global
+fi
+
+if command -v conda &> /dev/null; then
+    conda update -n base --all -y
+fi
+
+GIT_UPDATES=(
+    "$HOME/.local/src/zsh-autocomplete"
+    "$HOME/.local/src/zsh-autosuggestions"
+)
+
+for directory in "${GIT_UPDATES[@]}"; do
+    [ -d $directory ] && git -C $directory pull
+done
+

@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+AT="."
+CHOICE=${1:-"detailed"}           # "detailed" (default), "lean", "all"
+
+if [[ "$CHOICE" = "detailed" ]] || [[ "$CHOICE" = "all" ]]; then
+    # conda
+    conda list --explicit > $AT/environment.txt
+
+    # pip
+    pip list --format=freeze > $AT/requirements-detailed.txt # all pip packages
+fi
+
+if [[ "$CHOICE" = "lean" ]] || [[ "$CHOICE" = "all" ]]; then
+    # conda
+    echo "---" > $AT/environment.yaml
+    conda env export --no-build --from-history | grep -v "^prefix: " >> $AT/environment.yaml
+    conda env export --no-build | sed -n '/\- pip\:/,$p' | grep -v "^prefix: " >> $AT/environment.yaml
+    echo "..." >> $AT/environment.yaml
+
+    # pip
+    conda env export --no-build | sed -n '/\- pip\:/,$p' | grep -v "^prefix: " | tail -n +2 | sed 's/^.\{8\}//' > $AT/requirements.txt
+fi

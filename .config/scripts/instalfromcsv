@@ -1,0 +1,204 @@
+#!/usr/bin/env bash
+
+# for Arch Linux (Arch, Arch Linux ARM (ALARM), Asahi, etc.)
+instal_aur() {
+    GIT_URL=$1
+    DIR_NAME=${GIT_URL##*/}
+    DIR_NAME=$HOME/.local/src/${DIR_NAME%.git*}
+    if [ ! -d $DIR_NAME ]; then
+        mkdir -p $DIR_NAME
+
+        git clone $GIT_URL $DIR_NAME
+    fi
+    cd $DIR_NAME
+    makepkg -si --noconfirm
+}
+
+
+instal_with_pacstrap() {
+    pacstrap -K /mnt $1
+}
+
+
+instal_with_pacman() {
+    if ! pacman -Q $1 >/dev/null 2>&1; then
+        # to sudo or not sudo
+        if [[ $2 -eq 1 ]]; then
+            sudo pacman -S $1 -y --noconfirm
+        else
+            pacman -S $1 -y --noconfirm
+        fi
+    fi
+}
+
+
+instal_with_yay() {
+    if ! yay -Q $1 >/dev/null 2>&1; then
+        yay -S $1 --noconfirm
+    fi
+}
+
+
+# for Alpine
+instal_with_apk() {
+    if ! apk -e info "$1" >/dev/null 2>&1; then
+        # to sudo or not sudo
+        if [[ $2 -eq 1 ]]; then
+            sudo apk add $1
+        else
+            apk add $1
+        fi
+    fi
+}
+
+
+# for MacOS (OSX)
+instal_with_brew() {
+    # if 0, instal from brew; if 1, instal from cask
+    if [[ $2 -eq 0 ]]; then
+        if ! brew list $1 >/dev/null 2>&1; then
+            brew install $1
+        fi
+    elif [[ $2 -eq 1 ]]; then
+        if ! brew list --cask $1 >/dev/null 2>&1; then
+            brew install --cask $1
+        fi
+    fi
+}
+
+
+instal_from_appstore() {
+    mas install $1
+}
+
+
+# for Ubuntu, Debian, etc.
+instal_with_apt() {
+    if ! dpkg-query -W -f='${Status}' "$1" 2>/dev/null | grep -q "installed"; then
+        # to sudo or not sudo
+        if [[ $2 -eq 1 ]]; then
+            sudo apt install $1 -y
+        else
+            apt install $1 -y
+        fi
+    fi
+}
+
+
+# general
+clone_from_git() {
+    GIT_URL=$1
+    DIR_NAME=${GIT_URL##*/}
+    DIR_NAME=$HOME/.local/src/${DIR_NAME%.git*}
+    if [ ! -d $DIR_NAME ]; then
+        mkdir -p $DIR_NAME
+
+        git clone $GIT_URL $DIR_NAME
+        cd $DIR_NAME
+    fi
+}
+
+
+instal_from_csv() {
+    FILENAME=$(eval echo $1)
+    if [ -f $FILENAME ]; then
+        instal_from_file $FILENAME "${@:2}"
+    fi
+}
+
+
+instal_with_make() {
+    BIN_DST=$HOME/.local
+    mkdir -p $BIN_DST
+
+    GIT_URL=$1
+    DIR_NAME=${GIT_URL##*/}
+    DIR_NAME=$HOME/.local/src/${DIR_NAME%.git*}
+    PATCHES=$XDG_CONFIG_HOME/patches/$DIR_NAME.patch
+
+    if [ ! -d $DIR_NAME ]; then
+        mkdir -p $DIR_NAME
+        
+        git clone $GIT_URL $DIR_NAME
+        cd $DIR_NAME
+
+        if [ -f "$PATCHES" ]; then
+            patch -p1 < $PATCHES
+        fi
+
+        make
+
+        # to sudo or not sudo
+        if [[ $2 -eq 1 ]]; then
+            sudo make clean install PREFIX=$BIN_DST
+        else
+            make clean install PREFIX=$BIN_DST
+        fi
+
+        cd ..
+    fi;
+}
+
+
+# TODO: this script needs to be improved to aggregate all packages for each
+# manager and supply it as a list to the manager instead of installing each
+# package individually to speed up and help resolve inter-dependencies better.
+instal_from_file() {
+    ROW_COUNT=0
+    IS_SUDO=0
+    if [[ "$1" = "-s" ]] || [[ "$2" = "-s" ]]; then
+        IS_SUDO=1
+    fi
+
+    while IFS=',' read -r MANAGER PACKAGE _; do
+        if [[ $ROW_COUNT -eq 0 ]]; then
+            ((ROW_COUNT++))
+            continue
+        fi
+
+        case $MANAGER in
+            "a")
+                instal_aur $PACKAGE $IS_SUDO
+                ;;
+            "apk")
+                instal_with_apk $PACKAGE $IS_SUDO
+                ;;
+            "apt")
+                instal_with_apt $PACKAGE $IS_SUDO
+                ;;
+            "b")
+                instal_with_brew $PACKAGE 0
+                ;;
+            "bc")
+                instal_with_brew $PACKAGE 1
+                ;;
+            "c")
+                instal_from_csv $PACKAGE "${@:2}"
+                ;;
+            "g")
+                clone_from_git $PACKAGE
+                ;;
+            "m")
+                instal_with_make $PACKAGE $IS_SUDO
+                ;;
+            "mas")
+                instal_from_appstore $PACKAGE
+                ;;
+            "p")
+                instal_with_pacman $PACKAGE $IS_SUDO
+                ;;
+            "ps")
+                instal_with_pacstrap $PACKAGE
+                ;;
+            "y")
+                instal_with_yay $PACKAGE
+                ;;
+            *)
+                echo "Unknown package manager from $PACKAGE"
+                ;;
+        esac
+    done < $1
+}
+
+instal_from_file $@
+

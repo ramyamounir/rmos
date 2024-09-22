@@ -1,0 +1,15 @@
+Manager,    Package,                                                Comments
+y,          bibtex-tidy,                                            CLI to tidy up BibTeX files
+p,          pandoc-cli,                                             Pandoc CLI
+p,          texlive-basic,                                          TeX Live: essential programs
+p,          texlive-plaingeneric,                                   TeX Live: plain (La)TeX packages
+p,          texlive-latex,                                          TeX Live: LaTeX packages
+p,          texlive-latexrecommended,                               TeX Live: LaTeX recommended and additional packages
+p,          texlive-latexextra,                                     TeX Live: LaTeX additional packages
+p,          texlive-luatex,                                         TeX Live: LuaTeX packages
+p,          texlive-xetex,                                          TeX Live: XeTeX packages
+p,          texlive-binextra,                                       TeX Live: auxiliary programs
+p,          texlive-fontsextra,                                     TeX Live: additional fonts
+p,          texlive-fontsrecommended,                               TeX Live: recommended fonts
+p,          texlive-bibtexextra,                                    TeX Live: BibTeX additional styles
+p,          texlive-science,                                        TeX Live: mathematics; natural and computer science packages

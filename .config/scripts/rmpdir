@@ -1,0 +1,30 @@
+#!/usr/bin/env sh
+
+PROJECT_DIR=$1
+PROJECT_DIR=$(realpath ${PROJECT_DIR:-$(pwd)})
+PROJECT=$(basename $PROJECT_DIR)
+
+if [ -n "$2" ]; then
+    STORAGE_DIR=$(realpath $2)
+
+    INTERMEDIATE="$STORAGE_DIR/projects/$PROJECT"
+    IN_DIR=$INTERMEDIATE/inputs
+    OUT_DIR=$INTERMEDIATE/outputs
+
+    # outputs
+    rm -rf $STORAGE_DIR/checkpoints/$PROJECT
+    rm -rf $STORAGE_DIR/logs/console/$PROJECT
+    rm -rf $STORAGE_DIR/logs/performance/$PROJECT
+    rm -rf $STORAGE_DIR/logs/tensorboard/$PROJECT
+
+    rm -rf $INTERMEDIATE
+
+    rm -rf $STORAGE_DIR/visualisations/manim/$PROJECT
+    rm -rf $STORAGE_DIR/visualisations/plots/$PROJECT
+    rm -rf $STORAGE_DIR/visualisations/misc/$PROJECT
+
+    rm -rf $IN_DIR $OUT_DIR;
+fi
+
+rm -rf $PROJECT_DIR
+

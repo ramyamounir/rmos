@@ -1,0 +1,6 @@
+#!/usr/bin/env sh
+
+MODE="--short"
+[ ! -z $1 ] && MODE=""
+
+colorpicker --one-shot $MODE | xclip -sel clip

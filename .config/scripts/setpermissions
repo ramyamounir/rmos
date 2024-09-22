@@ -1,0 +1,22 @@
+#!/usr/bin/env sh
+
+# ssh
+if [ -d $HOME/.ssh ]; then
+    chown -R `whoami` $HOME/.ssh
+    chmod 700 $HOME/.ssh
+
+    [ -f $HOME/.ssh/config ] && chmod 600 $HOME/.ssh/config
+    [ -f $HOME/.ssh/authorized_keys ] && chmod 600 $HOME/.ssh/authorized_keys
+
+    if [ -d $HOME/.ssh/keys ]; then
+        NUM_KEYS=$(ls -l $HOME/.ssh/keys | grep -v '^total' | wc -l)
+        if [ $NUM_KEYS -gt 0 ]; then
+            chmod 600 $HOME/.ssh/keys/*
+        fi
+    fi
+fi
+
+# gpg
+chown -R `whoami` $GNUPGHOME
+find $GNUPGHOME -type f -exec chmod 600 {} \;
+find $GNUPGHOME -type d -exec chmod 700 {} \;

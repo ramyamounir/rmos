@@ -1,0 +1,12 @@
+# Preserve the order of modules.
+
+zmodule input                                       # applies correct keybindings for input events
+zmodule prompt-pwd                                  # formats current working directory
+zmodule eriner                                      # theme
+zmodule git-info                                    # git repository information
+zmodule kiesman99/zim-zoxide                        # zoxide
+zmodule joke/zim-github-cli                         # GitHub CLI
+zmodule zsh-users/zsh-autosuggestions               # autocompletion (package misnomered)
+# zmodule marlonrichert/zsh-autocomplete              # autosuggestions (package misnomered)
+zmodule zsh-users/zsh-completions                   # supplements 'zmodule completion'
+zmodule completion                                  # replacement for manual compinit

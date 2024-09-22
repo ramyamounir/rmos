@@ -1,0 +1,9 @@
+*
+
+!.gitignore
+
+!zimrc
+!.zprofile
+!.zlogout
+!.zshrc
+!*.zsh

@@ -1,0 +1,42 @@
+#!/bin/sh
+
+case $X_DISPLAY_LAYOUT in
+    # laptop 13"
+    0)
+        xrandr \
+            --dpi 96 \
+            --output eDP-1 --primary --mode 1280x800 --scale 1x1
+        ;;
+    # mbp 16"
+    1)
+        xrandr \
+            --dpi 96 \
+            --output None-1 --primary --mode 3456x2160 --scale 1x1
+        ;;
+    # desk setup
+    2)
+        xrandr \
+            --dpi 96 \
+            --output eDP-1 --primary --mode 1280x800 \
+            --output DP-1 --mode 1920x1080 --right-of eDP-1 \
+            --output HDMI-2 --mode 1920x1080 --right-of DP-1
+        ;;
+    # lab setup
+    3)
+        xrandr \
+            --dpi 96 \
+            --output DP-1 --primary \
+            --output DP-5 --right-of DP-1
+        ;;
+esac
+
+# wallpaper settings
+setbg $HOME/.local/wallpapers/ &			# set the background with the `setbg` script
+
+xrdb -merge $XDG_CONFIG_HOME/x11/XResources &
+
+# setxkbmap -option compose:ralt &
+
+command -v dunst &> /dev/null && dunst &    # dunst notification system
+
+xcompmgr -c -C -t-0 -l-0 -r0 -o.5 &         # x compositor

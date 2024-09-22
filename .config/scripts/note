@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+FILENAME=$1
+if [[ -z $FILENAME ]]; then
+    FILENAME="note.txt"
+fi
+
+cd $HOME/downloads
+touch $FILENAME
+nvim $HOME/downloads/$FILENAME

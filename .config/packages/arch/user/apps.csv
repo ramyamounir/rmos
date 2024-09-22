@@ -1,0 +1,11 @@
+Manager,    Package,                                                Comments
+y,          drawio-desktop,                                         DrawIO
+p,          firefox,                                                Firefox browser
+p,          inkscape,                                               Inkscape
+p,          libreoffice-fresh,                                      Libre Office
+p,          nextcloud-client,                                       client tool for next cloud
+p,          networkmanager-openconnect,                             OpenConnect (CISCO; GlobalProtect; etc)
+y,          nordvpn-bin,                                            Nord VPN
+p,          obsidian,                                               notebook
+y,          plex-desktop,                                           Plex desktop app
+p,          tgpt,                                                   Terminal GPT

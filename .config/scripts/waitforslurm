@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+
+function __waitforslurm() {
+    SLURM_PID=$1
+    INTERVAL=60s
+
+    # wait for the SLURM job to finish
+    while true; do
+        RESULT=$(squeue -j $1 -h 2>/dev/null)
+        if [ -z "$RESULT" ]; then
+            break
+        else
+            sleep $INTERVAL
+        fi
+    done
+
+    # Execute the supplied command
+    bash -c "$2"
+}
+
+# Check if PID is provided
+if [ -z "$1" ]; then
+  echo -e "Usage:"
+  echo -e "\t$ waitforslurm PID \"CMD\""
+  exit 1
+fi
+
+export -f __waitforslurm
+
+__waitforslurm "$@" > /dev/null 2>&1 &
+

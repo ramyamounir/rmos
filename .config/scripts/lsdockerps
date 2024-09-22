@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+
+if ! command -v docker &> /dev/null; then
+    exit 0
+fi
+
+. $XDG_CONFIG_HOME/scripts/utils.sh
+
+RESULT="`docker ps --format "table {{.ID}} {{.Names}} {{.Image}} {{.State}} {{.Command}}" $@`"
+STATUS="`docker ps --format "table {{.Status}}" $@`"
+CREATION="`docker ps --format "table {{.RunningFor}}" $@`"
+IFS=$'\n'
+STATUS=($STATUS)
+CREATION=($CREATION)
+
+printf "╭───────────────┬────────────────────────────────┬──────────────────────┬─────────────────┬────────────────────────────────────────╮\n";
+printf "│ %-13s │ %-30s │ %-20s │ %-15s │ %-25s   %-10s │\n" "ID" "NAME" "IMAGE" "CREATED" "STATUS" ""
+printf "├───────────────┼────────────────────────────────┼──────────────────────┼─────────────────┼────────────────────────────────────────┤\n";
+
+ROW_COUNT=0
+while IFS= read -a LINE; do
+    if [[ $ROW_COUNT -eq 0 ]]; then
+        ((ROW_COUNT++))
+        continue
+    fi
+    ((ROW_COUNT++))
+    IFS=' ' read -ra ITEMS <<< $LINE
+    printf "│ %-13s │ %-30s │ %-20s │ %-15s │ %-25s   %-10s │\n" ${ITEMS[0]} $(padclip ${ITEMS[1]} 30) $(padclip ${ITEMS[2]} 20) \
+        $(padclip "${CREATION[$((ROW_COUNT-1))]}" 15) $(padclip "${STATUS[$((ROW_COUNT-1))]}" 25) $(padclip ${ITEMS[3]} 10)
+done <<< "$RESULT"
+
+printf "╰───────────────┴────────────────────────────────┴──────────────────────┴─────────────────┴────────────────────────────────────────╯\n";
+

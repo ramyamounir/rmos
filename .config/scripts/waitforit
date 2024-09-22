@@ -1,0 +1,23 @@
+#!/usr/bin/env sh
+
+function __waitforit() {
+    PID=$1
+
+    # Wait for the process with the given PID to exit
+    waitpid $PID
+
+    # Execute the supplied command
+    eval "$2"
+}
+
+# Check if PID is provided
+if [ -z "$1" ]; then
+  echo -e "Usage:"
+  echo -e "\t$ waitfor PID \"CMD\""
+  exit 1
+fi
+
+export -f __waitforit
+
+__waitforit "$@" > /dev/null 2>&1 &
+
