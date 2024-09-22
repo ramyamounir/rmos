@@ -1,0 +1,6 @@
+#!/bin/sh
+
+xmodmap -e 'keycode 66 = Escape'
+xmodmap -e 'clear lock'
+xmodmap -e 'keycode 111 = Down'
+xmodmap -e 'keycode 116 = Up'

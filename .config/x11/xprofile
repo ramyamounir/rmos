@@ -33,6 +33,9 @@ esac
 # wallpaper settings
 setbg $HOME/.local/wallpapers/ &			# set the background with the `setbg` script
 
+# key remaps
+remaps &
+
 xrdb -merge $XDG_CONFIG_HOME/x11/XResources &
 
 # setxkbmap -option compose:ralt &

@@ -15,9 +15,9 @@ export GTK2_RC_FILES="/usr/share/themes/Arc-dark/gtk-2.0/gtkrc"
 export GTK_THEME="Arc:dark"
 export HISTSIZE=50000
 export HISTFILESIZE=50000
-export LANG="en_GB.UTF-8"
-export LC_ALL="en_GB.UTF-8"
-export LC_CTYPE="en_GB.UTF-8"
+export LANG="en_US.UTF-8"
+export LC_ALL="en_US.UTF-8"
+export LC_CTYPE="en_US.UTF-8"
 export PATH=$(echo $(cat << EOV
     $HOME/.local/bin:
     $XDG_CONFIG_HOME/scripts:
@@ -26,11 +26,13 @@ export PATH=$(echo $(cat << EOV
     $PATH
 EOV
 ) | tr -d ' ')
+
 export SAVEHIST=50000
 export TERM="xterm-256color"
-export VISUAL=vim
+export TERMINAL="st"
+export VISUAL=nvim
 export EDITOR="$VISUAL"
-
+export BROWSER="firefox"
 
 # configurations
 export AWS_CONFIG_FILE="$XDG_CONFIG_HOME/aws/config"

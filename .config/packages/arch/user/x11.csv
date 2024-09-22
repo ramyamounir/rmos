@@ -24,3 +24,4 @@ p,          zathura-pdf-mupdf,                                     MuPDF compati
 m,          https://github.com/ramyamounir/dwm.git,                DWM (Window Manager)
 m,          https://github.com/ramyamounir/dwmblocks.git,          DWM blocks
 m,          https://github.com/ramyamounir/dmenu.git,              dynamic menu (dmenu)
+m,          https://github.com/ramyamounir/st.git,                 st (terminal)
