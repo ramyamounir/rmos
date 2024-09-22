@@ -64,8 +64,11 @@ function cloneconfigs() {
     read -p "Ensure that the GitHub repository for RMOS is public. [ENTER]" 
     
     # cloning from HTTPS since SSH has not yet been configured
-    git clone https://github.com/ramyamounir/rmos.git $HOME
+    git clone https://github.com/ramyamounir/rmos.git $HOME/temp
+    mv $HOME/temp/* $HOME
+    mv $HOME/temp/.* $HOME
     mv $HOME/.git $HOME/.rmos
+    rm -rf $HOME/temp
 
     # modify HTTPS origin to SSH
     git --git-dir $HOME/.rmos remote set-url origin git@github.com:ramyamounir/rmos.git
