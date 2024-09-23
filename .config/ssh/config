@@ -1,0 +1,28 @@
+Match host * exec "gpg-connect-agent --quiet updatestartuptty /bye"
+
+Host *
+    ControlPath ~/.ssh/multiplex/%r@%h:%p
+    ControlMaster auto
+    ControlPersist 1
+
+Host lab
+    HostName lab.ramymounir.com
+    User ramy
+    AddKeysToAgent yes
+
+Host gaivi
+    HostName gaivi.cse.usf.edu
+    User ramy
+    AddKeysToAgent yes
+
+Host hipergator
+    HostName hpg.rc.ufl.edu
+    Port 2222
+    User mounir.r
+    AddKeysToAgent yes
+
+Host github
+    HostName github.com
+    User ramyamounir
+    AddKeysToAgent yes
+
