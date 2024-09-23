@@ -5,31 +5,13 @@
 #                               SSH and keyrings                               #
 ################################################################################
 
-# SSH agent setup
-function ssh_agent_setup() {
+# GPG agent configuration
+function gpg_ssh_agent() {
+
     if command -v ssh-agent > /dev/null 2>&1; then
         export GPG_TTY=$(tty)
         eval "$(ssh-agent)" > /dev/null
     fi
-}
-
-# GNOME agent configuration
-function gnome_keyring_setup() {
-    ssh_agent_setup
-
-    if command -v gnome-keyring > /dev/null 2>&1; then
-        export SSH_AUTH_SOCK="${XDG_RUNTIME_DIR}/keyring/ssh"
-
-        gnome-keyring-daemon \
-            --daemonize \
-            --start \
-            --components=gpg,ssh,secrets,pkcs11 >/dev/null 2>&1
-    fi
-}
-
-# GPG agent configuration
-function gpg_keyring_setup() {
-    ssh_agent_setup
 
     if command -v gpgconf > /dev/null 2>&1; then
         if [ "${gnupg_SSH_AUTH_SOCK_by:-0}" -ne $$ ]; then
@@ -42,13 +24,6 @@ function gpg_keyring_setup() {
     fi
 }
 
-# start SSH and GPG/GNOME keyring agents
-function start_ssh_and_companion_agents() {
-    SC=${SSH_KEYRING_COMPANION:-"gpg"}
-
-    if [ "$SC" = "gpg" ]; then gpg_keyring_setup 2>&1 > /dev/null
-    elif [ "$SC" = "gnome" ]; then gnome_keyring_setup > /dev/null 2>&1; fi
-}
 
 # SSH and GPG/GNOME agent cleanup
 function shell_cleanup {

@@ -1,0 +1,43 @@
+[user]
+    name = ramyamounir
+    email = ramyamounir@gmail.com
+    signingkey = 2BA1D4B7CEAEC1D7!
+
+[color]
+    ui = true
+
+[credential]
+    credentialStore = gpg
+
+[commit]
+    gpgsign = true
+    status = true
+
+[core]
+	excludesfile = global.gitignore
+
+[includeIf "hasconfig:remote.*.url:git@github.com:*/**"]
+    path = providers/github.config
+
+[includeIf "hasconfig:remote.*.url:https://github.com/**"]
+    path = providers/github.config
+
+[gpg]
+    program = gpg
+
+[init]
+    defaultBranch = main
+
+[push]
+    default = current
+
+[pull]
+    default = current
+    rebase = off
+
+[push]
+    autoSetupRemote = true
+
+[tag]
+    gpgsign = true
+

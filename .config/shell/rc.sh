@@ -2,9 +2,8 @@
 
 source $XDG_CONFIG_HOME/shell/shell_tools.sh
 source $XDG_CONFIG_HOME/shell/aliases.sh
-source $XDG_CONFIG_HOME/shell/server_tools.sh
 
-start_ssh_and_companion_agents;
+gpg_ssh_agent;
 disable_commands;
 
 # kill the SSH and GPG/GNOME agents upon exit
