@@ -199,7 +199,7 @@ function theme_zim() {
         CONDA_ENV=$(! [[ -n $CONDA_PREFIX ]] && echo "" || basename $CONDA_PREFIX)
         CONDA_ENV=$([[ -z $CONDA_ENV ]] && echo "" || echo " ${YELLOW_BG}${GREY}${YELLOW_BG}${GREY}  $([[ "$CONDA_ENV" == "anaconda3" ]] && echo "" || echo "$CONDA_ENV ")"${GREY_BG}${YELLOW})
 
-        echo -en "${SHELL_DEPTH}${CONDA_ENV}${GREY_BG}${YELLOW} %n@%m ${BLUE_BG}${GREY}${RESET}"
+        echo -en "${CONDA_ENV}${GREY_BG}${YELLOW} %n@%m ${BLUE_BG}${GREY}${RESET}"
     }
     PS1='$(_prompt_eriner_main)'
 }
