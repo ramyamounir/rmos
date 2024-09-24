@@ -2,6 +2,6 @@
 
 [ -f $XDG_CONFIG_HOME/x11/xprofile ] && . $XDG_CONFIG_HOME/x11/xprofile &
 
-#dwmblocks &                             # dmenu blocks
+dwmblocks &                             # dmenu blocks
 
 exec dwm                                # start dwm

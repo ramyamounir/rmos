@@ -1,0 +1,59 @@
+! alt
+keycode 64 = Mode_switch
+keycode 108 = Mode_switch
+
+! control
+! keycode 37 = ISO_Level3_Shift
+keycode 105 = ISO_Level3_Shift
+
+! numbers
+keycode 19 = U0966 U029 0 U029
+keycode 10 = U0967 U021 1 U021
+keycode 11 = U0968 U040 2 U040
+keycode 12 = U0969 U023 3 U023
+keycode 13 = U096A U024 4 U024
+keycode 14 = U096B U025 5 U025
+keycode 15 = U096C U05E 6 U05E
+keycode 16 = U096D U026 7 U026
+keycode 17 = U096E U02A 8 U02A
+keycode 18 = U096F U028 9 U028
+
+! vowels
+keycode 38 = U0905 U093E U0905 U0906 a A
+keycode 31 = U093F U0940 U0907 U0908 i I
+keycode 30 = U0941 U0942 U0909 U090A u U
+keycode 27 = U0930 U0943 U090B U0960 r U0944
+keycode 26 = U0947 U0948 U090F U0910 e E
+keycode 32 = U094B U094C U0913 U0914 U0950 O
+
+! compositions
+keycode 41 = U094D F
+keycode 58 = U092E U0902 m M
+keycode 43 = U0939 U0903 h H
+
+! consonants
+keycode 45 = U0915 U0916 k K
+keycode 42 = U0917 U0918 g G
+keycode 52 = U0919 U091E z Z
+
+keycode 54 = U091A U091B c C                 
+keycode 44 = U091C U091D j J
+
+keycode 28 = U0924 U0925 U091F U0920 t T
+keycode 40 = U0926 U0927 U0921 U0922 U093C D
+keycode 57 = U0928 U0923 n N
+
+keycode 33 = U092A U092B p P
+keycode 56 = U092C U092D b B
+
+! special sounds
+keycode 29 = U092F Y y Y
+keycode 46 = U0932 U0933 l L
+keycode 55 = U0935 V v V
+keycode 39 = U0938 U0936 U093D S
+keycode 53 = U0937 X x X
+
+! special symbols
+keycode 59 = U0964 less U002C less
+keycode 60 = U0965 greater U002E greater
+keycode 61 = slash U097D slash U003F
