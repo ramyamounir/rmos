@@ -31,15 +31,15 @@ case $X_DISPLAY_LAYOUT in
 esac
 
 # wallpaper settings
-setbg $HOME/.local/wallpapers/ &			# set the background with the `setbg` script
+setbg $HOME/.local/wallpapers/ 			# set the background with the `setbg` script
 
 # key remaps
-remaps &
+remaps
 
-xrdb -merge $XDG_CONFIG_HOME/x11/XResources &
+xrdb -merge $XDG_CONFIG_HOME/x11/XResources
 
-# setxkbmap -option compose:ralt &
+# setxkbmap -option compose:ralt
 
-command -v dunst &> /dev/null && dunst &    # dunst notification system
+command -v dunst &> /dev/null && dunst    # dunst notification system
 
-xcompmgr -c -C -t-0 -l-0 -r0 -o.5 &         # x compositor
+xcompmgr -c -C -t-0 -l-0 -r0 -o.5          # x compositor
