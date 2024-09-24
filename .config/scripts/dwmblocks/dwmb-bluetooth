@@ -1,5 +1,21 @@
 #!/usr/bin/env sh
 
-BLUETOOTH_CONNECTED=`bluetoothctl info | grep "Connected" | awk '{print $2}'`
+# https://www.reddit.com/r/bash/comments/nij3w8/comment/gz2rxem/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button
+function timeout() {
+    local cmd_pid sleep_pid retval
+	(shift; "$@") &   # shift out sleep value and run rest as command in background job
+	cmd_pid=$!
+	(sleep "$1"; kill "$cmd_pid" 2>/dev/null) &
+	sleep_pid=$!
+	wait "$cmd_pid"
+	retval=$?
+	kill "$sleep_pid" 2>/dev/null
+	return "$retval"
+}
 
-[[ $BLUETOOTH_CONNECTED = "yes" ]] && echo -e ""
+function run() {
+    BLUETOOTH_CONNECTED=`bluetoothctl --timeout 1 info | grep "Connected" | awk '{print $2}'`
+    [[ $BLUETOOTH_CONNECTED = "yes" ]] && echo -e ""
+}
+
+timeout 0.25 run

@@ -1,11 +1,14 @@
 #!/bin/sh
+
+DMENU_OPTIONS=`dwm -m`
+
 # A dmenu wrapper script for system functions.
 case "$(readlink -f /sbin/init)" in
 	*systemd*) ctl='systemctl' ;;
 	*) ctl='loginctl' ;;
 esac
 
-case "$(printf "🔒 lock\n🚪 leave dwm\n♻️ renew dwm\n🐻 hibernate\n💤 sleep\n🔃 reboot\n🖥️shutdown\n📺 display off" | dmenu -i -p 'Action: ')" in
+case "$(printf "🔒 lock\n🚪 leave dwm\n♻️ renew dwm\n🐻 hibernate\n💤 sleep\n🔃 reboot\n🖥️shutdown\n📺 display off" | dmenu $DMENU_OPTIONS -i -p 'Action: ')" in
 	'🔒 lock') slock ;;
 	'🚪 leave dwm') kill -TERM "$(pgrep -u "$USER" "\bdwm$")" ;;
 	'♻️ renew dwm') kill -HUP "$(pgrep -u "$USER" "\bdwm$")" ;;

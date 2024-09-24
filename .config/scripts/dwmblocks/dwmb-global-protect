@@ -1,5 +1,7 @@
 #!/usr/bin/env sh
 
-if ! [ -z $(nmcli -f GENERAL.STATE connection show USF | cut -d ":" -f 2 | xargs) ]; then
-    echo -e ""
+if ! [[ -z $(nmcli con show --active | grep "USF" 2>&1) ]]; then
+    if ! [ -z $(nmcli -f GENERAL.STATE connection show USF | cut -d ":" -f 2 | xargs) ]; then
+        echo -e ""
+    fi
 fi
