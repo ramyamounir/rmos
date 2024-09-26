@@ -45,6 +45,12 @@ return packer.startup(function(use)
   use "nvim-lua/popup.nvim" -- An implementation of the Popup API from vim in Neovim
   use "nvim-lua/plenary.nvim" -- Useful lua functions used ny lots of plugins
   use {'iamcco/markdown-preview.nvim', run = 'cd app && yarn install'}
+  use "machakann/vim-sandwich"
+  use "machakann/vim-highlightedyank"
+  use "tpope/vim-commentary"
+  use "tpope/vim-repeat"
+  use "akinsho/bufferline.nvim"
+  use {"stsewd/isort.nvim", run=':UpdateRemotePlugins' }
 
   -- color scheme
   use "morhetz/gruvbox"
@@ -57,13 +63,14 @@ return packer.startup(function(use)
   use "saadparwaiz1/cmp_luasnip" -- snippet completions
   use "hrsh7th/cmp-nvim-lsp"
   use "hrsh7th/cmp-nvim-lua"
-  use "machakann/vim-sandwich"
-  use "machakann/vim-highlightedyank"
-  use "tpope/vim-commentary"
-  use "tpope/vim-repeat"
   use "vim-scripts/ReplaceWithRegister"
-
-
+  use {
+      "Exafunction/codeium.nvim",
+      config = function()
+          require("codeium").setup({
+          })
+      end
+  }
 
   -- snippets
   use "L3MON4D3/LuaSnip" --snippet engine
@@ -94,13 +101,6 @@ return packer.startup(function(use)
   -- nvim-tree
   use 'kyazdani42/nvim-web-devicons'
   use 'nvim-tree/nvim-tree.lua'
-
-  -- formatting and sorting
-  use {"stsewd/isort.nvim", run=':UpdateRemotePlugins' }
-
-  -- Buffer line
-  use "akinsho/bufferline.nvim"
-  -- use "moll/vim-bbye"
 
   -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins
