@@ -5,4 +5,8 @@ require "user.colorscheme"
 require "user.cmp"
 require "user.lsp"
 require "user.telescope"
+require "user.treesitter"
+require "user.gitsigns"
+require "user.nvimtree"
+require "user.bufferline"
 

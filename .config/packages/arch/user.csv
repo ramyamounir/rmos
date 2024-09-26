@@ -49,6 +49,7 @@ p,          pulsemixer,                                            CLI and curse
 p,          qrencode,                                              QR code encoder
 p,          qt5-x11extras,                                         QT5 for X
 p,          reptyr,                                                reparent a process' terminal (move process from one terminal to another)
+p,          ripgrep,                                               Faster grep package
 p,          rsync,                                                 ssh remote sync
 p,          sof-firmware,                                          sound card
 p,          speedtest-cli,                                         a CLI tool to test Internet speed
@@ -60,6 +61,7 @@ p,          unison,                                                file synchron
 p,          vlc,                                                   VLC media player
 p,          zoxide,                                                Zoxide
 p,          zsh,                                                   shell
+p,          xcape,                                                 configure keys remaps
 c,          $XDG_CONFIG_HOME/packages/arch/user/apps.csv,          User applications
 c,          $XDG_CONFIG_HOME/packages/arch/user/archivers.csv,     Archiving packages
 c,          $XDG_CONFIG_HOME/packages/arch/user/fs.csv,            File system packages

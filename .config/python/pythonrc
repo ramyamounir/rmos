@@ -1,0 +1,45 @@
+#!/usr/bin/env python3
+
+try:
+    from os import path, getenv
+    from readline import (
+        read_history_file as read_history_from,
+        write_history_file as write_history_to
+    )
+    from atexit import register
+except ImportError as e:
+    print(f'Could not load module(s). {e}')
+    quit(1)
+
+
+class HistoryFileManagement:
+    r"""
+    This class provides an initialiser and a utility method to write Python CLI
+    history into a file at a custom location.
+    """
+
+    def __init__(self):
+        f = path.join(getenv('XDG_STATE_HOME', '~/'), 'python_history')
+        f = path.expanduser(f)
+        self.f = f if path.isabs(f) else path.abspath(f)
+
+        try:
+            read_history_from(self.f)
+        except OSError:
+            pass
+
+    def write_history(self):
+        r"""
+        This method of an instantiated object registers the instance to the
+        'atexit' module.
+        """
+
+        try:
+            write_history_to(self.f)
+        except OSError:
+            pass
+
+
+hist_manager = HistoryFileManagement()
+register(hist_manager.write_history)
+

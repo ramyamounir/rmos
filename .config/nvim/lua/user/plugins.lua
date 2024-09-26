@@ -57,6 +57,13 @@ return packer.startup(function(use)
   use "saadparwaiz1/cmp_luasnip" -- snippet completions
   use "hrsh7th/cmp-nvim-lsp"
   use "hrsh7th/cmp-nvim-lua"
+  use "machakann/vim-sandwich"
+  use "machakann/vim-highlightedyank"
+  use "tpope/vim-commentary"
+  use "tpope/vim-repeat"
+  use "vim-scripts/ReplaceWithRegister"
+
+
 
   -- snippets
   use "L3MON4D3/LuaSnip" --snippet engine
@@ -71,6 +78,29 @@ return packer.startup(function(use)
   -- Telescope
   use "nvim-telescope/telescope.nvim"
   use 'nvim-telescope/telescope-media-files.nvim'
+
+  -- Treesitter
+  use {
+      'nvim-treesitter/nvim-treesitter',
+      run = function()
+          local ts_update = require('nvim-treesitter.install').update({ with_sync = true })
+          ts_update()
+      end,
+  }
+
+  -- Git
+  use "lewis6991/gitsigns.nvim"
+
+  -- nvim-tree
+  use 'kyazdani42/nvim-web-devicons'
+  use 'nvim-tree/nvim-tree.lua'
+
+  -- formatting and sorting
+  use {"stsewd/isort.nvim", run=':UpdateRemotePlugins' }
+
+  -- Buffer line
+  use "akinsho/bufferline.nvim"
+  -- use "moll/vim-bbye"
 
   -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins
