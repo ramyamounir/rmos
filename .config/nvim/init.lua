@@ -1,12 +1,15 @@
+-- Main Nvim settings
 require "user.options"
 require "user.keymaps"
 require "user.plugins"
-require "user.colorscheme"
-require "user.cmp"
-require "user.lsp"
-require "user.telescope"
-require "user.treesitter"
-require "user.gitsigns"
-require "user.nvimtree"
-require "user.bufferline"
+
+-- Plugin Configs
+require "user.plugin_configs.colorscheme"
+require "user.plugin_configs.cmp"
+require "user.plugin_configs.lsp"
+require "user.plugin_configs.telescope"
+require "user.plugin_configs.treesitter"
+require "user.plugin_configs.gitsigns"
+require "user.plugin_configs.nvimtree"
+require "user.plugin_configs.bufferline"
 
