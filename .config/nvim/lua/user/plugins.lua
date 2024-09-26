@@ -47,6 +47,7 @@ return packer.startup(function(use)
   use {'iamcco/markdown-preview.nvim', run = 'cd app && yarn install'}
   use "machakann/vim-sandwich"
   use "machakann/vim-highlightedyank"
+  use "tpope/vim-surround"
   use "tpope/vim-commentary"
   use "tpope/vim-repeat"
   use "akinsho/bufferline.nvim"
