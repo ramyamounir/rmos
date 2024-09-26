@@ -7,6 +7,8 @@ source $XDG_CONFIG_HOME/shell/rc.sh
 
 source $XDG_CONFIG_HOME/zsh/aliases.zsh
 
+source $XDG_CONFIG_HOME/zsh/configs.zsh
+
 theme_shell "zsh";
 
 [ -t 0 ] && clear;

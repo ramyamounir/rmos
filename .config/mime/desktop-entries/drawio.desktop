@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=DrawIO
+Version=1.0
+Type=Application
+Comment=Open a file with DrawIO
+Exec=drawio
+Terminal=false
+MimeType=application/x-drawio;
+Icon=hwloc
+Categories=System;

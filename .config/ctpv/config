@@ -1,0 +1,6 @@
+set showgpg
+
+# preview <CUSTOM_PREVIEW_NAME> <.EXT | MIMETYPE> {{
+#    <PREVIEW CODE> "${f}"
+# }}
+

@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=AERC
+Version=1.0
+Type=Application
+Comment=Open AERC in the terminal
+Exec=st -e aerc
+Terminal=true
+Icon=hwloc
+Categories=System;

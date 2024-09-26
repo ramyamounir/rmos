@@ -1,0 +1,8 @@
+*
+
+!.gitignore
+!mimeapps.list
+!custom-mime-types/
+!custom-mime-types/*
+!desktop-entries/
+!desktop-entries/*

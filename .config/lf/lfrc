@@ -1,0 +1,138 @@
+set shell zsh
+set drawbox
+set icons
+set timefmt 'Mon, 2 Jan 2006 03:04:05'
+set infotimefmtnew '2 Jan 06 15:04'
+set infotimefmtold '2 Jan 06 15:04'
+set info time:size
+set scrolloff 10                        # scroll margin at the vertical extremes
+set cursorpreviewfmt "\033[7;90m"       # preview cursor style
+set previewer ctpv                      # previewers
+set cleaner ctpvclear                   # previewers
+&ctpv -s $id
+&ctpvquit $id
+
+
+# number of columns based on screen width
+${{
+    w=$(tput cols)
+    if [ $w -le 80 ]; then
+        lf -remote "send $id set ratios 1:2"
+    elif [ $w -le 160 ]; then
+        lf -remote "send $id set ratios 1:2:3"
+    else
+        lf -remote "send $id set ratios 1:2:3:5"
+    fi
+}}
+
+# prompt to open file with app
+## opens with a cli application inside lf client
+cmd open-with-cli $$@ $fx
+
+# yank pathname into the clipboard
+cmd yank-path $printf '%s' "$fx" | xclip -i -selection clipboard
+
+cmd paste &{{
+    set -- $(cat ~/.local/share/lf/files)
+    mode="$1"
+    shift
+    case "$mode" in
+        copy) cp -rn -- "$@" .;;
+        move) mv -n -- "$@" .;;
+    esac
+    rm ~/.local/share/lf/files
+    lf -remote "send clear"
+}}
+
+cmd paste-with-progress &{{
+    set -- $(cat ~/.local/share/lf/files)
+    mode="$1"
+    shift
+    case "$mode" in
+        copy)
+            rsync -av --ignore-existing --progress -- "$@" . |
+            stdbuf -i0 -o0 -e0 tr '\r' '\n' |
+            while IFS= read -r line; do
+                lf -remote "send $id echo $line"
+            done
+            ;;
+        move) mv -n -- "$@" .;;
+    esac
+    rm ~/.local/share/lf/files
+    lf -remote "send clear"
+}}
+
+cmd bulk-rename ${{
+    old="$(mktemp)"
+    new="$(mktemp)"
+    if [ -n "$fs" ]; then
+        fs="$(basename -a $fs)"
+    else
+        fs="$(ls)"
+    fi
+    printf '%s\n' "$fs" >"$old"
+    printf '%s\n' "$fs" >"$new"
+    $EDITOR "$new"
+    [ "$(wc -l < "$new")" -ne "$(wc -l < "$old")" ] && exit
+    paste "$old" "$new" | while IFS= read -r names; do
+        src="$(printf '%s' "$names" | cut -f1)"
+        dst="$(printf '%s' "$names" | cut -f2)"
+        if [ "$src" = "$dst" ] || [ -e "$dst" ]; then
+            continue
+        fi
+        mv -- "$src" "$dst"
+    done
+    rm -- "$old" "$new"
+    lf -remote "send $id unselect"
+}}
+
+cmd create_directory ${{
+    set -- $(cat ~/.local/share/lf/files)
+    printf "Directory name: "
+    read ITEM_NAME
+    mkdir -- $ITEM_NAME
+}}
+
+cmd create_new_item ${{
+    set -- $(cat ~/.local/share/lf/files)
+    printf "Item name (suffix with / for directory): "
+    read ITEM_NAME
+    if [[ $ITEM_NAME == *\/ ]]; then
+        mkdir -- $ITEM_NAME
+    else
+        touch -- $ITEM_NAME
+    fi
+}}
+
+cmd delete_selected_items ${{
+    set -- $(cat ~/.local/share/lf/files)
+    printf "The following items will be deleted...\n"
+    for ITEM in ${fx[@]}; do
+        printf "$ITEM\n"
+    done
+    printf "Yes/no? "
+    read CHOICE
+    opt=$( tr '[:upper:]' '[:lower:]' <<<"$CHOICE" )
+    case "$CHOICE" in
+        [Yy] | [(Y|y)es])
+            while IFS=$'\n' read -r FILENAME; do
+                rm -rf $FILENAME
+            done <<< $fx
+            ;;
+        "no" | "n")
+            ;;
+    esac
+}}
+
+map I set hidden!                       # show hidden files
+map p paste                             # paste
+map P paste-with-progress               # paste with progress below
+map o push :open-with-cli<space>        # input application
+map R bulk-rename
+map r rename
+map a create_new_item
+map A create_directory
+map D delete
+map y copy
+map Y yank-path
+map x cut

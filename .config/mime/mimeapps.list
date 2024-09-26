@@ -1,0 +1,46 @@
+[Default Applications]
+
+# applications
+x-scheme-handler/http=firefox.desktop
+x-scheme-handler/https=firefox.desktop
+x-scheme-handler/nc=com.nextcloud.desktopclient.nextcloud.desktop
+x-scheme-handler/postman=Postman.desktop
+
+# text files and document
+inode/x-empty=open-with-vim.desktop
+inode/directory=nautilus.desktop
+text/plain=open-with-vim.desktop
+text/csv=open-with-vim.desktop
+text/html=open-with-vim.desktop
+text/xml=open-with-vim.desktop
+text/x-c=open-with-vim.desktop
+text/x-tex=open-with-vim.desktop
+text/x-file=open-with-vim.desktop
+text/x-shellscript=open-with-vim.desktop
+text/x-script.python=open-with-vim.desktop
+application/javascript=open-with-vim.desktop
+application/json=open-with-vim.desktop
+application/pdf=org.pwmt.zathura.desktop
+
+# image
+image/avif=sxiv.desktop
+image/bmp=sxiv.desktop
+image/gif=sxiv.desktop
+image/jpeg=sxiv.desktop
+image/png=sxiv.desktop
+image/tiff=sxiv.desktop
+image/vnd.microsoft.icon=sxiv.desktop
+image/webp=sxiv.desktop
+
+# video
+video/x-msvideo=mpv.desktop
+video/mp4=mpv.desktop
+video/mpeg=mpv.desktop
+video/ogg=mpv.desktop
+video/mp2t=mpv.desktop
+video/webm=mpv.desktop
+video/3gpp=mpv.desktop
+
+# custom MIME types
+application/x-drawio=drawio.desktop
+x-scheme-handler/mailto=aerc.desktop

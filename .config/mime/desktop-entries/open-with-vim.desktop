@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=VIMOpen
+Version=1.0
+Type=Application
+Comment=Open a file with VIM in a terminal
+Exec=st -e nvim
+Terminal=true
+Icon=hwloc
+Categories=System;
