@@ -1,0 +1,39 @@
+[global]
+    monitor = 0
+    follow = keyboard
+    width = 370
+    height = 350
+    offset = 25x50
+    padding = 10
+    corner_radius = 5
+    line_height = 5
+    horizontal_padding = 10
+    transparency = 0
+    font = SF Mono 10
+    format = "<b>%s</b>\n%b"
+    icon_position = off
+    frame_width = 0
+    gap_size = 10
+    sort = yes
+
+[urgency_low]
+    background = "#52AC6C"
+    foreground = "#E4f453"
+    frame_color = "#52AC6C"
+    timeout = 3
+    default_icon=/usr/share/icons/Adwaita/32x32/actions/help-about-symbolic.symbolic.png
+
+[urgency_normal]
+    background = "#015D52"
+    foreground = "#E5F554"
+    frame_color = "#015D52"
+    timeout = 5
+    default_icon=/usr/share/icons/Adwaita/32x32/actions/help-about-symbolic.symbolic.png
+
+[urgency_critical]
+    background = "#D49B54"
+    foreground = "#46244C"
+    frame_color = "#D49B54"
+    timeout = 10
+    default_icon=/usr/share/icons/Adwaita/32x32/actions/help-about-symbolic.symbolic.png
+
