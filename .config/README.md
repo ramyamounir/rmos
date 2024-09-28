@@ -113,10 +113,43 @@ To compile use `make clean install`
 #### 5.1 Dynamic Window Manager (DWM) <a name="dwm"></a>
 
 DWM is the tiling window manager installed by default in RMOS. Keybindings are provided in the `.local/src/dwm/config.h` file.
+Here are some of the keybinding defined in RMOS.
+
+| Mod           | Key           | Action                   |
+| ------------- | ------------- | ------------------------ |
+| Super         | Number        | Go to workspace          |
+| Super - Shift | Number        | Move Window to Workspace |
+| Super         | t             | Layout 1                 |
+| Super - Shift | t             | Layout 2                 |
+| Super         | y             | Layout 3                 |
+| Super - Shift | y             | Layout 4                 |
+| Super         | f             | Toggle Full Screen       |
+| Super         | b             | Toggle Bar               |
+| Super         | Enter         | Spawn Terminal           |
+| Super         | Space         | Zoom Window              |
+| Super         | j or k        | Move between Windows     |
+| Super         | h or l        | Resize Master Window     |
+| Super         | w             | Browser                  |
+| Super - Shift | w             | Network GUI (NMTUI)      |
+| Super         | r             | Lf Window Manager        |
+| Super - Shift | r             | Htop                     |
+| Super         | q             | Quit Window              |
+| Super - Shift | q             | Quit dwm to tty          |
+| Super         | z             | Decrease Window gaps     |
+| Super         | x             | Increase Window gaps     |
+| Super         | m             | Mount device script      |
+| Super - Shift | m             | UnMount device script    |
+| Super         | Backspace     | Turn off script          |
+| Super         | d             | Spawn dmenu              |
+| Super         | p             | dmenupass                |
+| Super - Shift | p             | Maim pick script         |
+| Super         | Left or Right | Switch to monitor        |
+| Super - Shift | Left or Right | Move Window to monitor   |
 
 #### 5.2 DMenu <a name="dmenu"></a>
 
-Dmenu allows for running scripts easily.
+Dmenu allows for running scripts easily. Dmenu has been configured to run in the center of the screen.
+Make sure to pass the output of the command `$(dwm -m)` to the dmenu command; it contains some variables.
 
 #### 5.2 DWM Blocks <a name="dwmb"></a>
 
