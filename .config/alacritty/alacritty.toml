@@ -40,12 +40,59 @@ live_config_reload = true
 [keyboard]
 
     [[keyboard.bindings]]
-        key = "D"
-        mods = "Shift|Control"
+        mods = "Alt"
+        key = "c"
+        action = "Copy"
 
-    [keyboard.bindings.command]
-        args = ["-c", "toggle-alacritty-theme"]
-        program = "sh"
+    [[keyboard.bindings]]
+        mods = "Alt"
+        key = "v"
+        action = "Paste"
+
+    [[keyboard.bindings]]
+        mods = "Alt"
+        key = "Escape"
+        action = "ToggleViMode"
+
+    [[keyboard.bindings]]
+        mods = "Alt|Shift"
+        key = "j"
+        action = "DecreaseFontSize"
+
+    [[keyboard.bindings]]
+        mods = "Alt|Shift"
+        key = "k"
+        action = "IncreaseFontSize"
+
+    [[keyboard.bindings]]
+        mods = "Alt"
+        key = "k"
+        action = "ScrollLineUp"
+
+    [[keyboard.bindings]]
+        mods = "Alt"
+        key = "j"
+        action = "ScrollLineDown"
+
+    [[keyboard.bindings]]
+        mods = "Alt"
+        key = "u"
+        action = "ScrollHalfPageUp"
+
+    [[keyboard.bindings]]
+        mods = "Alt"
+        key = "d"
+        action = "ScrollHalfPageDown"
+
+    [[keyboard.bindings]]
+        mods = "Alt|Shift"
+        key = "u"
+        action = "ScrollToTop"
+
+    [[keyboard.bindings]]
+        mods = "Alt|Shift"
+        key = "d"
+        action = "ScrollToBottom"
 
 
 

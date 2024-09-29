@@ -94,13 +94,52 @@ If they exist, `$XDG_DATA_HOME/.env` will be invoked at the beginning of setting
 ### 3. Terminal Emulator <a name="alacritty"></a>
 
 [Alacritty](https://alacritty.org) is the installed terminal emulator and can be configured in `$HOME/.config/alacritty/alacritty.toml`.
+Here are some of the keybindings configured in Alacritty.
+
+| Mod         | Key    | Action                   |
+| ----------- | ------ | ------------------------ |
+| Alt         | c      | Copy                     |
+| Alt         | v      | Paste                    |
+| Alt         | Escape | ToggleViMode             |
+| Alt         | j/k    | Scroll Line up/down      |
+| Alt         | u/d    | Scroll Half page up/down |
+| Alt         | U/D    | Scroll to top/bottom     |
+| Alt - Shift | j/k    | Change font size         |
 
 
 ### 4. Text Editor <a name="nvim"></a>
 
 [NeoVim](https://neovim.io/) is the installed text editor. Nvim is configured to intall its plugin manager and its plugins.
-It should right work out of the box.
+It should right work out of the box. Here are some keybindings in nvim.
 
+| Plugin    | Mod       | Key                | Action                              |
+| --------- | --------- | ------------------ | ----------------------------------- |
+| Core      | Ctrl      | h/j/k/l            | Move between splits                 |
+| Core      | Ctrl      | up/down/left/right | Resize splits                       |
+| Core      | Space     | j                  | close buffer (`:q`)                 |
+| Core      | Space     | k                  | New tab                             |
+| Core      | Shift     | h/l                | Cycle between tabs                  |
+| Core      | -         | zz                 | Save all buffers (`:wa`)            |
+| Core      | Shift     | zz                 | Save and close all buffers (`:wqa`) |
+| Nvim Tree | Space     | e                  | Toggle Nvim tree                    |
+| Nvim Tree | -         | a                  | add file                            |
+| Nvim Tree | -         | r                  | Rename file                         |
+| Telescope | Ctrl      | p                  | Find Files                          |
+| Telescope | Ctrl      | t                  | Find text                           |
+| GitSigns  | Space - h | p                  | Hunk Preview                        |
+| GitSigns  | Space - h | n                  | Hunk Next                           |
+| GitSigns  | Space - h | s                  | Hunk Stage                          |
+| GitSigns  | Space - h | S                  | Stage file                          |
+| GitSigns  | Space - h | u                  | Hunk undo stage                     |
+| GitSigns  | Space - h | R                  | Reset buffer                        |
+| GitSigns  | Space - h | b                  | Blame line                          |
+| GitSigns  | Space -h  | d                  | Diff this                           |
+| cmp       | Shift     | k                  | preview definition                  |
+| cmp       | Shift     | k (x2)             | Go into preview                     |
+| cmp       | Ctrl      | k                  | Exit preview                        |
+| cmp       | Ctrl      | y                  | Start Completion suggestions        |
+| cmp       | -         | Tab                | Cycle through suggestions           |
+| cmp       | -         | Enter              | Select suggestions                  |
 
 ### 5. RMOS Desktop Environment <a name="suckless"></a>
 
