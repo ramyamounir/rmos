@@ -34,8 +34,8 @@ keymap("n", "<C-Right>", ":vertical resize +2<CR>", opts)
 -- Navigate Tabs
 keymap("n", "<Leader>j", ":q<CR>", opts)
 keymap("n", "<Leader>k", ":tabnew<CR>", opts)
-keymap("n", "<Leader>h", ":tabprev<CR>", opts)
-keymap("n", "<Leader>l", ":tabnext<CR>", opts)
+keymap("n", "H", ":tabprev<CR>", opts)
+keymap("n", "L", ":tabnext<CR>", opts)
 
 -- Buffer save and Yanking
 keymap("n", "Y", "y$", opts)
