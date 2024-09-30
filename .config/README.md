@@ -34,6 +34,9 @@ $HOME
 6. [GnuPG and SSH](#gpg)
 7. [LF File Manager](#lf)
 8. [Fonts](#fonts)
+9. [Bluetooth](#bluetooth)
+10. [Printer](#printers)
+11. [Scanner](#scanners)
 
 
 ### 1. User Configs Installation <a name="installation"></a>
@@ -224,4 +227,104 @@ fc-cache -fr
 # To list available fonts
 fc-list
 ```
+
+
+### 9 Bluetooth <a name="bluetooth"></a> 
+
+This configuration uses the Linux Bluetooth protocol stack
+[BlueZ](http://www.bluez.org/), configurable with `bluez` and its utilities
+extension `bluez-utils`. It can be enabled and started as a service:
+
+```sh
+systemctl enable bluetooth
+systemctl start bluetooth
+```
+
+> **Note:** To ensure that Bluetooth hardware is supported by the system, run
+> `rfkill list`. To unblock (if blocked), run `rfkill unblock bluetooth`.
+
+To scan, connect, list, delete, and perform other operations on Bluetooth
+devices, enter the Bluetooth controller interactive shell:
+
+```sh
+bluetoothctl
+> agent on # enable Bluetooth agent
+> scan on # scan devices
+> pair XX:XX:XX:XX:XX:XX # pair a device
+> connect XX:XX:XX:XX:XX:XX # connect to a device
+> set-alias ALIAS # device alias
+> exit # exit the interactive shell
+```
+
+or directly inline in the command line interface (_e.g._, `bluetoothctl connect
+XX:XX:XX:XX:XX:XX`).
+
+### 10 Printer <a name="printer"></a> 
+
+To use printers, enable and start `cups.service`; alternatively, to enable them
+on demand, enable and start `cups.socket`.
+
+```sh
+systemctl enable cups.service
+
+# on demand
+systemctl enable --user cups.socket
+```
+
+If necessary, the printer may be searched with the [appropriate
+driver](https://wiki.archlinux.org/title/CUPS/Printer-specific_problems) and
+added to CUPS using `lpadmin`. If the IP address of the printer is know, then
+it can be configured over `ipp`:
+
+```sh
+# with IP address
+lpadmin -p PRINTER_NAME -E -v "ipp://IP_ADDRESS/ipp/print" -m everywhere
+
+# with URI obtained with a driver
+lpadmin -p PRINTER_NAME -E -v URI -P /usr/share/cups/model/DRIVER.ppd
+```
+
+Other useful commands:
+
+```sh
+lpinfo -m # list available drivers
+
+lpstat -v # list added printers
+
+lpstat -p PRINTER [options] # list statistics of a specific printer
+```
+
+[Ink](https://ink.sourceforge.net/) can be used to print the ink information.
+For example:
+
+```sh
+ink -b bjnp://IP_ADDRESS
+```
+
+### 11 Scanner <a name="scanner"></a> 
+
+This setup comes with GNOME's [Document
+Scanner](https://apps.gnome.org/en/SimpleScan/) graphical interface installed,
+which also installs the [SANE](http://www.sane-project.org/) backend necessary
+for scanning. For it to work, the `saned` daemon service needs to be enabled and
+started.
+
+```sh
+systemctl enable --now saned
+```
+
+Most scanners can be configured to work wireless by editing the configuration
+file relevant to the scanner of interest in `/etc/sane.d` and restarting the
+daemon `saned.socket`.
+
+For example, Canon's PIXMA series scanner can be configured by adding an entry
+by its IP address: 
+
+```txt
+# /etc/sane.d/pixma.conf
+
+bjnp://IP_ADDRESS
+```
+
+
 
