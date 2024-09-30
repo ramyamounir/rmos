@@ -29,9 +29,10 @@ EOV
 
 export SAVEHIST=50000
 export TERM="xterm-256color"
-export TERMINAL="st"
+export TERMINAL="alacritty"
 export VISUAL=nvim
 export EDITOR="$VISUAL"
+export SUDO_EDITOR="$VISUAL"
 export BROWSER="firefox"
 
 # configurations
