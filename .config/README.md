@@ -134,12 +134,17 @@ It should right work out of the box. Here are some keybindings in nvim.
 | GitSigns  | Space - h | R                  | Reset buffer                        |
 | GitSigns  | Space - h | b                  | Blame line                          |
 | GitSigns  | Space -h  | d                  | Diff this                           |
-| cmp       | Shift     | k                  | preview definition                  |
+| cmp       | Shift     | k                  | preview definition (hover)          |
 | cmp       | Shift     | k (x2)             | Go into preview                     |
 | cmp       | Ctrl      | k                  | Exit preview                        |
 | cmp       | Ctrl      | y                  | Start Completion suggestions        |
 | cmp       | -         | Tab                | Cycle through suggestions           |
 | cmp       | -         | Enter              | Select suggestions                  |
+| cmp       | -         | gl                 | Show diagnostics (hover)            |
+| cmp       | -         | gd                 | Show definition                     |
+| cmp       | -         | gD                 | Show Declaration                    |
+| cmp       | -         | gR                 | Show Refereneces                    |
+| cmp       | -         | gi                 | Show Implementation                 |
 
 ### 5. RMOS Desktop Environment <a name="suckless"></a>
 
