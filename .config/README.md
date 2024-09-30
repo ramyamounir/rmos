@@ -301,6 +301,13 @@ For example:
 ink -b bjnp://IP_ADDRESS
 ```
 
+
+Here is an example to set up a brother printer:
+
+```sh
+lpadmin -p home_brother -E -v "ipp://192.168.50.183/ipp/print" -m everywhere
+```
+
 ### 11 Scanner <a name="scanner"></a> 
 
 This setup comes with GNOME's [Document
@@ -317,14 +324,17 @@ Most scanners can be configured to work wireless by editing the configuration
 file relevant to the scanner of interest in `/etc/sane.d` and restarting the
 daemon `saned.socket`.
 
-For example, Canon's PIXMA series scanner can be configured by adding an entry
-by its IP address: 
+Here is an [example](https://gist.github.com/sieste/77c004a263f1da38688e119c7b4758b8) to set up a brother scanner:
 
-```txt
-# /etc/sane.d/pixma.conf
+```sh
+# add scanner example
+sudo brsaneconfig4 -a name='brother' model='DCP-L2540DW' ip=192.168.50.183
 
-bjnp://IP_ADDRESS
+# restart sane
+sudo systemctl restart saned.socket
+
+# Check if scanner is recognised
+scanimage -L
 ```
-
 
 

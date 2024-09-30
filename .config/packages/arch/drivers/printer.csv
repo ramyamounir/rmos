@@ -4,3 +4,5 @@ p,          cups-pdf,                                              PDF printer f
 y,          ink,                                                   Ink information
 p,          sane,                                                  Scanner Access Now Easy
 p,          simple-scan,                                           Scanner GUI
+y,          brscan4,                                               Brother scanning tool
+y,          brscan-skey,                                           Brother scanning tool
