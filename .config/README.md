@@ -24,6 +24,7 @@ $HOME
 2. [Terminal Shell](#shell)
     1. [Plugin Managers](#zim)
     2. [Environment Variables](#env-vars)
+    2. [Setting Screen Layout](#screen_layout)
 3. [Terminal Emulator](#alacritty)
 4. [Text Editor](#nvim)
 5. [RMOS Desktop Environment](#suckless)
@@ -87,8 +88,14 @@ If they exist, `$XDG_DATA_HOME/.env` will be invoked at the beginning of setting
 | `USE_ZSH_AT`            | Path to `zsh`. This variable is useful when the default shell is bash, cannot be changed, but zsh is preferred.          |
 | `WINDOW_MANAGER`        | The window manager to use (`gnome` for GNOME (requires GNOME to be installed); none for dwm; default: dwm)               |
 | `VIM_THEME`             | The default Vim theme                                                                                                    |
-| `X_DISPLAY_LAYOUT`      | Used by [`xprofile`]($XDG_CONFIG_HOME/x11/xprofile) to determine the screen layout (refer to the profile to get an idea) |
 | `X_WALLPAPER`           | Path to an image to set as the background (used by X)                                                                    |
+
+#### 2.3 Setting Screen Layout <a name="screen_layout"></a>
+
+To set a system specific screen layout, specify an xrandr command in the file `$XDG_DATA_HOME/screenlayout.sh`.
+The package `arandr` can be used to configure and export this xrandr command to the desired location.
+
+
 
 
 ### 3. Terminal Emulator <a name="alacritty"></a>

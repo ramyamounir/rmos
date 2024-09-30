@@ -1,5 +1,6 @@
 Manager,    Package,                                               Comments
 y,          ctpv-git,                                              Previewer for lf
+p,          arandr,                                                Manually setting display layout
 p,          dunst,                                                 Notifications manager
 p,          feh,                                                   background image setter
 p,          libxinerama,                                           Libxinerama extension library (used by dwm)
