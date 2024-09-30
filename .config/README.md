@@ -35,8 +35,8 @@ $HOME
 7. [LF File Manager](#lf)
 8. [Fonts](#fonts)
 9. [Bluetooth](#bluetooth)
-10. [Printer](#printers)
-11. [Scanner](#scanners)
+10. [Printers](#printers)
+11. [Scanners](#scanners)
 
 
 ### 1. User Configs Installation <a name="installation"></a>
@@ -199,6 +199,7 @@ Here are some of the keybinding defined in RMOS.
 | Super - Shift | p             | Maim pick script         |
 | Super         | Left or Right | Switch to monitor        |
 | Super - Shift | Left or Right | Move Window to monitor   |
+| Super - Shift | b             | Bluetooth Script         |
 
 #### 5.2 DMenu <a name="dmenu"></a>
 
@@ -259,7 +260,9 @@ bluetoothctl
 or directly inline in the command line interface (_e.g._, `bluetoothctl connect
 XX:XX:XX:XX:XX:XX`).
 
-### 10 Printer <a name="printer"></a> 
+**After pairing a new device, the script `dm-bluetooth` can be used to connect to paired devices.**
+
+### 10 Printer <a name="printers"></a> 
 
 To use printers, enable and start `cups.service`; alternatively, to enable them
 on demand, enable and start `cups.socket`.
@@ -301,14 +304,23 @@ For example:
 ink -b bjnp://IP_ADDRESS
 ```
 
+Here are a few examples to add Brother and HP printers:
 
-Here is an example to set up a brother printer:
+* Here is an example to set up a brother printer:
+    ```sh
+    lpadmin -p home_brother -E -v "ipp://192.168.50.183/ipp/print" -m everywhere
+    ```
+* Here is an example to set up an HP printer:
+    ```sh
+    # Install hplip package (should be part of the printers csv)
+    sudo pacman -S hplip
 
-```sh
-lpadmin -p home_brother -E -v "ipp://192.168.50.183/ipp/print" -m everywhere
-```
+    # Use hp-setup utility with -i (cli) to add the printer
+    hp-setup -i
+    ```
 
-### 11 Scanner <a name="scanner"></a> 
+
+### 11 Scanners <a name="scanners"></a> 
 
 This setup comes with GNOME's [Document
 Scanner](https://apps.gnome.org/en/SimpleScan/) graphical interface installed,
@@ -317,7 +329,7 @@ for scanning. For it to work, the `saned` daemon service needs to be enabled and
 started.
 
 ```sh
-systemctl enable --now saned
+systemctl enable --now saned.socket
 ```
 
 Most scanners can be configured to work wireless by editing the configuration
@@ -336,5 +348,7 @@ sudo systemctl restart saned.socket
 # Check if scanner is recognised
 scanimage -L
 ```
+
+**For additional scanner problems check [here](https://wiki.archlinux.org/title/SANE/Scanner-specific_problems).**
 
 

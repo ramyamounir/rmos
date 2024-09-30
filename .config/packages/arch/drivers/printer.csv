@@ -6,3 +6,4 @@ p,          sane,                                                  Scanner Acces
 p,          simple-scan,                                           Scanner GUI
 y,          brscan4,                                               Brother scanning tool
 y,          brscan-skey,                                           Brother scanning tool
+p,          hplip,                                                 HP Utility

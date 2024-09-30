@@ -2,10 +2,12 @@
 
 DMENU_OPTIONS=`dwm -m`
 
+# Turn bluetooth on if it's off
 if bluetoothctl show | grep "Powered: no" &> /dev/null; then 
     bluetoothctl power on
 fi
 
+# Create a menu of bluetooth devices
 if command -v bluetoothctl &> /dev/null; then
     DEVICES=`bluetoothctl devices`
     N="${#DEVICES[@]}"
