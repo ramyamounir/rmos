@@ -1,9 +1,9 @@
 [global]
     monitor = 0
     follow = keyboard
-    width = 370
-    height = 350
-    offset = 25x50
+    width = 400
+    height = 400
+    offset = 25x55
     padding = 10
     corner_radius = 5
     line_height = 5
@@ -11,29 +11,29 @@
     transparency = 0
     font = SF Mono 10
     format = "<b>%s</b>\n%b"
-    icon_position = off
-    frame_width = 0
+    icon_position = left
+    frame_width = 2
     gap_size = 10
     sort = yes
 
 [urgency_low]
-    background = "#52AC6C"
-    foreground = "#E4f453"
-    frame_color = "#52AC6C"
+    background = "#1E2127"
+    foreground = "#ABB2BF88"
+    frame_color = "#ABB2BF88"
     timeout = 3
-    default_icon=/usr/share/icons/Adwaita/32x32/actions/help-about-symbolic.symbolic.png
+    default_icon = $XDG_CONFIG_HOME/dunst/icons/bell.svg
 
 [urgency_normal]
-    background = "#015D52"
-    foreground = "#E5F554"
-    frame_color = "#015D52"
+    background = "#1E2127"
+    foreground = "#ABB2BF"
+    frame_color = "#ABB2BF"
     timeout = 5
-    default_icon=/usr/share/icons/Adwaita/32x32/actions/help-about-symbolic.symbolic.png
+    default_icon = $XDG_CONFIG_HOME/dunst/icons/info.svg
 
 [urgency_critical]
-    background = "#D49B54"
-    foreground = "#46244C"
-    frame_color = "#D49B54"
+    background = "#1E2127"
+    foreground = "#E28743"
+    frame_color = "#E28743"
     timeout = 10
-    default_icon=/usr/share/icons/Adwaita/32x32/actions/help-about-symbolic.symbolic.png
+    default_icon = $XDG_CONFIG_HOME/dunst/icons/important.svg
 

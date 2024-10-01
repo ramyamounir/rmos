@@ -44,6 +44,10 @@ if [ -d "/sys/class/power_supply/BAT0" ]; then
     show_battery "/sys/class/power_supply/BAT0"
 fi
 
+if [ -d "/sys/class/power_supply/BAT1" ]; then
+    show_battery "/sys/class/power_supply/BAT1"
+fi
+
 if [ -d "/sys/class/power_supply/macsmc-battery" ]; then
     show_battery "/sys/class/power_supply/macsmc-battery"
 fi
