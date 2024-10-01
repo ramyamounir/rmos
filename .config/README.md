@@ -199,7 +199,7 @@ Here are some of the keybinding defined in RMOS.
 | Super - Shift | p             | Maim pick script         |
 | Super         | Left or Right | Switch to monitor        |
 | Super - Shift | Left or Right | Move Window to monitor   |
-| Super - Shift | b             | Bluetooth Script         |
+| Super - Shift | b             | Bluetooth TUI            |
 
 #### 5.2 DMenu <a name="dmenu"></a>
 
