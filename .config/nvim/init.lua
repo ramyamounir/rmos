@@ -12,4 +12,5 @@ require "user.plugin_configs.treesitter"
 require "user.plugin_configs.gitsigns"
 require "user.plugin_configs.nvimtree"
 require "user.plugin_configs.bufferline"
+require "user.plugin_configs.sandwich"
 
