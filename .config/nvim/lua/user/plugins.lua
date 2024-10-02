@@ -51,6 +51,9 @@ return packer.startup(function(use)
   use "tpope/vim-repeat"
   use "akinsho/bufferline.nvim"
   use {"stsewd/isort.nvim", run=':UpdateRemotePlugins' }
+  use "lukas-reineke/indent-blankline.nvim"
+  use "nvim-lualine/lualine.nvim"
+  -- use "lervag/vimtex"
 
   -- color scheme
   use "morhetz/gruvbox"

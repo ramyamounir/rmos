@@ -1,3 +1,4 @@
+
 -- Main Nvim settings
 require "user.options"
 require "user.keymaps"
@@ -13,4 +14,6 @@ require "user.plugin_configs.gitsigns"
 require "user.plugin_configs.nvimtree"
 require "user.plugin_configs.bufferline"
 require "user.plugin_configs.sandwich"
-
+require "user.plugin_configs.blankline"
+require "user.plugin_configs.lualine"
+-- require "user.plugin_configs.vimtex"
