@@ -8,6 +8,7 @@ p,          bat,                                                   Better cat
 p,          bc,                                                    precision calculator
 p,          bind,                                                  DNS protocol implementation (useful for servers)
 p,          bluez,                                                 Bluetooth controller
+p,          bluez-obex,                                            Bluetooth OBEX
 p,          bluez-utils,                                           Bluetooth utilities
 y,          bluetuith,                                             Bluetooth TUI
 p,          bore,                                                  Tunnel
