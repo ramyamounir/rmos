@@ -31,12 +31,12 @@ local opts = {
                 icon = " ",
             },
         },
-        opts = {
-            position = {
-                row = "80%",
-                col = "50%",
-            },
-        },
+        -- opts = {
+        --     position = {
+        --         row = "80%",
+        --         col = "50%",
+        --     },
+        -- },
         size = {
             width = "50%",
             height = "auto",
