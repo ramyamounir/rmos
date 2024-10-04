@@ -1,0 +1,6 @@
+Inbox = INBOX
+Sent = Sent Items
+Spam = Junk Email
+Bin = Deleted Items
+Archives = Archive
+Archives/* = Archive/*

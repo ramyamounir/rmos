@@ -1,0 +1,6 @@
+Inbox = INBOX
+Drafts = Draft
+Bin = Trash
+Spam = Bulk
+Archives = Archive
+Archives/* = Archive/*

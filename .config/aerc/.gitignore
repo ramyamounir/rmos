@@ -1,0 +1,10 @@
+*
+
+!.gitignore
+
+!accounts.conf
+!accounts.conf.bak
+!aerc.conf
+!binds.conf
+!directory-maps
+!mutt_oauth2.py

@@ -1,0 +1,15 @@
+pgp-key-id        = KEYID!
+pgp-attach-key    = false
+cache-headers     = true
+default           = "Inbox"
+folders-sort      = "Inbox, Drafts, Sent, Spam, Bin"
+copy-to           = "Sent"
+archive           = "Archives"
+
+[Section]
+source            = imaps://user@email.domain
+source-cred-cmd   = command_to_get_password
+outgoing          = smtps://user@email.domain
+outgoing-cred-cmd = command_to_get_password
+from              = "User Name" <user@domain>
+folder-map        = ~/.config/aerc/directory-maps/email.map
