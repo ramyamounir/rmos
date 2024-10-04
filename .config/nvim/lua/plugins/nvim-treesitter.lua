@@ -1,9 +1,4 @@
-local status_ok, configs = pcall(require, "nvim-treesitter.configs")
-if not status_ok then
-    return
-end
-
-configs.setup {
+local opts = {
   ensure_installed = "all",
   sync_install = false,
   ignore_install = { "" }, -- List of parsers to ignore installing
@@ -15,3 +10,9 @@ configs.setup {
   },
   indent = { enable = true, disable = { "yaml" } },
 }
+
+return {
+    lazy=false,
+    opts = opts,
+}
+

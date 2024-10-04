@@ -1,7 +1,5 @@
-local status_ok, gitsigns = pcall(require, "lualine")
-if not status_ok then
-  return
-end
+
+local dependencies = { 'nvim-tree/nvim-web-devicons' }
 
 local opts = {
     options = {
@@ -18,5 +16,11 @@ local opts = {
     }
 }
 
-gitsigns.setup(opts)
+return {
+    dependencies = dependencies,
+    opts = opts
+}
+
+
+
 
