@@ -10,8 +10,8 @@ local function init()
         pcall(norm_unmapped, "N")
     end)
 
-    vim.cmd([[nnoremap / :silent! /]])
-    vim.cmd([[nnoremap ? :silent! /]])
+    -- vim.cmd([[nnoremap / :silent! /]])
+    -- vim.cmd([[nnoremap ? :silent! /]])
 end
 
 local opts = {
