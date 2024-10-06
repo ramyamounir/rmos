@@ -109,8 +109,6 @@ local function init()
             opts = vim.tbl_deep_extend("force", configs, opts)
         end
 
-        if not req_ok then opts = {} end
-
         lspconfig[server].setup(opts)
     end
 

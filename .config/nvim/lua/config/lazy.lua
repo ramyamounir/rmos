@@ -24,7 +24,6 @@ vim.opt.rtp:prepend(lazypath)
 local plugins = {
     -- UI plugins
     PreparePackage("akinsho/bufferline.nvim", require("plugins.bufferline")),
-    -- PreparePackage("neanias/everforest-nvim", require("plugins.everforest")),
     PreparePackage("lewis6991/gitsigns.nvim", require("plugins.gitsigns")),
     PreparePackage("lukas-reineke/indent-blankline.nvim", require("plugins.indent-blankline")),
     PreparePackage("nvim-lualine/lualine.nvim", require("plugins.lualine")),
