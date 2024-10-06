@@ -41,7 +41,7 @@ local on_attach = function(client, bufnr)
 end
 
 
-function setup ()
+local function diagnostics_setup ()
     local signs = {
         { name = "DiagnosticSignError", text = "" },
         { name = "DiagnosticSignWarn", text = "" },
@@ -87,20 +87,20 @@ end
 
 local function init()
 
-    local status_ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
-    if status_ok then
-        capabilities = cmp_nvim_lsp.default_capabilities()
+    local cmp_status_ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
+    if cmp_status_ok then
+        Capabilities = cmp_nvim_lsp.default_capabilities()
     end
 
-    local status_ok, lspconfig = pcall(require, 'lspconfig')
-    if not status_ok then return end
+    local lspconfig_status_ok, lspconfig = pcall(require, 'lspconfig')
+    if not lspconfig_status_ok then return end
 
     local opts = {}
     for _, server in pairs(LspServers) do
 
         opts = {
             on_attach = on_attach,
-            capabilities = capabilities,
+            capabilities = Capabilities,
         }
 
         local filename = "plugins/lsp/" .. server
@@ -112,7 +112,7 @@ local function init()
         lspconfig[server].setup(opts)
     end
 
-    setup()
+    diagnostics_setup()
 
 end
 

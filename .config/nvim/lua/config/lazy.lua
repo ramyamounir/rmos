@@ -54,6 +54,8 @@ local plugins = {
     PreparePackage("williamboman/mason-lspconfig.nvim", require("plugins.mason-lspconfig")),
     PreparePackage("neovim/nvim-lspconfig", require("plugins.nvim-lspconfig")),
     PreparePackage("jose-elias-alvarez/null-ls.nvim", require("plugins.null-ls")),
+    PreparePackage("mfussenegger/nvim-lint"),
+    PreparePackage("rshkarin/mason-nvim-lint", require("plugins.mason-lintconfig")),
 
     -- miscellaneous
     PreparePackage("machakann/vim-sandwich", require("plugins.sandwich")),
