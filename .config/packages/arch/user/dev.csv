@@ -9,8 +9,4 @@ p,          github-cli,                                             GitHub CLI t
 p,          nodejs,                                                 nodejs engine
 p,          npm,                                                    node package manager
 p,          yarn,                                                   node package manager
-p,          python-pip,                                             python package manager
-p,          python-black,                                           python linter for formating
-p,          python-isort,                                           python sorting for libraries
-p,          flake8,                                                 flake8 diagnostics
 y,          postman-bin,                                            POSTMAN tool
