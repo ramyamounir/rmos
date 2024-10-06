@@ -10,7 +10,9 @@ local opts = {
         lualine_a = {'mode'},
         lualine_b = {'branch', 'diff' },
         lualine_c = { { 'filename', path = 1 } },
-        lualine_x = { 'diagnostics' },
+        lualine_x = { {'diagnostics',
+            symbols = {error = '  ', warn = ' ', info = '  ', hint = '󰌵 '},
+            }},
         lualine_y = {'encoding', 'fileformat', 'filetype'},
         lualine_z = {'progress', 'location'}
     }
