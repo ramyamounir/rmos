@@ -37,6 +37,7 @@ local plugins = {
 
     -- editor
     PreparePackage("iamcco/markdown-preview.nvim", require("plugins.markdown-preview")),
+    PreparePackage("ibhagwan/fzf-lua", require("plugins.fzf")),
 
     -- coding
     PreparePackage("lervag/vimtex", require("plugins.vimtex")),
