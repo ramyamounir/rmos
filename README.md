@@ -18,7 +18,7 @@ In sub-README files, we go through user configurations in details.
 
 1. [Arch Linux Installation](#arch-linux-installation)
     1. [Live Medium and ISO](#live-medium)
-    2. [Disk Partitions and Mounting](#disk-paritions)
+    2. [Disk Partitions and Mounting](#disk-partitions)
     3. [Internet and NTP](#internet-ntp)
     4. [Pacstrap and Chroot](#pacstrap-chroot)
 2. [Arch Linux Configuration](#arch-linux-configuration)
@@ -39,17 +39,18 @@ In sub-README files, we go through user configurations in details.
 * Boot from the flash drive
 
 
-### 1.2 Disk Partitions and Mounting <a name="disk-paritions"></a>
+### 1.2 Disk Partitions and Mounting <a name="disk-partitions"></a>
 
-| Partition | Partition type number | Size           | File system              | Mount points |     |
-| --------- | --------------------- | -------------- | ------------------------ | ------------ | --- |
-| Boot      | 1 (EFI) or 4 (BIOS)   | 1GB            | FAT32 (`mkfs.fat -F 32`) | `/mnt/boot`  |     |
-| Swap      | 19 (Linux Swap)       | Twice RAM size | Swap (`mkswap`)          |              |     |
-| Root      | 23 (Linux Root)       | Rest           | Ext4 (`mkfs.ext4`)       | `/mnt`       |     |
+| Partition | Partition type number | Size           | File system              | Mount points |
+| --------- | --------------------- | -------------- | ------------------------ | ------------ |
+| Boot      | 1 (EFI) or 4 (BIOS)   | 1GB            | FAT32 (`mkfs.fat -F 32`) | `/mnt/boot`  |
+| Swap      | 19 (Linux Swap)       | Twice RAM size | Swap (`mkswap`)          |              |
+| Root      | 23 (Linux Root)       | Rest           | Ext4 (`mkfs.ext4`)       | `/mnt`       |
+
 * Partition the disks as needed. use `fdisk /dev/DEVICE` to partition. Use options:
 	* P for printing the table
 	* n for a new partition
-	* d for deleting a partion
+	* d for deleting a partition
 	* L to list partition types
 	* m for help
 * After partitioning, format by making file system using
