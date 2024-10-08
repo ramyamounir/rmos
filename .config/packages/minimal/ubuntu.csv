@@ -1,7 +1,0 @@
-Manager,    Package,            Comments
-apt,        curl,
-apt,        git,
-apt,        zsh,
-apt,        neovim,
-apt,        nodejs,
-apt,        vim-gtk3,           gvim

@@ -1,7 +1,0 @@
-Manager,    Package,            Comments
-apt,        npm,
-apt,        openssh-server,
-apt,        gnupg,
-apt,        htop,
-g,          https://github.com/marlonrichert/zsh-autocomplete,     zsh autocomplete
-g,          https://github.com/zsh-users/zsh-autosuggestions,      zsh autosuggestion

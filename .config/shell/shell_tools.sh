@@ -54,17 +54,6 @@ function start_X_if_available() {
     fi
 }
 
-# set X11 wallpaper
-function setwallpaper() {
-    WP=$1
-    if [ -z $WP ]; then
-        source $HOME/.env
-        WP=$X_WALLPAPER
-    fi
-    [ -z $WP ] && WP=$XDG_CONFIG_HOME/wallpapers/wallpaper-green-3.jpg 
-    feh --no-fehbg --bg-fill $WP
-}
-
 ################################################################################
 #                                Shell tools                                   #
 ################################################################################

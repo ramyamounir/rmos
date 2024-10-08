@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-FILE=$XDG_CONFIG_HOME/conda/environment.yaml
+FILE=$XDG_CONFIG_HOME/packages/conda.csv
 if ! [ -f $FILE ]; then
     exit 0
 fi
@@ -29,20 +29,7 @@ skip_package() {
 
 # Read the file line by line
 while IFS= read -r LINE; do
-    # Check if the line contains the pattern "dependencies"
-    if [[ "$LINE" == *"dependencies"* ]]; then
-        START_PROCESSING=true
-        continue
-    fi
-
-    # Process lines after the "dependencies" pattern
-    if [ "$START_PROCESSING" = true ]; then
-        # Remove leading " - " and trim spaces
-        PACKAGE=$(echo "$LINE" | sed 's/^[[:space:]]*-\s*//;s/[[:space:]]*$//')
-
-        if ! [ "$(skip_package $PACKAGE)" = true ]; then
-            ln -sf $HOME/.local/src/anaconda3/bin/$PACKAGE $DST/
-        fi
-    fi
+    PKG=$(echo $LINE | cut -d ',' -f 2 - | xargs)
+    ln -sf $HOME/.local/src/anaconda3/bin/$PKG $DST/$PKG
 done < "$FILE"
 

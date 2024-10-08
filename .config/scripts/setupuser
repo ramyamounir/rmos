@@ -9,8 +9,8 @@ if [[ $(cat /proc/$$/comm) != "bash" ]]; then
     return;
 fi
 
-# get distribution name; TODO: if needed, this can be automated by reading
-# /etc/os-release
+# get distribution name;
+# TODO: if needed, this can be automated by reading /etc/os-release
 DISTRO=$1; ___() {
     if [ -z $DISTRO ]; then
         echo -e "---Choose your distribution---"
@@ -22,9 +22,9 @@ DISTRO=$1; ___() {
     fi
 };___;
 
-# # -----------------------------------------------------------------------------
-# #                                  SETUP
-# # -----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+#                                  SETUP
+# -----------------------------------------------------------------------------
 
 # installing basic necessities
 function preinstal() {
@@ -56,34 +56,35 @@ function mkuserdirs() {
     ln -sf $HOME/.local/data $HOME/.local/share
     ln -sf $HOME/.local/logs $HOME/.local/state
 
-    mkdir -p $HOME/{downloads,documents}
+    mkdir -p $HOME/{downloads,projects}
 }
 
 # clone the configurations
 function cloneconfigs() {
-    read -p "Ensure that the GitHub repository for RMOS is public. [ENTER]" 
-    
-    # cloning from HTTPS since SSH has not yet been configured
-    git clone https://github.com/ramyamounir/rmos.git $HOME/temp
+    read -p "Ensure that the GitHub repository for TVSOS is public. [ENTER]"
+
+    # cloning from HTTPS since SSH has not yet been configured during initial setup
+    git clone https://github.com/sujaltv/tvsos.git $HOME/temp
     mv $HOME/temp/* $HOME
     mv $HOME/temp/.* $HOME
-    mv $HOME/.git $HOME/.rmos
-    rm -rf $HOME/temp
+    mv $HOME/.git $HOME/.tvsos
+    rm -r $HOME/temp
 
     # modify HTTPS origin to SSH
-    git --git-dir $HOME/.rmos remote set-url origin git@github.com:ramyamounir/rmos.git
+    git --git-dir $HOME/.tvsos remote set-url origin git@github.com:sujaltv/tvsos.git
 
     # set some basic configs
-    git --git-dir $HOME/.rmos config --local status.showuntrackedfiles no
-    git --git-dir $HOME/.rmos config --local pull.rebase off
-    git --git-dir $HOME/.rmos config --local pull.default current
-    git --git-dir $HOME/.rmos config --local push.default current    
+    git --git-dir $HOME/.tvsos config --local status.showuntrackedfiles no
+    git --git-dir $HOME/.tvsos config --local pull.rebase off
+    git --git-dir $HOME/.tvsos config --local pull.default current
+    git --git-dir $HOME/.tvsos config --local push.default current
 }
 
 function setupshell() {
     source $HOME/.config/shell/variables.sh;
 
     # shell configuration links
+    ln -sf $XDG_CONFIG_HOME/alacritty/none.toml $XDG_CONFIG_HOME/alacritty/theme.toml
     ln -sf $XDG_CONFIG_HOME/bash/.bashrc $HOME/
     ln -sf $XDG_CONFIG_HOME/bash/.bash_profile $HOME/
     ln -sf $XDG_CONFIG_HOME/zsh/.zprofile $HOME/
@@ -111,8 +112,11 @@ function instalappswithpm() {
 
             # link files and directories
             $XDG_CONFIG_HOME/scripts/applysettings alllinks;
+
+            # apply patches and settings to apps and install them
+            $XDG_CONFIG_HOME/scripts/applysettings patch 1;
         }
-        
+
         if [[ "$GUI_SUPPORT" == "y" ]]; then
             gui > /dev/null 2>&1
         else
@@ -154,12 +158,12 @@ function instalwithconda() {
     sh temp.sh
     rm temp.sh
 
+    $XDG_CONFIG_HOME/scripts/instalfromcsv $XDG_CONFIG_HOME/packages/conda/conda.csv
     $XDG_CONFIG_HOME/scripts/linkbinsfromconda
-    $HOME/.local/src/anaconda3/bin/conda env update -n base --file $XDG_CONFIG_HOME/conda/environment.yaml > /dev/null;
 }
 
 function instalapps() {
-    read -p "Install with the sytem's package manager (p) or conda (c)? " PM
+    read -p "Install with the system's package manager (p) or conda (c)? " PM
 
     case $PM in
         "p")
@@ -167,10 +171,6 @@ function instalapps() {
         "c")
             instalwithconda;;
     esac
-}
-
-function getwallpapers() {
-    git clone https://github.com/ramyamounir/wallpapers.git $HOME/.local/wallpapers
 }
 
 echo -e "[1 of 5]: Pre-requisites: installing basic packages..."
@@ -188,9 +188,6 @@ setupshell > /dev/null 2>&1;
 
 echo -e "[4 of 5]: Installing user apps and fonts..."
 instalapps $DISTRO;
-
-echo -e "[5 of 5]: Getting wallpapers..."
-getwallpapers;
 
 echo "User setup finished."
 

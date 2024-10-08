@@ -1,6 +1,0 @@
-Manager,    Package,                                               Comments
-p,          cuda-tools,                                            CUDA tools
-p,          nvidia,                                                NVIDIA driver
-p,          nvidia-utils,                                          NVIDIA driver utilities
-p,          nvidia-container-toolkit,                              For Docker
-p,          nvtop,                                                 top for NVIDIA GPUs

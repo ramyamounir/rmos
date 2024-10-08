@@ -1,8 +1,0 @@
-Manager,    Package,                                Comments
-p,          curl,
-p,          git,
-p,          gvim,
-p,          neovim,
-p,          nodejs,
-p,          which,
-p,          zsh,

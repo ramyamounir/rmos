@@ -90,8 +90,6 @@ If they exist, `$XDG_DATA_HOME/.env` will be invoked at the beginning of setting
 | `STORAGE_DIR`           | Used by the command `mkpdir` as the storage location                                                                     |
 | `USE_ZSH_AT`            | Path to `zsh`. This variable is useful when the default shell is bash, cannot be changed, but zsh is preferred.          |
 | `WINDOW_MANAGER`        | The window manager to use (`gnome` for GNOME (requires GNOME to be installed); none for dwm; default: dwm)               |
-| `VIM_THEME`             | The default Vim theme                                                                                                    |
-| `X_WALLPAPER`           | Path to an image to set as the background (used by X)                                                                    |
 
 #### 2.3 Setting Screen Layout <a name="screen_layout"></a>
 

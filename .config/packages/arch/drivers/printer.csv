@@ -1,9 +1,0 @@
-Manager,    Package,                                               Comments
-p,          cups,                                                  printing system
-p,          cups-pdf,                                              PDF printer for CUPS
-y,          ink,                                                   Ink information
-p,          sane,                                                  Scanner Access Now Easy
-p,          simple-scan,                                           Scanner GUI
-y,          brscan4,                                               Brother scanning tool
-y,          brscan-skey,                                           Brother scanning tool
-p,          hplip,                                                 HP Utility

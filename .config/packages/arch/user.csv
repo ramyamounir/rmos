@@ -63,10 +63,97 @@ p,          vlc,                                                   VLC media pla
 p,          zoxide,                                                Zoxide
 p,          zsh,                                                   shell
 p,          xcape,                                                 configure keys remaps
-c,          $XDG_CONFIG_HOME/packages/arch/user/apps.csv,          User applications
-c,          $XDG_CONFIG_HOME/packages/arch/user/archivers.csv,     Archiving packages
-c,          $XDG_CONFIG_HOME/packages/arch/user/fs.csv,            File system packages
-c,          $XDG_CONFIG_HOME/packages/arch/user/latex.csv,         TeX packages
-c,          $XDG_CONFIG_HOME/packages/arch/user/x11.csv,           X11 packages
+y,          drawio-desktop,                                        DrawIO
+p,          firefox,                                               Firefox browser
+p,          inkscape,                                              Inkscape
+p,          libreoffice-fresh,                                     Libre Office
+p,          nextcloud-client,                                      client tool for next cloud
+p,          networkmanager-openconnect,                            OpenConnect (CISCO; GlobalProtect; etc)
+y,          nordvpn-bin,                                           Nord VPN
+p,          obsidian,                                              notebook
+y,          plex-desktop,                                          Plex desktop app
+p,          tgpt,                                                  Terminal GPT
+p,          p7zip,                                                 7z extractor
+p,          unzip,                                                 archive decompression
+p,          zip,                                                   Zip archiver
+y,          apfs-fuse-git,                                         Apple file system (APFS)
+p,          cdrtools,                                              ISO and other CD/DVD/BluRay image maker
+p,          dosfstools,                                            FAT formatting
+p,          exfat-utils,                                           exFAT file system
+y,          fuse-ext2,                                             User-space file system (FUSE)
+p,          nfs-utils,                                             Network file system (NFS)
+p,          ntfs-3g,                                               New Technology File System (NTFS)
+y,          simple-mtpfs,                                          Simple MTP File System (Simple MTPFS) that supports reading/writing from MTP devices (cell phones)
+p,          sshfs,                                                 SSH file system (SSHFS)
+y,          bibtex-tidy,                                           CLI to tidy up BibTeX files
+p,          pandoc-cli,                                            Pandoc CLI
+p,          texlive-basic,                                         TeX Live: essential programs
+p,          texlive-plaingeneric,                                  TeX Live: plain (La)TeX packages
+p,          texlive-latex,                                         TeX Live: LaTeX packages
+p,          texlive-latexrecommended,                              TeX Live: LaTeX recommended and additional packages
+p,          texlive-latexextra,                                    TeX Live: LaTeX additional packages
+p,          texlive-luatex,                                        TeX Live: LuaTeX packages
+p,          texlive-xetex,                                         TeX Live: XeTeX packages
+p,          texlive-binextra,                                      TeX Live: auxiliary programs
+p,          texlive-fontsextra,                                    TeX Live: additional fonts
+p,          texlive-fontsrecommended,                              TeX Live: recommended fonts
+p,          texlive-bibtexextra,                                   TeX Live: BibTeX additional styles
+p,          texlive-science,                                       TeX Live: mathematics; natural and computer science packages
+p,          aws-cli,                                               AWS CLI
+p,          cmake,                                                 CMake
+p,          docker,			                                       docker
+p,          docker-buildx,                                         docker build
+p,          docker-compose,                                        docker compose
+p,          evtest,                                                input device monitor
+p,          github-cli,                                            GitHub CLI tool
+p,          nodejs,                                                nodejs engine
+p,          npm,                                                   node package manager
+p,          yarn,                                                  node package manager
+y,          postman-bin,                                           POSTMAN tool
+p,          simple-scan,                                           Scanner GUI
+p,          signal-desktop,                                        Signal desktop client
+y,          teams-for-linux,                                       Microsoft Teams
+y,          twitter,                                               Twitter
+y,          whatsapp-for-linux,                                    WhatsApp
+y,          zoom,                                                  Zoom US
+p,          cuda-tools,                                            CUDA tools
+p,          nvidia,                                                NVIDIA driver
+p,          nvidia-utils,                                          NVIDIA driver utilities
+p,          nvidia-container-toolkit,                              For Docker
+p,          nvtop,                                                 top for NVIDIA GPUs
+p,          cups,                                                  printing system
+p,          cups-pdf,                                              PDF printer for CUPS
+y,          ink,                                                   Ink information
+p,          sane,                                                  Scanner Access Now Easy
+p,          simple-scan,                                           Scanner GUI
+y,          brscan4,                                               Brother scanning tool
+y,          brscan-skey,                                           Brother scanning tool
+p,          hplip,                                                 HP Utility
+y,          ctpv-git,                                              Previewer for lf
+p,          arandr,                                                Manually setting display layout
+p,          dunst,                                                 Notifications manager
+p,          feh,                                                   background image setter
+p,          libxinerama,                                           Libxinerama extension library (used by dwm)
+p,          maim,                                                  Make image (screenshot tool)
+p,          slock,                                                 screen lock
+p,          sxiv,                                                  image viewer
+p,          ueberzug,                                              previewer for lf
+p,          xclip,                                                 X clipboard
+p,          xorg-xinit,                                            xorg initialisation program
+p,          xorg-xdpyinfo,                                         display information utility for X
+p,          xorg-server,                                           graphics hardware manager
+p,          xorg-server-xvfb,                                      virtual framebuffer X server (useful for headless renderings)
+p,          xorg-xrandr,                                           interface to RandR
+p,          xorg-xinput,                                           input device manager
+p,          xorg-xbacklight,                                       RandR-based backlight control application
+p,          xorg-xprop,                                            Property displayer for X
+p,          xorg-xwininfo,                                         utility to print information about windows on an X server
+p,          xdotool,                                               Command-line X11 automation tool
+p,          xcompmgr,                                              The X compositing manager
+p,          zathura,                                               PDF viewer
+p,          zathura-pdf-mupdf,                                     MuPDF compatibility
 g,          https://github.com/marlonrichert/zsh-autocomplete,     zsh autocomplete
 g,          https://github.com/zsh-users/zsh-autosuggestions,      zsh autosuggestion
+m,          https://github.com/ramyamounir/dwm.git,                DWM (Window Manager)
+m,          https://github.com/ramyamounir/dwmblocks.git,          DWM blocks
+m,          https://github.com/ramyamounir/dmenu.git,              dynamic menu (dmenu)

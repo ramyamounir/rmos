@@ -85,6 +85,12 @@ instal_with_apt() {
 }
 
 
+instal_with_conda() {
+    if command -v conda &> /dev/null; then
+        conda install $1 -c $2 -y
+    fi
+}
+
 # general
 clone_from_git() {
     GIT_URL=$1
@@ -118,7 +124,7 @@ instal_with_make() {
 
     if [ ! -d $DIR_NAME ]; then
         mkdir -p $DIR_NAME
-        
+
         git clone $GIT_URL $DIR_NAME
         cd $DIR_NAME
 
@@ -150,7 +156,7 @@ instal_from_file() {
         IS_SUDO=1
     fi
 
-    while IFS=',' read -r MANAGER PACKAGE _; do
+    while IFS=',' read -r MANAGER PACKAGE CHANNEL; do
         if [[ $ROW_COUNT -eq 0 ]]; then
             ((ROW_COUNT++))
             continue
@@ -174,6 +180,9 @@ instal_from_file() {
                 ;;
             "c")
                 instal_from_csv $PACKAGE "${@:2}"
+                ;;
+            "cd")
+                instal_with_conda $PACKAGE "${@:3}" ${CHANNEL:-"conda-forge"}
                 ;;
             "g")
                 clone_from_git $PACKAGE
