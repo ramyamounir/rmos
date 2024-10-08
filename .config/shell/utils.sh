@@ -55,33 +55,6 @@ function start_X_if_available() {
 }
 
 ################################################################################
-#                                Shell tools                                   #
-################################################################################
-
-function disable_commands() {
-    DISABLE=${1:-$DISABLE_UPDATE_CMDS}
-    DISABLE=${DISABLE:-1}
-    export DISABLE_UPDATE_CMDS=$DISABLE
-
-    if [[ $DISABLE = 1 ]]; then
-        function u1() { echo "Disabled"; return; }
-        function u2() { echo "Disabled"; return; }
-        function cleanup() { echo "Disabled"; return; }
-        function update() { echo "Disabled"; return; }
-        function resetrmos() { echo "Disabled"; return; }
-
-        function relax_restrictions() { echo "Disabled"; return; }
-        function impose_restrictions() { echo "Disabled"; return; }
-        function renew_certs() { echo "Disabled"; return; }
-    fi
-}
-
-function god() {
-    disable_commands 0;
-    $SHELL
-}
-
-################################################################################
 #                               Shell theming                                  #
 ################################################################################
 
