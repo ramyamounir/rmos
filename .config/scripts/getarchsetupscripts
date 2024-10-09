@@ -3,7 +3,7 @@
 BASE_URL=https://raw.githubusercontent.com/ramyamounir/rmos/main/.config
 
 FILES=(
-    scripts/instalfromcsv
+    scripts/installfromcsv
     scripts/setupuser
     packages/arch/base.csv
     packages/arch/root.csv
@@ -14,7 +14,7 @@ for file in ${FILES[@]}; do
     curl -LO $BASE_URL/$file
 done
 
-chmod +x instalfromcsv
+chmod +x installfromcsv
 chmod +x setupuser
 
 pacman-key --init

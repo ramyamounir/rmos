@@ -1,12 +1,6 @@
 #!/usr/bin/env bash
 
-declare -a PACSTRAP_PKGS PACMAN_PKGS YAY_PKGS CONDA_PKGS CONDA_CHNS
-
-# Function to remove duplicates from the channels array
-remove_duplicates() {
-    echo "$@" | tr ' ' '\n' | awk '!seen[$0]++' | tr '\n' ' '
-}
-
+declare -a PACSTRAP_PKGS PACMAN_PKGS YAY_PKGS
 
 # for Arch Linux (Arch, Arch Linux ARM (ALARM), Asahi, etc.)
 install_aur() {
@@ -41,17 +35,8 @@ install_with_yay() {
 }
 
 install_with_conda() {
-
-    # Aggregate channels into string
-    CONDA_CHNS=($(remove_duplicates "${CONDA_CHNS[@]}"))
-    channel_args=""
-    for channel in "${CONDA_CHNS[@]}"; do
-        channel_args+="-c $channel "
-    done
-    channel_args=$(echo "$channel_args" | xargs)
-
     if command -v conda &> /dev/null; then
-        conda install ${CONDA_PKGS[@]} $channel_args -y
+        conda install $1 -c $2 -y
     fi
 }
 
@@ -127,8 +112,7 @@ install_from_file() {
                 fi
                 ;;
             "cd")
-                CONDA_PKGS+=("$PACKAGE")
-                CONDA_CHNS+=("$CHANNEL")
+                install_with_conda $PACKAGE "${@:3}" ${CHANNEL:-"conda-forge"}
                 ;;
             "ps")
                 PACSTRAP_PKGS+=("$PACKAGE")
@@ -140,7 +124,7 @@ install_from_file() {
                 install_with_make $PACKAGE $IS_SUDO
                 ;;
             "a")
-                instal_aur $PACKAGE $IS_SUDO
+                install_aur $PACKAGE $IS_SUDO
                 ;;
             *)
                 echo "Unknown package manager from $PACKAGE"
@@ -149,13 +133,10 @@ install_from_file() {
     done < $1
 
     # # Now install packages in groups
+    [[ ${#PACSTRAP_PKGS[@]} -gt 0 ]] && install_with_pacstrap
     [[ ${#PACMAN_PKGS[@]} -gt 0 ]] && install_with_pacman $IS_SUDO
     [[ ${#YAY_PKGS[@]} -gt 0 ]] && install_with_yay
-    [[ ${#CONDA_PKGS[@]} -gt 0 ]] && install_with_conda
-    [[ ${#PACSTRAP_PKGS[@]} -gt 0 ]] && install_with_pacstrap
 }
-
-
 
 install_from_file $@
 

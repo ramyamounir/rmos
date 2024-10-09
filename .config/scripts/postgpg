@@ -1,0 +1,10 @@
+#!/usr/bin/env sh
+
+# start some services
+sudo systemctl enable --now bluetooth
+sudo systemctl enable --now cups.service
+sudo systemctl enable --now saned.socket
+
+
+# clone gpg passwords
+git clone git@github.com:ramyamounir/passwords.git "${PASSWORD_STORE_DIR}"

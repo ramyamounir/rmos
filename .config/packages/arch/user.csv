@@ -99,10 +99,6 @@ p,          yarn,                                                  node package 
 p,          simple-scan,                                           Scanner GUI
 p,          signal-desktop,                                        Signal desktop client
 p,          cuda-tools,                                            CUDA tools
-p,          nvidia,                                                NVIDIA driver
-p,          nvidia-utils,                                          NVIDIA driver utilities
-p,          nvidia-container-toolkit,                              For Docker
-p,          nvtop,                                                 top for NVIDIA GPUs
 p,          cups,                                                  printing system
 p,          cups-pdf,                                              PDF printer for CUPS
 p,          sane,                                                  Scanner Access Now Easy
@@ -151,7 +147,6 @@ y,          ctpv-git,                                              Previewer for
 y,          apfs-fuse-git,                                         Apple file system (APFS)
 y,          plex-desktop,                                          Plex desktop app
 y,          drawio-desktop,                                        DrawIO
-y,          ncmatrix,                                              terminal matrix-like screensaver
 y,          colorpicker,                                           Colour picker
 y,          downgrade,                                             Downgrade packages
 y,          dpkg,                                                  Debian package manager

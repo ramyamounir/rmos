@@ -9,44 +9,14 @@ if [[ $(cat /proc/$$/comm) != "bash" ]]; then
     return;
 fi
 
-# get distribution name; TODO: if needed, this can be automated by reading
-# /etc/os-release
-DISTRO=$1; ___() {
-    if [ -z $DISTRO ]; then
-        echo -e "---Choose your distribution---"
-        DISTRIBUTIONS=("arch" "ubuntu" "alpine")
-
-        select DISTRO in "${DISTRIBUTIONS[@]}"; do
-          break;
-        done
-    fi
-};___;
-
 # # -----------------------------------------------------------------------------
 # #                                  SETUP
 # # -----------------------------------------------------------------------------
 
 # installing basic necessities
-function preinstal() {
-    case $1 in
-        "arch")
-            pacman -Syyu --noconfirm;
-            pacman -S git fontconfig --noconfirm;
-            ;;
-        "ubuntu")
-            apt update -y;
-            apt upgrade -y;
-            apt install git fontconfig -y;
-            ;;
-        "alpine")
-            apk update;
-            apk upgrade;
-            apk add git fontconfig;
-            ;;
-        *)
-            echo -e "Unknown distribution"
-            ;;
-    esac
+function preinstall() {
+    pacman -Syyu --noconfirm;
+    pacman -S git fontconfig --noconfirm;
 }
 
 # create the directory structure
@@ -56,7 +26,7 @@ function mkuserdirs() {
     ln -sf $HOME/.local/data $HOME/.local/share
     ln -sf $HOME/.local/logs $HOME/.local/state
 
-    mkdir -p $HOME/{downloads,documents}
+    mkdir -p $HOME/{downloads,projects}
 }
 
 # clone the configurations
@@ -93,60 +63,24 @@ function setupshell() {
 }
 
 # a function that installs apps depending on the OS distribution
-function instalappswithpm() {
-    function instal_commence() {
-        echo "Installing $1 packages..."
-        echo -e "This may take several tens of minutes; please be patient..."
-    }
+function installappswithpm() {
 
-    function instal_arch() {
-        read -p "GUI support needed (instals DWM) [y/n]? " GUI_SUPPORT
+    echo "Installing Arch packages..."
+    echo -e "This may take several tens of minutes; please be patient..."
+    read -p "NVIDIA drivers needed [y/n]? " NVIDIA_DRIVERS
 
-        function cli() {
-            $XDG_CONFIG_HOME/scripts/instalfromcsv $XDG_CONFIG_HOME/packages/minimal/arch.csv
-        }
+    # Install packages
+    if [[ "$NVIDIA_DRIVERS" == "y" ]]; then
+        $XDG_CONFIG_HOME/scripts/installfromcsv $XDG_CONFIG_HOME/packages/arch/nvidia.csv -s;
+    fi
+    $XDG_CONFIG_HOME/scripts/installfromcsv $XDG_CONFIG_HOME/packages/arch/user.csv -s;
+    $XDG_CONFIG_HOME/scripts/applylinks;
 
-        function gui() {
-            $XDG_CONFIG_HOME/scripts/instalfromcsv $XDG_CONFIG_HOME/packages/arch/user.csv -s;
-
-            # link files and directories
-            $XDG_CONFIG_HOME/scripts/applysettings alllinks;
-        }
-        
-        if [[ "$GUI_SUPPORT" == "y" ]]; then
-            gui
-        else
-            cli
-        fi
-    }
-
-    function instal_alpine() {
-        $XDG_CONFIG_HOME/scripts/instalfromcsv $XDG_CONFIG_HOME/packages/minimal/alpine.csv
-    }
-
-    function instal_ubuntu() {
-        $XDG_CONFIG_HOME/scripts/instalfromcsv $XDG_CONFIG_HOME/packages/minimal/ubuntu.csv
-    }
-
-    case $1 in
-        "arch")
-            instal_commence $DISTRO;
-            instal_arch;;
-        "ubuntu")
-            instal_commence $DISTRO;
-            instal_ubuntu > /dev/null 2>&1;;
-        "alpine")
-            instal_commence $DISTRO;
-            instal_alpine > /dev/null 2>&1;;
-        *)
-            echo "Unknown distribution";;
-    esac
-
-    # instal fonts
+    # install fonts
     [ command -v fc-cache &> /dev/null ] && fc-cache -fr > /dev/null;
 }
 
-function instalwithconda() {
+function installwithconda() {
     read -p "Enter the latest conda download script URL: " CONDASCRIPTURL
     read -p "Make sure that the installation path is: $HOME/.local/src/anaconda3 [ENTER] "
 
@@ -154,18 +88,18 @@ function instalwithconda() {
     sh temp.sh
     rm temp.sh
 
-    $XDG_CONFIG_HOME/scripts/instalfromcsv $XDG_CONFIG_HOME/packages/arch/conda.csv
+    $XDG_CONFIG_HOME/scripts/installfromcsv $XDG_CONFIG_HOME/packages/arch/conda.csv
     $XDG_CONFIG_HOME/scripts/linkbinsfromconda
 }
 
-function instalapps() {
+function installapps() {
     read -p "Install with the system's package manager (p) or conda (c)? " PM
 
     case $PM in
         "p")
-            instalappswithpm $1;;
+            installappswithpm;;
         "c")
-            instalwithconda;;
+            installwithconda;;
     esac
 }
 
@@ -175,7 +109,7 @@ function getwallpapers() {
 
 echo -e "[1 of 5]: Pre-requisites: installing basic packages..."
 echo -e "This may take several minutes; please be patient..."
-preinstal $DISTRO > /dev/null 2>&1;
+preinstall > /dev/null 2>&1;
 
 echo -e "[1 of 5]: Creating directories..."
 mkuserdirs > /dev/null 2>&1;
@@ -187,7 +121,7 @@ echo -e "[3 of 5]: Applying user configurations..."
 setupshell > /dev/null 2>&1;
 
 echo -e "[4 of 5]: Installing user apps and fonts..."
-instalapps $DISTRO;
+installapps;
 
 echo -e "[5 of 5]: Getting wallpapers..."
 getwallpapers;

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-FILE=$XDG_CONFIG_HOME/packages/conda.csv
+FILE=$XDG_CONFIG_HOME/packages/arch/conda.csv
 if ! [ -f $FILE ]; then
     exit 0
 fi
@@ -11,21 +11,6 @@ if ! [ -z $1 ]; then
 fi
 mkdir -p $DST
 
-skip_package() {
-    local TARGET_STRING=$1
-    shift
-    local IGNORE_PACKAGES=("ncurses")
-    local FOUND=false
-
-    for ELEMENT in "${IGNORE_PACKAGES[@]}"; do
-        if [ "$ELEMENT" == "$TARGET_STRING" ]; then
-            FOUND=true
-            break
-        fi
-    done
-
-    echo "$FOUND"
-}
 
 # Read the file line by line
 while IFS= read -r LINE; do

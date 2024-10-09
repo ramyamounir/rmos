@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+
+# ssh
+TEMPKEYS="$HOME/TEMPKEYS"
+TEMP="$HOME/TEMP"
+mkdir $TEMPKEYS
+if [ -f $HOME/.ssh/authorized_keys ]; then
+    cp $HOME/.ssh/authorized_keys $TEMP
+fi
+if [ -d $HOME/.ssh/keys ]; then
+    if [ $(ls $HOME/.ssh/keys | wc -l) -gt 0 ]; then
+        cp -r $HOME/.ssh/keys/* $TEMPKEYS
+    fi
+fi
+rm -rf $HOME/.ssh
+ln -sf $XDG_CONFIG_HOME/ssh $HOME/.ssh
+if [ -f $TEMP ]; then
+    mv $TEMP $HOME/.ssh/authorized_keys
+fi
+if [ -d $TEMPKEYS ]; then
+    if [ $(ls $TEMPKEYS | wc -l) -gt 0 ]; then
+        mv $TEMPKEYS/* $HOME/.ssh/keys
+    fi
+    rm -rf $TEMPKEYS
+fi
+
+# general links
+ln -sf $XDG_CONFIG_HOME/xdg/user-dirs.dirs $XDG_CONFIG_HOME/
+! [ -L $HOME/.local/share ] && ln -sf $XDG_DATA_HOME/ $HOME/.local/share
+! [ -L $HOME/.local/state ] && ln -sf $XDG_STATE_HOME/ $HOME/.local/state
+
+# mime
+mkdir -p $XDG_DATA_HOME/applications
+ln -sf $XDG_CONFIG_HOME/mime/mimeapps.list $XDG_CONFIG_HOME/
+ln -sf $XDG_CONFIG_HOME/mime/mimeapps.list $XDG_DATA_HOME/applications/ # deprecated but for legacy applications
+
+# custom MIME types
+mkdir -p $XDG_DATA_HOME/mime/packages
+ln -sf $XDG_CONFIG_HOME/mime/custom-mime-types/*.xml $XDG_DATA_HOME/mime/packages/
+for FILE in $(ls $XDG_DATA_HOME/mime/packages/*.xml); do
+    xdg-mime install --novendor --mode user $FILE
+done
+update-mime-database $XDG_DATA_HOME/mime
+
+# app associations
+mkdir -p $XDG_DATA_HOME/applications
+ln -sf $XDG_CONFIG_HOME/mime/desktop-entries/*.desktop $XDG_DATA_HOME/applications/
+update-desktop-database $XDG_DATA_HOME/applications
+
