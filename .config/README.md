@@ -46,6 +46,8 @@ This has been automated with a shell script. Once a network connection has been 
 ```sh
 # Connect to wifi if not connected
 nmcli device wifi connect <SSID> password <passwd>
+# or
+nmcli con up <SSID> --ask
 
 # Get script and set up user
 source <(curl -Ls https://raw.githubusercontent.com/ramyamounir/rmos/refs/heads/main/.config/scripts/setupuser)
