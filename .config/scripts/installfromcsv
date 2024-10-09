@@ -1,0 +1,162 @@
+#!/usr/bin/env bash
+
+declare -a PACSTRAP_PKGS PACMAN_PKGS YAY_PKGS CONDA_PKGS CONDA_CHNS
+
+# Function to remove duplicates from the channels array
+remove_duplicates() {
+    echo "$@" | tr ' ' '\n' | awk '!seen[$0]++' | tr '\n' ' '
+}
+
+
+# for Arch Linux (Arch, Arch Linux ARM (ALARM), Asahi, etc.)
+install_aur() {
+    GIT_URL=$1
+    DIR_NAME=${GIT_URL##*/}
+    DIR_NAME=$HOME/.local/src/${DIR_NAME%.git*}
+    if [ ! -d $DIR_NAME ]; then
+        mkdir -p $DIR_NAME
+
+        git clone $GIT_URL $DIR_NAME
+    fi
+    cd $DIR_NAME
+    makepkg -si --noconfirm
+}
+
+
+install_with_pacstrap() {
+    pacstrap -K /mnt ${PACSTRAP_PKGS[@]}
+}
+
+install_with_pacman() {
+
+    if [[ $1 -eq 1 ]]; then
+        sudo pacman -S ${PACMAN_PKGS[@]} -y --noconfirm 
+    else
+        pacman -S ${PACMAN_PKGS[@]} -y --noconfirm 
+    fi
+}
+
+install_with_yay() {
+    yay -S ${YAY_PKGS[@]} --noconfirm
+}
+
+install_with_conda() {
+
+    # Aggregate channels into string
+    CONDA_CHNS=($(remove_duplicates "${CONDA_CHNS[@]}"))
+    channel_args=""
+    for channel in "${CONDA_CHNS[@]}"; do
+        channel_args+="-c $channel "
+    done
+    channel_args=$(echo "$channel_args" | xargs)
+
+    if command -v conda &> /dev/null; then
+        conda install ${CONDA_PKGS[@]} $channel_args -y
+    fi
+}
+
+# general
+clone_from_git() {
+    GIT_URL=$1
+    DIR_NAME=${GIT_URL##*/}
+    DIR_NAME=$HOME/.local/src/${DIR_NAME%.git*}
+    if [ ! -d $DIR_NAME ]; then
+        mkdir -p $DIR_NAME
+
+        git clone $GIT_URL $DIR_NAME
+        cd $DIR_NAME
+    fi
+}
+
+
+install_with_make() {
+    BIN_DST=$HOME/.local
+    mkdir -p $BIN_DST
+
+    GIT_URL=$1
+    DIR_NAME=${GIT_URL##*/}
+    DIR_NAME=$HOME/.local/src/${DIR_NAME%.git*}
+    PATCHES=$XDG_CONFIG_HOME/patches/$DIR_NAME.patch
+
+    if [ ! -d $DIR_NAME ]; then
+        mkdir -p $DIR_NAME
+
+        git clone $GIT_URL $DIR_NAME
+        cd $DIR_NAME
+
+        if [ -f "$PATCHES" ]; then
+            patch -p1 < $PATCHES
+        fi
+
+        make
+
+        # to sudo or not sudo
+        if [[ $2 -eq 1 ]]; then
+            sudo make clean install PREFIX=$BIN_DST
+        else
+            make clean install PREFIX=$BIN_DST
+        fi
+
+        cd ..
+    fi;
+}
+
+
+install_from_file() {
+    ROW_COUNT=0
+    IS_SUDO=0
+    if [[ "$1" = "-s" ]] || [[ "$2" = "-s" ]]; then
+        IS_SUDO=1
+    fi
+
+    while IFS=',' read -r MANAGER PACKAGE CHANNEL; do
+        if [[ $ROW_COUNT -eq 0 ]]; then
+            ((ROW_COUNT++))
+            continue
+        fi
+
+        case $MANAGER in
+            "p")
+                if ! pacman -Q $PACKAGE >/dev/null 2>&1; then
+                    PACMAN_PKGS+=("$PACKAGE")
+                fi
+                ;;
+            "y")
+                if ! yay -Q $PACKAGE >/dev/null 2>&1; then
+                    YAY_PKGS+=("$PACKAGE")
+                fi
+                ;;
+            "cd")
+                CONDA_PKGS+=("$PACKAGE")
+                CONDA_CHNS+=("$CHANNEL")
+                ;;
+            "ps")
+                PACSTRAP_PKGS+=("$PACKAGE")
+                ;;
+            "g")
+                clone_from_git $PACKAGE
+                ;;
+            "m")
+                install_with_make $PACKAGE $IS_SUDO
+                ;;
+            "a")
+                instal_aur $PACKAGE $IS_SUDO
+                ;;
+            *)
+                echo "Unknown package manager from $PACKAGE"
+                ;;
+        esac
+    done < $1
+
+    # # Now install packages in groups
+    [[ ${#PACMAN_PKGS[@]} -gt 0 ]] && install_with_pacman $IS_SUDO
+    [[ ${#YAY_PKGS[@]} -gt 0 ]] && install_with_yay
+    [[ ${#CONDA_PKGS[@]} -gt 0 ]] && install_with_conda
+    [[ ${#PACSTRAP_PKGS[@]} -gt 0 ]] && install_with_pacstrap
+}
+
+
+
+install_from_file $@
+
+
