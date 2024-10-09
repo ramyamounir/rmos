@@ -1,6 +1,6 @@
 <h1 align="center">RMOS User Configs</h1>
 
-**This document provides user configurations for RMOS, additional configs may be provdided under the corresponding config directory.**
+**This document provides user configurations for RMOS, additional configs may be provided under the corresponding config directory.**
 
 
 All user configurations, applicable for any Linux-based as well as console-based
@@ -44,14 +44,15 @@ $HOME
 This has been automated with a shell script. Once a network connection has been established, all user configurations can be applied by simply running the following shell command:
 
 ```sh
-source <(curl -Ls ramyamounir.com/setupuser)
+# Connect to wifi if not connected
+nmcli device wifi connect <SSID> password <passwd>
 
-# or
-source setupuser  # if the script is already downloaded 
+# Get script and set up user
+source <(curl -Ls https://raw.githubusercontent.com/ramyamounir/rmos/refs/heads/main/.config/scripts/setupuser)
 ```
 
-This scipt will download the packages under the `.config/packages/[DISTRIBUTION]/user.csv`.
-Additional packages are available in sub-csv files and can be installed independentally with the `instalfromcsv.sh` script.
+This script will download the packages under the `.config/packages/[DISTRIBUTION]/user.csv`.
+Additional packages are available in sub-csv files and can be installed independentaly with the `instalfromcsv.sh` script.
 
 
 ### 2. Terminal Shell <a name="shell"></a>

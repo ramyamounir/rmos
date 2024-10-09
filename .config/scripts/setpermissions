@@ -20,3 +20,6 @@ fi
 chown -R `whoami` $GNUPGHOME
 find $GNUPGHOME -type f -exec chmod 600 {} \;
 find $GNUPGHOME -type d -exec chmod 700 {} \;
+
+# aerc
+chmod 600 $XDG_CONFIG_HOME/aerc/accounts.conf

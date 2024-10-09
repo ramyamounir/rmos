@@ -135,6 +135,7 @@ p,          dunst,                                                 Notifications
 p,          feh,                                                   background image setter
 p,          libxinerama,                                           Libxinerama extension library (used by dwm)
 p,          maim,                                                  Make image (screenshot tool)
+p,          seahorse,                                              gpg key management (GUI tool)
 p,          slock,                                                 screen lock
 p,          sxiv,                                                  image viewer
 p,          ueberzug,                                              previewer for lf

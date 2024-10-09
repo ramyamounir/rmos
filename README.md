@@ -45,7 +45,8 @@ In sub-README files, we go through user configurations in details.
 | --------- | --------------------- | -------------- | ------------------------ | ------------ |
 | Boot      | 1 (EFI) or 4 (BIOS)   | 1GB            | FAT32 (`mkfs.fat -F 32`) | `/mnt/boot`  |
 | Swap      | 19 (Linux Swap)       | Twice RAM size | Swap (`mkswap`)          |              |
-| Root      | 23 (Linux Root)       | Rest           | Ext4 (`mkfs.ext4`)       | `/mnt`       |
+| Root      | 23 (Linux Root)       | at least 16 GB | Ext4 (`mkfs.ext4`)       | `/mnt`       |
+| Home      | 42 (Linux Home)       | Rest           | Ext4 (`mkfs.ext4`)       | `/mnt/home`  |
 
 * Partition the disks as needed. use `fdisk /dev/DEVICE` to partition. Use options:
 	* P for printing the table
@@ -60,6 +61,7 @@ In sub-README files, we go through user configurations in details.
 * Then mount the partitions
 	* `mount /dev/[PARTITION] /mnt` to mount the root partition
 	* `mkdir /mnt/boot` and `mount /dev/[PARTITION] /mnt/boot` to mount boot partition
+	* `mkdir /mnt/home` and `mount /dev/[PARTITION] /mnt/home` to mount home partition
 	* `swapon [PARTITION]` for swap partition
 
 ### 1.3 Internet and NTP <a name="internet-ntp"></a>
@@ -76,17 +78,11 @@ In sub-README files, we go through user configurations in details.
 
     ```sh
     # prepare for installation
-    mkdir -p /mnt/scripts
-    cd /mnt/scripts
+    cd /mnt/home
 
     # get scripts and install
-    curl -Ls ramymounir.com/getarchsetupscripts | sh
+    curl -Ls https://raw.githubusercontent.com/ramyamounir/rmos/refs/heads/main/.config/scripts/getarchsetupscripts | sh
     ./instalfromcsv base.csv
-
-    # clean up
-    cd /mnt
-    mv /mnt/scripts/* /mnt/home/
-    rm -rf /mnt/scripts
     ```
 
 * Generate fstab file and check the file exists:
@@ -139,7 +135,7 @@ In sub-README files, we go through user configurations in details.
     grub-mkconfig -o /boot/grub/grub.cfg
     ```
 ### 2.3 Users and Groups <a name="users-groups"></a>
-* Add new groups if needed: `groupadd sudo` and `groupadd docker`
+* Add new groups if needed: `groupadd [GROUP]` for sudo, docker and media
 * Add new user: `useradd -m ramy`
 * Set password of new user: `passwd ramy`
 * Set group of new user: `usermod -aG sudo,media,docker ramy`
