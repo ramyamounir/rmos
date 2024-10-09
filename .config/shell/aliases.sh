@@ -11,6 +11,7 @@ alias cursor='find-cursor --repeat 0 --follow --distance 1 --line-width 16 --siz
 alias pen='sudo ~/Downloads/Linux_Pentablet_V1.2.14.1/Pentablet_Driver.sh'
 alias MI='mediainfo --Inform="Video;Width=%Width%, Height=%Height%, Duration=%Duration%, FPS=%FrameRate%, NumFrames=%FrameCount%"'
 alias open='xdg-open'
+alias svim='sudoedit'
 ### NAVIGATION & HELPER ###
 
 ### CONDA ###
