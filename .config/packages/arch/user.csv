@@ -1,5 +1,4 @@
 Manager,    Package,                                               Comments
-a,          https://aur.archlinux.org/yay.git,                     Yay package manager
 p,          aerc,                                                  email client
 p,          alacritty,                                             terminal emulator
 p,          arc-gtk-theme,                                         GTK theme
@@ -10,19 +9,15 @@ p,          bind,                                                  DNS protocol 
 p,          bluez,                                                 Bluetooth controller
 p,          bluez-obex,                                            Bluetooth OBEX
 p,          bluez-utils,                                           Bluetooth utilities
-y,          bluetuith,                                             Bluetooth TUI
+p,          bluez-libs,                                            Bluetooth libraries
 p,          bore,                                                  Tunnel
 p,          bpytop,                                                Better htop
 p,          certbot,                                               SSL certification tool
 p,          certbot-nginx,                                         certbot plugin for nginx
-y,          colorpicker,                                           Colour picker
-y,          downgrade,                                             Downgrade packages
-y,          dpkg,                                                  Debian package manager
 p,          dua-cli,                                               Better du (disc usage)
 p,          duf,                                                   Better df 
 p,          evtest,                                                Listening to events--useful for debugging
 p,          fail2ban,                                              Protecting servers with failures to authentication being banned
-y,          ffcast,                                                quick screen recorder
 p,          ffmpeg,                                                Solution to record; convert and stream audio and video
 p,          figlet,                                                figured letters
 p,          fzf,                                                   fuzzy search
@@ -35,7 +30,6 @@ p,          lvm2,                                                  Logical volum
 p,          man-db,                                                manual pages
 p,          man-pages,                                             manual pages
 p,          mpv,                                                   video player
-y,          ncmatrix,                                              terminal matrix-like screensaver
 p,          nginx,                                                 reverse proyx server
 p,          obs-studio,                                            screen recorder (Open Broadcaster Software)
 p,          openconnect,                                           VPN
@@ -63,29 +57,22 @@ p,          vlc,                                                   VLC media pla
 p,          zoxide,                                                Zoxide
 p,          zsh,                                                   shell
 p,          xcape,                                                 configure keys remaps
-y,          drawio-desktop,                                        DrawIO
 p,          firefox,                                               Firefox browser
 p,          inkscape,                                              Inkscape
 p,          libreoffice-fresh,                                     Libre Office
 p,          nextcloud-client,                                      client tool for next cloud
 p,          networkmanager-openconnect,                            OpenConnect (CISCO; GlobalProtect; etc)
-y,          nordvpn-bin,                                           Nord VPN
 p,          obsidian,                                              notebook
-y,          plex-desktop,                                          Plex desktop app
 p,          tgpt,                                                  Terminal GPT
 p,          p7zip,                                                 7z extractor
 p,          unzip,                                                 archive decompression
 p,          zip,                                                   Zip archiver
-y,          apfs-fuse-git,                                         Apple file system (APFS)
 p,          cdrtools,                                              ISO and other CD/DVD/BluRay image maker
 p,          dosfstools,                                            FAT formatting
 p,          exfat-utils,                                           exFAT file system
-y,          fuse-ext2,                                             User-space file system (FUSE)
 p,          nfs-utils,                                             Network file system (NFS)
 p,          ntfs-3g,                                               New Technology File System (NTFS)
-y,          simple-mtpfs,                                          Simple MTP File System (Simple MTPFS) that supports reading/writing from MTP devices (cell phones)
 p,          sshfs,                                                 SSH file system (SSHFS)
-y,          bibtex-tidy,                                           CLI to tidy up BibTeX files
 p,          pandoc-cli,                                            Pandoc CLI
 p,          texlive-basic,                                         TeX Live: essential programs
 p,          texlive-plaingeneric,                                  TeX Live: plain (La)TeX packages
@@ -109,13 +96,8 @@ p,          github-cli,                                            GitHub CLI to
 p,          nodejs,                                                nodejs engine
 p,          npm,                                                   node package manager
 p,          yarn,                                                  node package manager
-y,          postman-bin,                                           POSTMAN tool
 p,          simple-scan,                                           Scanner GUI
 p,          signal-desktop,                                        Signal desktop client
-y,          teams-for-linux,                                       Microsoft Teams
-y,          twitter,                                               Twitter
-y,          whatsapp-for-linux,                                    WhatsApp
-y,          zoom,                                                  Zoom US
 p,          cuda-tools,                                            CUDA tools
 p,          nvidia,                                                NVIDIA driver
 p,          nvidia-utils,                                          NVIDIA driver utilities
@@ -123,13 +105,9 @@ p,          nvidia-container-toolkit,                              For Docker
 p,          nvtop,                                                 top for NVIDIA GPUs
 p,          cups,                                                  printing system
 p,          cups-pdf,                                              PDF printer for CUPS
-y,          ink,                                                   Ink information
 p,          sane,                                                  Scanner Access Now Easy
 p,          simple-scan,                                           Scanner GUI
-y,          brscan4,                                               Brother scanning tool
-y,          brscan-skey,                                           Brother scanning tool
 p,          hplip,                                                 HP Utility
-y,          ctpv-git,                                              Previewer for lf
 p,          arandr,                                                Manually setting display layout
 p,          dunst,                                                 Notifications manager
 p,          feh,                                                   background image setter
@@ -155,6 +133,29 @@ p,          zathura,                                               PDF viewer
 p,          zathura-pdf-mupdf,                                     MuPDF compatibility
 g,          https://github.com/marlonrichert/zsh-autocomplete,     zsh autocomplete
 g,          https://github.com/zsh-users/zsh-autosuggestions,      zsh autosuggestion
+a,          https://aur.archlinux.org/yay.git,                     Yay package manager
+y,          nordvpn-bin,                                           Nord VPN
+y,          ink,                                                   Ink information
+y,          postman-bin,                                           POSTMAN tool
+y,          brscan4,                                               Brother scanning tool
+y,          brscan-skey,                                           Brother scanning tool
+y,          bibtex-tidy,                                           CLI to tidy up BibTeX files
+y,          simple-mtpfs,                                          Simple MTP File System (Simple MTPFS) that supports reading/writing from MTP devices (cell phones)
+y,          fuse-ext2,                                             User-space file system (FUSE)
+y,          teams-for-linux,                                       Microsoft Teams
+y,          twitter,                                               Twitter
+y,          whatsapp-for-linux,                                    WhatsApp
+y,          zoom,                                                  Zoom US
+y,          bluetuith,                                             Bluetooth TUI
+y,          ctpv-git,                                              Previewer for lf
+y,          apfs-fuse-git,                                         Apple file system (APFS)
+y,          plex-desktop,                                          Plex desktop app
+y,          drawio-desktop,                                        DrawIO
+y,          ncmatrix,                                              terminal matrix-like screensaver
+y,          colorpicker,                                           Colour picker
+y,          downgrade,                                             Downgrade packages
+y,          dpkg,                                                  Debian package manager
+y,          ffcast,                                                quick screen recorder
 m,          https://github.com/ramyamounir/dwm.git,                DWM (Window Manager)
 m,          https://github.com/ramyamounir/dwmblocks.git,          DWM blocks
 m,          https://github.com/ramyamounir/dmenu.git,              dynamic menu (dmenu)
