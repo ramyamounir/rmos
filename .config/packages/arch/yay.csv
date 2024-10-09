@@ -1,0 +1,23 @@
+Manager,    Package,                                               Comments
+a,          https://aur.archlinux.org/yay.git,                     Yay package manager
+y,          nordvpn-bin,                                           Nord VPN
+y,          ink,                                                   Ink information
+y,          postman-bin,                                           POSTMAN tool
+y,          brscan4,                                               Brother scanning tool
+y,          brscan-skey,                                           Brother scanning tool
+y,          bibtex-tidy,                                           CLI to tidy up BibTeX files
+y,          simple-mtpfs,                                          Simple MTP File System (Simple MTPFS) that supports reading/writing from MTP devices (cell phones)
+y,          fuse-ext2,                                             User-space file system (FUSE)
+y,          teams-for-linux,                                       Microsoft Teams
+y,          twitter,                                               Twitter
+y,          whatsapp-for-linux,                                    WhatsApp
+y,          zoom,                                                  Zoom US
+y,          bluetuith,                                             Bluetooth TUI
+y,          ctpv-git,                                              Previewer for lf
+y,          apfs-fuse-git,                                         Apple file system (APFS)
+y,          plex-desktop,                                          Plex desktop app
+y,          drawio-desktop,                                        DrawIO
+y,          colorpicker,                                           Colour picker
+y,          downgrade,                                             Downgrade packages
+y,          dpkg,                                                  Debian package manager
+y,          ffcast,                                                quick screen recorder

@@ -67,14 +67,22 @@ function installappswithpm() {
 
     echo "Installing Arch packages..."
     echo -e "This may take several tens of minutes; please be patient..."
-    read -p "NVIDIA drivers needed [y/n]? " NVIDIA_DRIVERS
 
-    # Install packages
+    # Install nvidia packages
+    read -p "NVIDIA drivers needed [y/n]? " NVIDIA_DRIVERS
     if [[ "$NVIDIA_DRIVERS" == "y" ]]; then
         $XDG_CONFIG_HOME/scripts/installfromcsv $XDG_CONFIG_HOME/packages/arch/nvidia.csv -s;
     fi
-    $XDG_CONFIG_HOME/scripts/installfromcsv $XDG_CONFIG_HOME/packages/arch/user.csv -s;
+
+    $XDG_CONFIG_HOME/scripts/installfromcsv $XDG_CONFIG_HOME/packages/arch/pacman.csv -s;
     $XDG_CONFIG_HOME/scripts/applylinks;
+
+    # Install yay packages
+    read -p "Yay needed (will take a lot of time!) [y/n]? " YAY_PACKAGES
+    if [[ "$YAY_PACKAGES" == "y" ]]; then
+        $XDG_CONFIG_HOME/scripts/installfromcsv $XDG_CONFIG_HOME/packages/arch/yay.csv -s;
+    fi
+
 
     # install fonts
     [ command -v fc-cache &> /dev/null ] && fc-cache -fr > /dev/null;
