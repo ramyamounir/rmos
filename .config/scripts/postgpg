@@ -4,6 +4,8 @@
 sudo systemctl enable --now bluetooth
 sudo systemctl enable --now cups.service
 sudo systemctl enable --now saned.socket
+systemctl --user start pipewire.service
+systemctl --user start pipewire-pulse.service
 
 
 # clone gpg passwords
