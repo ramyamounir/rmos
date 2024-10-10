@@ -23,8 +23,8 @@ alias tb='tensorboard --samples_per_plugin="images=0" --logdir'
 ### CONDA ###
 
 ### GP ###
-alias gpc='globalprotect connect'
-alias gpd='globalprotect disconnect'
+alias gpc='nmcli connection up usf --ask'
+alias gpd='nmcli connection down usf'
 
 ### NGROK ###
 alias ngbot='aaa; python ~/apps/ngrok-bot.py; d'

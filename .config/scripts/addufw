@@ -1,0 +1,23 @@
+#!/usr/bin/env sh
+
+sudo systemctl enable ufw
+sudo systemctl start ufw
+
+# default settings
+sudo ufw default deny incoming
+sudo ufw default deny outgoing
+
+# default outgoing
+sudo ufw allow out 22        # ssh
+sudo ufw allow out 53/udp    # dns
+sudo ufw allow out 80        # http
+sudo ufw allow out 443       # https
+sudo ufw allow out 465       # SMTP
+sudo ufw allow out 587       # SMTP
+sudo ufw allow out 993       # IMAP
+sudo ufw allow out 995       # POP3
+
+# special outgoing
+sudo ufw allow out 1194      # OpenVPN
+sudo ufw allow out 4501      # GlobalProtect
+sudo ufw allow out 51820/udp # NordVPN/Wireguard

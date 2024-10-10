@@ -1,0 +1,8 @@
+#!/usr/bin/env sh
+
+nmcli connection add \
+    connection.id usf \
+    connection.type vpn \
+    vpn.data cookie-flags=2,gateway="vpn.usf.edu",protocol=gp \
+    vpn.service-type openconnect \
+    vpn.secrets gateway="vpn.usf.edu",gwcert=

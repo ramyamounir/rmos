@@ -7,6 +7,12 @@ sudo systemctl enable --now saned.socket
 systemctl --user start pipewire.service
 systemctl --user start pipewire-pulse.service
 
-
 # clone gpg passwords
 git clone git@github.com:ramyamounir/passwords.git "${PASSWORD_STORE_DIR}"
+
+# add ufw
+addufw
+
+# add vpns
+addvpn
+
