@@ -364,7 +364,18 @@ scanimage -L
 
 ### 12 VPN <a name="vpn"></a> 
 
-RMOS uses nordvpn. The dmenu script `dm-vpn` allows the user to connect and disconnect to various vpn profiles.
+RMOS uses nordvpn. The dmenu script `dm-vpn` allows the user to connect and disconnect to various vpn profiles. First:
+
+```sh
+# add user to the group nordvpn
+sudo usermod -aG nordvpn $USER
+
+# enable and start the nordvpn service
+sudo systemctl enable --now nordvpnd
+
+# Reboot the system or logout and log back in
+reboot
+```
 
 To login to a vpn account, get a token from the Nordvpn account and enter it here:
 

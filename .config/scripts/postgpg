@@ -8,11 +8,56 @@ systemctl --user start pipewire.service
 systemctl --user start pipewire-pulse.service
 
 # clone gpg passwords
-git clone git@github.com:ramyamounir/passwords.git "${PASSWORD_STORE_DIR}"
+if command -v pass &> /dev/null; then
+    read -p "Setup pass [y/n]? " PASSSETUP
+    if [[ "$PASSSETUP" == "y" ]]; then
+        git clone git@github.com:ramyamounir/passwords.git "${PASSWORD_STORE_DIR}"
+    fi
+fi
 
 # add ufw
-addufw
+if command -v ufw &> /dev/null; then
+    read -p "Setup UFW [y/n]? " UFWSETUP
+    if [[ "$UFWSETUP" == "y" ]]; then
+        sudo systemctl enable ufw
+        sudo systemctl start ufw
 
-# add vpns
-addvpn
+        # default settings
+        sudo ufw default deny incoming
+        sudo ufw default deny outgoing
 
+        # default outgoing
+        sudo ufw allow out 22        # ssh
+        sudo ufw allow out 53/udp    # dns
+        sudo ufw allow out 80        # http
+        sudo ufw allow out 443       # https
+        sudo ufw allow out 465       # SMTP
+        sudo ufw allow out 587       # SMTP
+        sudo ufw allow out 993       # IMAP
+        sudo ufw allow out 995       # POP3
+
+        # special outgoing
+        sudo ufw allow out 1194      # OpenVPN
+        sudo ufw allow out 4501      # GlobalProtect
+        sudo ufw allow out 51820/udp # NordVPN/Wireguard
+    fi
+fi
+
+read -p "Setup USF VPN [y/n]? " USFVPN
+if [[ "$USFVPN" == "y" ]]; then
+    nmcli connection add \
+        connection.id usf \
+        connection.type vpn \
+        vpn.data cookie-flags=2,gateway="vpn.usf.edu",protocol=gp \
+        vpn.service-type openconnect \
+        vpn.secrets gateway="vpn.usf.edu",gwcert=
+fi
+
+if command -v nordvpn &> /dev/null; then
+    read -p "Setup NordVPN [y/n]? " NORDVPN
+    if [[ "$NORDVPN" == "y" ]]; then
+        sudo usermod -aG nordvpn $USER
+        sudo systemctl enable --now nordvpnd
+        echo -e "Don't forget to\n1) reboot\n2) get a token from Nord VPN web interface\n3) run the command:\n\nnordvpn login --token [TOKEN]\n\n"
+    fi
+fi
