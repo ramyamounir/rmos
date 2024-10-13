@@ -1,0 +1,11 @@
+#!/usr/bin/env sh
+
+# Install some packages first
+sudo pacman -S qemu virt-manager virt-viewer dnsmasq vde2 bridge-utils openbsd-netcat
+sudo systemctl enable --now libvirtd.service
+sudo usermod -aG libvirt $USER
+sudo systemctl restart libvirtd.service
+
+echo -e "Uncomment these two lines in the file /etc/libvirt/libvirtd.conf\n\nunix_sock_group = 'libvirt'\nunix_sock_rw_perms = '0770'\n"
+
+
