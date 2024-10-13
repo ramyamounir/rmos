@@ -52,6 +52,12 @@ nmcli con up <SSID> --ask
 
 # Get script and set up user
 source <(curl -Ls https://raw.githubusercontent.com/ramyamounir/rmos/refs/heads/main/.config/scripts/setupuser)
+
+# Import GPG key
+gpg --import [KEY]
+
+# (optional) Run postgpg script to get pass repository and enable some services
+postgpg
 ```
 
 This script will download the packages under the `.config/packages/[DISTRIBUTION]/user.csv`.
@@ -121,7 +127,7 @@ Here are some of the keybindings configured in Alacritty.
 
 ### 4. Text Editor <a name="nvim"></a>
 
-[NeoVim](https://neovim.io/) is the installed text editor. Nvim is configured to intall its plugin manager and its plugins.
+[NeoVim](https://neovim.io/) is the installed text editor. Nvim is configured to install its plugin manager and its plugins.
 It should right work out of the box. Here are some keybindings in nvim.
 
 | Plugin    | Mod       | Key                | Action                              |
@@ -155,7 +161,7 @@ It should right work out of the box. Here are some keybindings in nvim.
 | cmp       | -         | gl                 | Show diagnostics (hover)            |
 | cmp       | -         | gd                 | Show definition                     |
 | cmp       | -         | gD                 | Show Declaration                    |
-| cmp       | -         | gR                 | Show Refereneces                    |
+| cmp       | -         | gR                 | Show References                     |
 | cmp       | -         | gi                 | Show Implementation                 |
 
 ### 5. RMOS Desktop Environment <a name="suckless"></a>
@@ -203,6 +209,7 @@ Here are some of the keybinding defined in RMOS.
 | Super - Shift | Left or Right | Move Window to monitor   |
 | Super - Shift | b             | Bluetooth TUI            |
 | Super         | v             | VPN script               |
+| Super         | e             | email client             |
 
 #### 5.2 DMenu <a name="dmenu"></a>
 
