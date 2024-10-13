@@ -37,6 +37,7 @@ $HOME
 9. [Bluetooth](#bluetooth)
 10. [Printers](#printers)
 11. [Scanners](#scanners)
+12. [VPN](#vpn)
 
 
 ### 1. User Configs Installation <a name="installation"></a>
@@ -201,6 +202,7 @@ Here are some of the keybinding defined in RMOS.
 | Super         | Left or Right | Switch to monitor        |
 | Super - Shift | Left or Right | Move Window to monitor   |
 | Super - Shift | b             | Bluetooth TUI            |
+| Super         | v             | VPN script               |
 
 #### 5.2 DMenu <a name="dmenu"></a>
 
@@ -352,4 +354,14 @@ scanimage -L
 
 **For additional scanner problems check [here](https://wiki.archlinux.org/title/SANE/Scanner-specific_problems).**
 
+
+### 12 VPN <a name="vpn"></a> 
+
+RMOS uses nordvpn. The dmenu script `dm-vpn` allows the user to connect and disconnect to various vpn profiles.
+
+To login to a vpn account, get a token from the Nordvpn account and enter it here:
+
+```sh
+nordvpn login --token [TOKEN]
+```
 
