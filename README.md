@@ -158,3 +158,88 @@ reboot
 
 
 
+### 2.6 RAID <a name="raid"></a>
+
+Make sure the device did not have raid metadata before using it. To clean it use:
+
+```sh
+mdadm --misc --zero-superblock /dev/[DEVICE/PARTITION]
+```
+
+To create a new raid array use:
+
+```sh
+mdadm --create --verbose --level=[RAID_LEVEL] --metadata=1.2 --raid_devices=[N] /dev/md/[RAID_NAME]  /dev/sd{b,c}1
+
+# update the mdadm configuration file as such
+mdadm --detail --scan >> /etc/mdadm.conf
+
+# assemble the raid
+mdadm --assemble --scan
+
+# Format the raid fs OR wait if doing LVM
+mkfs.ext4 -v -L [FS_LABEL] -b 4096 -E stride=128,stripe-width=[N_DEVICES*128] /dev/md/[RAID_NAME]
+```
+
+To monitor and maintenance:
+
+```sh
+# To watch resyncing progress
+watch cat /proc/mdstat
+
+# To get current sync action
+cat /sys/block/md[X]/md/sync_action
+
+# To get general detail about the array
+mdadm --detail /dev/md/[RAID_NAME]
+
+# Periodically scrub the raid devices (or get the systemd service)
+echo check > /sys/block/md[X]/md/sync_action
+```
+
+To replace faulty device:
+
+```sh
+# Mark the device as faulty and remove it
+mdadm --fail /dev/md/[RAID_NAME] /dev/[DEVICE/PARTITION]
+mdadm --remove /dev/md/[RAID_NAME] /dev/[DEVICE/PARTITION]
+
+# Or directly replace and existing raid partition
+mdadm  /dev/md/[RAID_NAME] --add /dev/[DEVICE/PARTITION]
+mdadm  /dev/md/[RAID_NAME] --replace /dev/[DEVICE/PARTITION] --with /dev/[DEVICE/PARTITION]
+```
+
+
+To modify the raid array:
+
+```sh
+# To change a new device to the raid array:
+mdadm  /dev/md/[RAID_NAME] --add/remove /dev/[DEVICE/PARTITION]
+mdadm --grow /dev/md/[RAID_NAME] -n=[N_DEVICES]
+
+# To change the raid size (do for all partitions)
+mdadm  /dev/md/[RAID_NAME] --add /dev/[DEVICE/PARTITION]
+mdadm  /dev/md/[RAID_NAME] --replace /dev/[DEVICE/PARTITION] --with /dev/[DEVICE/PARTITION]
+mdadm --grow /dev/md/[RAID_NAME] --size=max[/SIZE]
+```
+
+
+To delete a raid array:
+
+```sh
+# unmount the array 
+umount [MOUNT_POINT]
+
+# stop the raid
+mdadm --stop /dev/md/[RAID_NAME]
+
+# Remove the configs from /etc/mdadm.conf
+
+# zero out the devices' metadata 
+mdadm --misc --zero-superblock /dev/[DEVICE/PARTITION]
+```
+
+
+
+
+
