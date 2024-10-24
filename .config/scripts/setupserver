@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+
+# start nginx
+if command -v nginx &> /dev/null; then
+    sudo systemctl enable --now nginx
+fi
+
