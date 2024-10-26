@@ -8,6 +8,3 @@ y,          teams-for-linux,                                       Microsoft Tea
 y,          zoom,                                                  Zoom US
 y,          ctpv-git,                                              Previewer for lf
 y,          drawio-desktop,                                        DrawIO
-y,          apfs-fuse-git,                                         Apple file system (APFS)
-y,          fuse-ext2,                                             User-space file system (FUSE)
-y,          simple-mtpfs,                                          Simple MTP File System (Simple MTPFS) that supports reading/writing from MTP devices (cell phones)
