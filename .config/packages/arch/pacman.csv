@@ -50,7 +50,7 @@ p,          sof-firmware,                                          sound card
 p,          speedtest-cli,                                         a CLI tool to test Internet speed
 p,          system-config-printer,                                 printer configuration toolbox (GUI)
 p,          tldr,                                                  tldr manual pages
-p,          tmux,                                                  tmux
+p,          tmux,                                                  tmux session manager
 p,          ufw,                                                   firewall
 p,          unison,                                                file synchronisation tool
 p,          vlc,                                                   VLC media player
@@ -60,7 +60,6 @@ p,          xcape,                                                 configure key
 p,          firefox,                                               Firefox browser
 p,          inkscape,                                              Inkscape
 p,          libreoffice-fresh,                                     Libre Office
-p,          nextcloud-client,                                      client tool for next cloud
 p,          networkmanager-openconnect,                            OpenConnect (CISCO; GlobalProtect; etc)
 p,          obsidian,                                              notebook
 p,          tgpt,                                                  Terminal GPT
@@ -91,8 +90,6 @@ p,          cmake,                                                 CMake
 p,          docker,			                                       docker
 p,          docker-buildx,                                         docker build
 p,          docker-compose,                                        docker compose
-p,          evtest,                                                input device monitor
-p,          github-cli,                                            GitHub CLI tool
 p,          nodejs,                                                nodejs engine
 p,          npm,                                                   node package manager
 p,          yarn,                                                  node package manager
@@ -102,7 +99,6 @@ p,          cuda-tools,                                            CUDA tools
 p,          cups,                                                  printing system
 p,          cups-pdf,                                              PDF printer for CUPS
 p,          sane,                                                  Scanner Access Now Easy
-p,          simple-scan,                                           Scanner GUI
 p,          hplip,                                                 HP Utility
 p,          arandr,                                                Manually setting display layout
 p,          dunst,                                                 Notifications manager

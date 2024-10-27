@@ -6,9 +6,3 @@
 # absolute path. No other format is supported.
 XDG_DESKTOP_DIR="$HOME/"
 XDG_DOWNLOAD_DIR="$HOME/downloads"
-XDG_DOCUMENTS_DIR="$HOME/cloud/nextcloud/Documents"
-XDG_MUSIC_DIR="$HOME/cloud/nextcloud/Music"
-XDG_PICTURES_DIR="$HOME/cloud/nextcloud/Photos"
-XDG_TEMPLATES_DIR="$HOME/cloud/nextcloud/Templates"
-XDG_VIDEOS_DIR="$HOME/cloud/nextcloud/Videos"
-XDG_PUBLICSHARE_DIR="$XDG_DATA_HOME/cloud/Buffer"

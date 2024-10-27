@@ -86,10 +86,6 @@ If they exist, `$XDG_DATA_HOME/.env` will be invoked at the beginning of setting
 | `AM_I_ADMIN`            | Specify when the user is the admin (0 for not admin; 1 for admin; default = 0)                                           |
 | `BORE_SECRET`           | Bore tunnel secret token                                                                                                 |
 | `BORE_SERVER`           | Bore tunnel server URL                                                                                                   |
-| `CLOUD_USERNAME`        | Nextcloud username (used by `syncloud`)                                                                                  |
-| `CLOUD_PASSWORD_FILE`   | `pass` filename with Nextcloud password (used by `syncloud`)                                                             |
-| `CLOUD_DIR`             | Nextcloud directory (used by `syncloud`)                                                                                 |
-| `CLOUD_SERVER_URL`      | Nextcloud server URL (used by `syncloud`)                                                                                |
 | `DISABLE_UPDATE_CMDS`   | Disabled all update commands (defaults to `1`)                                                                           |
 | `SHELL_PLUGIN_MANAGER`  | Shell plugin manager (`zim` or `ohmy`; defaults to `zim`)                                                                |
 | `SLACK_SERVER_URL`      | The URL of the server (Used by `slackme`)                                                                                |

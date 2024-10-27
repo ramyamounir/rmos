@@ -3,7 +3,6 @@
 # applications
 x-scheme-handler/http=firefox.desktop
 x-scheme-handler/https=firefox.desktop
-x-scheme-handler/nc=com.nextcloud.desktopclient.nextcloud.desktop
 x-scheme-handler/postman=Postman.desktop
 
 # text files and document
