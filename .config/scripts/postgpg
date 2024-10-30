@@ -55,9 +55,7 @@ fi
 
 if command -v nordvpn &> /dev/null; then
     read -p "Setup NordVPN [y/n]? " NORDVPN
-    if [[ "$NORDVPN" == "y" ]]; then
-        sudo usermod -aG nordvpn $USER
-        sudo systemctl enable --now nordvpnd
-        echo -e "Don't forget to\n1) reboot\n2) get a token from Nord VPN web interface\n3) run the command:\n\nnordvpn login --token [TOKEN]\n\n"
-    fi
+    pass show keys/wireguard > nordvpn.conf
+    sudo nmcli connection import type wireguard file nordvpn.conf
+    rm nordvpn.conf
 fi
