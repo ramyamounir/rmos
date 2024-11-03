@@ -17,17 +17,18 @@ CHOICE=$(printf "$PROMPT" | dmenu $DMENU_OPTIONS -i)
 
 case $CHOICE in
     ${OPTIONS[0]})
-        nordvpn disconnect;
+        nmcli connect down nordvpn;
         echo -e "$(pass show emails/usf | tail -n 2 | head -n 1 | cut -d ':' -f 2 | xargs)\n$(pass show emails/usf | head -n 1)" | nmcli connection up usf --ask;
-        notify-send -i "USF VPN" "Connected to VPN"
+        notify-send -i "USF VPN" "Connected to USF"
         ;;
     ${OPTIONS[1]})
         nmcli connect down usf;
-        nordvpn connect;
+        nmcli connect up nordvpn;
+        notify-send -i "Nord VPN" "Connected to Nord"
         ;;
     ${OPTIONS[2]})
         nmcli connect down usf;
-        nordvpn disconnect;
+        nmcli connect down nordvpn;
         notify-send -i "VPN" "Disconnected from VPN"
         ;;
     *)
