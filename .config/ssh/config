@@ -5,6 +5,29 @@ Host *
     ControlMaster auto
     ControlPersist 1
 
+Host home
+    HostName home.ramymounir.com
+    Port 4243
+    User ramy
+    AddKeysToAgent yes
+
+Host server
+    HostName home.ramymounir.com
+    Port 4242
+    User ramy
+    AddKeysToAgent yes
+
+Host seedbox
+    HostName sawyer0.com
+    Port 22222
+    User ramy
+    AddKeysToAgent yes
+
+Host margoz
+    HostName 162.241.24.41
+    User margozvi
+    AddKeysToAgent yes
+
 Host lab
     HostName lab.ramymounir.com
     User ramy
@@ -19,6 +42,16 @@ Host hipergator
     HostName hpg.rc.ufl.edu
     Port 2222
     User mounir.r
+    AddKeysToAgent yes
+
+Host beast
+    HostName beast.ramymounir.com
+    User ramy
+    AddKeysToAgent yes
+
+Host gaivi
+    HostName puppy.ramymounir.com
+    User ramy
     AddKeysToAgent yes
 
 Host github
