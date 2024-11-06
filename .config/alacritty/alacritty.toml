@@ -1,5 +1,5 @@
-import = ["~/.config/alacritty/theme.toml"]
-live_config_reload = true
+general.import = ["~/.config/alacritty/theme.toml"]
+general.live_config_reload = true
 
 [cursor]
     blink_timeout = 0
@@ -99,7 +99,7 @@ live_config_reload = true
 [selection]
     save_to_clipboard = true
 
-[shell]
+[terminal.shell]
     program = "zsh"
 
 [window]
