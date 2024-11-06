@@ -59,6 +59,7 @@ read -p "Setup NordVPN [y/n]? " NORDVPN
 if [[ "$NORDVPN" == "y" ]]; then
     pass show keys/wireguard > nordvpn.conf
     sudo nmcli connection import type wireguard file nordvpn.conf
+    sudo nmcli connection down nordvpn
     sudo nmcli connection modify nordvpn connection.autoconnect no
     rm nordvpn.conf
 fi
