@@ -11,9 +11,15 @@ Host home
     User ramy
     AddKeysToAgent yes
 
-Host server
+Host msi
     HostName home.ramymounir.com
     Port 4242
+    User ramy
+    AddKeysToAgent yes
+
+Host laptop
+    HostName home.ramymounir.com
+    Port 4244
     User ramy
     AddKeysToAgent yes
 
