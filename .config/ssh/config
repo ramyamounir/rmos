@@ -55,7 +55,7 @@ Host beast
     User ramy
     AddKeysToAgent yes
 
-Host gaivi
+Host puppy
     HostName puppy.ramymounir.com
     User ramy
     AddKeysToAgent yes
