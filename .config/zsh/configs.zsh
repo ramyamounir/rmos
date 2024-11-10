@@ -7,6 +7,8 @@ if [ -x /usr/bin/dircolors ]; then
     alias egrep='egrep --color=auto'
 fi
 
+# For arabic fonts
+setopt COMBINING_CHARS
 
 # Basic auto/tab complete:
 autoload -U compinit
@@ -58,5 +60,4 @@ zle-line-init() {
 zle -N zle-line-init
 echo -ne '\e[5 q' # Use beam shape cursor on startup.
 preexec() { echo -ne '\e[5 q' ;} # Use beam shape cursor for each new prompt.
-
 
