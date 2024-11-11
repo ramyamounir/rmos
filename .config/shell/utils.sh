@@ -7,31 +7,35 @@
 
 # GPG agent configuration
 function gpg_ssh_agent() {
+    if ! [ -z "$PS1" ]; then
 
-    if command -v ssh-agent > /dev/null 2>&1; then
-        export GPG_TTY=$(tty)
-        eval "$(ssh-agent)" > /dev/null
-    fi
-
-    if command -v gpgconf > /dev/null 2>&1; then
-        if [ "${gnupg_SSH_AUTH_SOCK_by:-0}" -ne $$ ]; then
-            export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
+        if command -v ssh-agent > /dev/null 2>&1; then
+            export GPG_TTY=$(tty)
+            eval "$(ssh-agent)" > /dev/null
         fi
-    fi
-    
-    if command -v gpg-connect-agent > /dev/null 2>&1; then
-        gpg-connect-agent --quiet updatestartuptty /bye
+
+        if command -v gpgconf > /dev/null 2>&1; then
+            if [ "${gnupg_SSH_AUTH_SOCK_by:-0}" -ne $$ ]; then
+                export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
+            fi
+        fi
+        
+        if command -v gpg-connect-agent > /dev/null 2>&1; then
+            gpg-connect-agent --quiet updatestartuptty /bye
+        fi
     fi
 }
 
 
 # SSH and GPG/GNOME agent cleanup
 function shell_cleanup {
-    if ! [ -z $SSH_AGENT_PID ]; then
-        eval `ssh-agent -k` &> /dev/null
-    fi
-    if ! [ -z $DBUS_SESSION_BUS_PID ]; then
-        kill -9 $DBUS_SESSION_BUS_PID &> /dev/null
+    if ! [ -z "$PS1" ]; then
+        if ! [ -z $SSH_AGENT_PID ]; then
+            eval `ssh-agent -k` &> /dev/null
+        fi
+        if ! [ -z $DBUS_SESSION_BUS_PID ]; then
+            kill -9 $DBUS_SESSION_BUS_PID &> /dev/null
+        fi
     fi
 }
 

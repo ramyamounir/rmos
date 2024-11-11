@@ -2,7 +2,7 @@ local dependencies = {
     "nvim-lua/plenary.nvim",
     "nvim-tree/nvim-web-devicons",
     "MunifTanjim/nui.nvim",
-    "3rd/image.nvim",
+    -- "3rd/image.nvim",
 }
 
 local function init()
