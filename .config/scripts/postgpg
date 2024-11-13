@@ -54,12 +54,29 @@ if [[ "$USFVPN" == "y" ]]; then
     sudo nmcli connection modify usf connection.autoconnect no
 fi
 
-
 read -p "Setup NordVPN [y/n]? " NORDVPN
 if [[ "$NORDVPN" == "y" ]]; then
-    pass show keys/wireguard > nordvpn.conf
-    sudo nmcli connection import type wireguard file nordvpn.conf
-    sudo nmcli connection down nordvpn
-    sudo nmcli connection modify nordvpn connection.autoconnect no
-    rm nordvpn.conf
+    pass show wireguard/nord > nord.conf
+    sudo nmcli connection import type wireguard file nord.conf
+    sudo nmcli connection down nord
+    sudo nmcli connection modify nord connection.autoconnect no
+    rm nord.conf
+fi
+
+read -p "Setup Home VPN [y/n]? " HOMEVPN
+if [[ "$HOMEVPN" == "y" ]]; then
+    pass show wireguard/home > home.conf
+    sudo nmcli connection import type wireguard file home.conf
+    sudo nmcli connection down home
+    sudo nmcli connection modify home connection.autoconnect no
+    rm home.conf
+fi
+
+read -p "Setup Lab VPN [y/n]? " LABVPN
+if [[ "$LABVPN" == "y" ]]; then
+    pass show wireguard/lab > lab.conf
+    sudo nmcli connection import type wireguard file lab.conf
+    sudo nmcli connection down lab
+    sudo nmcli connection modify lab connection.autoconnect no
+    rm lab.conf
 fi
