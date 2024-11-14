@@ -2,13 +2,28 @@
 
 users=$(getent passwd | cut -d: -f1)
 
-echo "╭───────────────────────────────┬─────────────────────────────────────────────────────────────────────╮"
-printf "│%30s │ %-68s│\n" "User" "Group(s)"
-echo "├───────────────────────────────┼─────────────────────────────────────────────────────────────────────┤"
+echo "╭─────────────────────────────────────────────┬─────────────────────────────────────────────────────────────────────╮"
+printf "│%35s %-8s │ %-68s│\n" "User" "(Id)" "Group(s)"
+echo "├─────────────────────────────────────────────┼─────────────────────────────────────────────────────────────────────┤"
 
 while IFS= read -r user; do
-    groups=$(id -Gn $user | tr ' ' ',')
-    printf "│%30s │ %-68s│\n" "$user" "$groups"
+    # Get user ID
+    user_id=$(getent passwd "$user" | cut -d: -f3)
+    
+    # Get the groups the user is a member of, and include group ID
+    group_list=""
+    for group in $(id -Gn "$user"); do
+        group_id=$(getent group "$group" | cut -d: -f3)
+        group_list+="$group ($group_id), "
+    done
+
+    # Remove trailing comma and space
+    group_list="${group_list%, }"
+
+    # Print the user with their user ID and the list of groups with group IDs
+    printf "│%35s %-8s │ %-68s│\n" "$user" "($user_id)" "$group_list"
 done <<< "$users" | sort
 
-echo "╰───────────────────────────────┴─────────────────────────────────────────────────────────────────────╯"
+echo "╰─────────────────────────────────────────────┴─────────────────────────────────────────────────────────────────────╯"
+
+

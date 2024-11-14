@@ -7,8 +7,29 @@ printf "│%30s │ %-68s│\n" "Group" "User(s)"
 echo "├───────────────────────────────┼─────────────────────────────────────────────────────────────────────┤"
 
 while IFS= read -r group; do
-    users=$(getent group $group | cut -d: -f4)
-    printf "│%30s │ %-68s│\n" "$group" "$users"
+    # Get group ID
+    group_id=$(getent group "$group" | cut -d: -f3)
+    # Get list of users in the group
+    users=$(getent group "$group" | cut -d: -f4)
+
+    # Add group ID to the group name
+    group_display="$group ($group_id)"
+    
+    # Format and print group with users and their user IDs
+    if [ -n "$users" ]; then
+        user_list=""
+        for user in $(echo "$users" | tr ',' ' '); do
+            # Get user ID
+            user_id=$(getent passwd "$user" | cut -d: -f3)
+            user_list+="$user ($user_id), "
+        done
+        # Remove trailing comma and space
+        user_list="${user_list%, }"
+        printf "│%30s │ %-68s│\n" "$group_display" "$user_list"
+    else
+        # No users for this group, just print the group with no users
+        printf "│%30s │ %-68s│\n" "$group_display" ""
+    fi
 done <<< "$groups" | sort
 
 echo "╰───────────────────────────────┴─────────────────────────────────────────────────────────────────────╯"
