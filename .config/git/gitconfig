@@ -22,6 +22,9 @@
 [includeIf "hasconfig:remote.*.url:https://github.com/**"]
     path = providers/github.config
 
+[includeIf "hasconfig:remote.*.url:https://git.lab.ramymounir.com/**"]
+    path = providers/git.lab.ramymounir.config
+
 [gpg]
     program = gpg
 
