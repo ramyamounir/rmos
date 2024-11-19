@@ -80,3 +80,12 @@ if [[ "$LABVPN" == "y" ]]; then
     sudo nmcli connection modify lab connection.autoconnect no
     rm lab.conf
 fi
+
+read -p "Setup Privado VPN [y/n]? " PRIVADOVPN
+if [[ "$PRIVADOVPN" == "y" ]]; then
+    pass show wireguard/privado > privado.conf
+    sudo nmcli connection import type wireguard file privado.conf
+    sudo nmcli connection down privado
+    sudo nmcli connection modify privado connection.autoconnect no
+    rm privado.conf
+fi

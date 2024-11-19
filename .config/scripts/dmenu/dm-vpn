@@ -3,11 +3,12 @@
 DMENU_OPTIONS=`dwm -m`
 
 OPTIONS=(
+    "Off"
     "USF"
-    "Nord"
     "Home"
     "Lab"
-    "Off"
+    "Nord"
+    "Privado"
 )
 
 PROMPT=""
@@ -19,25 +20,28 @@ CHOICE=$(printf "$PROMPT" | dmenu $DMENU_OPTIONS -i)
 
 case $CHOICE in
     ${OPTIONS[0]})
+        nmcli connect down usf;
         nmcli connect down nord;
         nmcli connect down home;
         nmcli connect down lab;
+        nmcli connect down privado;
+
+        notify-send -i "VPN" "Disconnected from VPN"
+        ;;
+    ${OPTIONS[1]})
+        nmcli connect down nord;
+        nmcli connect down home;
+        nmcli connect down lab;
+        nmcli connect down privado;
 
         echo -e "$(pass show emails/usf | tail -n 2 | head -n 1 | cut -d ':' -f 2 | xargs)\n$(pass show emails/usf | head -n 1)" | nmcli connection up usf --ask;
         notify-send -i "USF VPN" "Connected to USF"
         ;;
-    ${OPTIONS[1]})
-        nmcli connect down usf;
-        nmcli connect down home;
-        nmcli connect down lab;
-
-        nmcli connect up nord;
-        notify-send -i "Nord VPN" "Connected to Nord"
-        ;;
     ${OPTIONS[2]})
         nmcli connect down usf;
-        nmcli connect down lab;
         nmcli connect down nord;
+        nmcli connect down lab;
+        nmcli connect down privado;
 
         nmcli connect up home;
         notify-send -i "Home VPN" "Connected to Home"
@@ -46,16 +50,28 @@ case $CHOICE in
         nmcli connect down usf;
         nmcli connect down nord;
         nmcli connect down home;
+        nmcli connect down privado;
 
         nmcli connect up lab;
         notify-send -i "Lab VPN" "Connected to Lab"
         ;;
     ${OPTIONS[4]})
         nmcli connect down usf;
+        nmcli connect down home;
+        nmcli connect down lab;
+        nmcli connect down privado;
+
+        nmcli connect up nord;
+        notify-send -i "Nord VPN" "Connected to Nord"
+        ;;
+    ${OPTIONS[5]})
+        nmcli connect down usf;
         nmcli connect down nord;
         nmcli connect down home;
         nmcli connect down lab;
-        notify-send -i "VPN" "Disconnected from VPN"
+
+        nmcli connect up privado;
+        notify-send -i "Privado VPN" "Connected to Privado"
         ;;
     *)
         ;;
