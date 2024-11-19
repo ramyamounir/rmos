@@ -37,7 +37,7 @@ $HOME
 9. [Bluetooth](#bluetooth)
 10. [Printers](#printers)
 11. [Scanners](#scanners)
-12. [VPN](#vpn)
+12. [Access Conrol List](#acl)
 
 
 ### 1. User Configs Installation <a name="installation"></a>
@@ -358,24 +358,22 @@ scanimage -L
 **For additional scanner problems check [here](https://wiki.archlinux.org/title/SANE/Scanner-specific_problems).**
 
 
-### 12 VPN <a name="vpn"></a> 
+### 12 Access Control List <a name="acl"></a> 
 
-RMOS uses nordvpn. The dmenu script `dm-vpn` allows the user to connect and disconnect to various vpn profiles. First:
-
-```sh
-# add user to the group nordvpn
-sudo usermod -aG nordvpn $USER
-
-# enable and start the nordvpn service
-sudo systemctl enable --now nordvpnd
-
-# Reboot the system or logout and log back in
-reboot
-```
-
-To login to a vpn account, get a token from the Nordvpn account and enter it here:
+To change owners and default permissions use:
 
 ```sh
-nordvpn login --token [TOKEN]
+# Change default permissions for all groups, recursively
+sudo setfacl -R -d -m g:[group_name]:rwX /path/to/folder
+
+# Change the "sticky" bit to inherit user:group permissions, recursively
+sudo chmod -R g+s /path/to/folder
+
+# Change the file permissions to 755, recursively
+sudo chmod -R 755 /path/to/folder
+
+# Change the user:group owners, recursively
+sudo chown -R [user]:[group] /path/to/folder
 ```
+
 
