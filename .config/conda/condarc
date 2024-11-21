@@ -1,0 +1,3 @@
+auto_activate_base: False
+auto_update_conda: False
+changeps1: False
