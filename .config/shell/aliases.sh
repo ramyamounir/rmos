@@ -90,6 +90,6 @@ command -v bat > /dev/null 2>&1 && alias catt="command bat"
 command -v bpytop > /dev/null 2>&1 && alias htopp="bpytop"
 command -v dua > /dev/null 2>&1 && alias duu="command dua"
 command -v duf > /dev/null 2>&1 && alias df="command duf --hide special" duf="command df"
-command -v nvim > /dev/null 2>&1 && alias vim="command nvim" vimdiff="command nvim -d" nvim="command vim"
+command -v nvim > /dev/null 2>&1 && alias vim="command nvim" vimdiff="command nvim -d"
 command -v procs > /dev/null 2>&1 && alias pss="procs"
 
