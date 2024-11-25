@@ -5,6 +5,12 @@ Host *
     ControlMaster auto
     ControlPersist 1
 
+Host pfsense
+    HostName 10.12.12.1
+    Port 22
+    User root
+    AddKeysToAgent yes
+
 Host home
     HostName 10.12.12.3
     Port 22
