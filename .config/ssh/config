@@ -6,20 +6,26 @@ Host *
     ControlPersist 1
 
 Host home
-    HostName home.ramymounir.com
-    Port 4243
+    HostName 10.12.12.3
+    Port 22
     User ramy
     AddKeysToAgent yes
 
 Host msi
-    HostName home.ramymounir.com
-    Port 4242
+    HostName 10.12.12.4
+    Port 22
     User ramy
     AddKeysToAgent yes
 
 Host laptop
-    HostName home.ramymounir.com
-    Port 4244
+    HostName 10.12.12.5
+    Port 22
+    User ramy
+    AddKeysToAgent yes
+
+Host hp
+    HostName 10.12.12.6
+    Port 22
     User ramy
     AddKeysToAgent yes
 
