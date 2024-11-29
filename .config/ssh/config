@@ -4,6 +4,8 @@ Host *
     ControlPath ~/.ssh/multiplex/%r@%h:%p
     ControlMaster auto
     ControlPersist 1
+    StrictHostKeyChecking no
+    UserKnownHostsFile=/dev/null
 
 Host pfsense
     HostName 10.12.12.1
@@ -12,26 +14,26 @@ Host pfsense
     AddKeysToAgent yes
 
 Host home
-    HostName 10.12.12.3
-    Port 22
+    HostName home.ramymounir.com
+    Port 4243
     User ramy
     AddKeysToAgent yes
 
 Host msi
-    HostName 10.12.12.4
-    Port 22
+    HostName home.ramymounir.com
+    Port 4244
     User ramy
     AddKeysToAgent yes
 
 Host laptop
-    HostName 10.12.12.5
-    Port 22
+    HostName home.ramymounir.com
+    Port 4245
     User ramy
     AddKeysToAgent yes
 
 Host hp
-    HostName 10.12.12.6
-    Port 22
+    HostName home.ramymounir.com
+    Port 4246
     User ramy
     AddKeysToAgent yes
 

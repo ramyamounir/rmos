@@ -1,0 +1,65 @@
+#!/bin/bash
+
+# Check for required tools
+if ! command -v qrencode &>/dev/null; then
+  echo "qrencode is not installed. Please install it to generate QR codes."
+  exit 1
+fi
+
+if ! command -v wg &>/dev/null; then
+  echo "wg is not installed. Please install WireGuard tools."
+  exit 1
+fi
+
+# Function to generate private and public keys
+generate_keys() {
+  local priv_key=$(wg genkey)
+  local pub_key=$(echo "$priv_key" | wg pubkey)
+  echo "$priv_key" "$pub_key"
+}
+
+# Prompt for Peer Name (used for file naming)
+read -rp "Enter the peer name (used for file naming): " PEER_NAME
+
+# Prompt for Peer Public Key
+read -rp "Enter the public key of the peer: " PEER_PUBLIC_KEY
+
+# Prompt for Interface Address
+read -rp "Enter the allowed addresses of the interface (eg. 10.0.0.5/32): " INTERFACE_ADDRESS
+
+# Prompt for Endpoint (IP:Port)
+read -rp "Enter the endpoint (IP:Port): " ENDPOINT
+
+# Generate keys for this machine
+KEYS=($(generate_keys))
+PRIVATE_KEY=${KEYS[0]}
+PUBLIC_KEY=${KEYS[1]}
+
+
+# Generate configuration
+CONFIG_FILE="${PEER_NAME}.conf"
+cat <<EOF > "$CONFIG_FILE"
+[Interface]
+PrivateKey = $PRIVATE_KEY
+Address = $INTERFACE_ADDRESS
+DNS = 8.8.8.8
+
+[Peer]
+PublicKey = $PEER_PUBLIC_KEY
+AllowedIPs = 0.0.0.0/0
+Endpoint = $ENDPOINT
+EOF
+
+
+# Generate QR code
+QR_CODE_FILE="${PEER_NAME}-qr.png"
+qrencode -o "$QR_CODE_FILE" -t PNG < "$CONFIG_FILE"
+
+
+# Output the generated public key
+echo -e "\n\nConfiguration file ($CONFIG_FILE) and qr created ($QR_CODE_FILE)"
+echo -e "\nGenerated public key for this server: $PUBLIC_KEY"
+echo -e "\nUse this address for the allowed IP: $INTERFACE_ADDRESS"
+
+
+
