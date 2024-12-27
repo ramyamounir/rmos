@@ -51,3 +51,5 @@ keymap("n", "<c-S-T>", ":FzfLua grep cwd=~ <CR>", { noremap = true, silent = tru
 -- Nvimtree
 keymap("n", "<leader>e", ":Neotree toggle<cr>", opts)
 
+
+
