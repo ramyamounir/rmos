@@ -51,5 +51,9 @@ keymap("n", "<c-S-T>", ":FzfLua grep cwd=~ <CR>", { noremap = true, silent = tru
 -- Nvimtree
 keymap("n", "<leader>e", ":Neotree toggle<cr>", opts)
 
+-- UFO
+keymap('n', 'zR', [[<Cmd>lua require('ufo').openAllFolds()<CR>]], opts)
+keymap('n', 'zM', [[<Cmd>lua require('ufo').closeAllFolds()<CR>]], opts)
+
 
 
