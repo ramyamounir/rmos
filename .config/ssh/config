@@ -6,6 +6,8 @@ Host *
     ControlPersist 1
     StrictHostKeyChecking no
     UserKnownHostsFile=/dev/null
+    ForwardX11 yes
+    ForwardX11Trusted yes
 
 Host pfsense
     HostName 10.12.12.1

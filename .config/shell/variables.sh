@@ -9,7 +9,6 @@ export XDG_RUNTIME_DIR="/run/user/$(id -u $USER)"
 
 # variables
 export DBUS_SESSION_BUS_ADDRESS="unix:path=$XDG_RUNTIME_DIR/bus"
-export DISPLAY=":0"
 export FZF_DEFAULT_COMMAND="find . -type f -print -o -type l -print 2> /dev/null | sed s/^..//"
 export GTK2_RC_FILES="/usr/share/themes/Arc-dark/gtk-2.0/gtkrc"
 export GTK_THEME="Arc:dark"
@@ -82,6 +81,5 @@ export TERMINFO_DIRS="$XDG_DATA_HOME/terminfo:/usr/share/terminfo"
 
 # logs
 export PYTHON_HISTORY="$XDG_STATE_HOME/python/history"
-export XAUTHORITY="$XDG_STATE_HOME/Xauthority"
 export ZSH_COMPDUMP="$XDG_STATE_HOME/zcompdump"
 
