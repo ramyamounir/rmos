@@ -8,7 +8,7 @@ case "$(readlink -f /sbin/init)" in
 	*) ctl='loginctl' ;;
 esac
 
-case "$(printf "🔒 lock\n🚪 leave dwm\n🐻 quit\n🔃 reboot\n🖥️shutdown\n" | dmenu $DMENU_OPTIONS -i -p 'Action: ')" in
+case "$(printf "🔒 lock\n🚪 leave dwm\n🐻 quit\n🔃 reboot\n🖥️ shutdown\n" | dmenu $DMENU_OPTIONS -i -p 'Action: ')" in
 	'🔒 lock') slock ;;
 	'🚪 leave dwm') kill -TERM "$(pgrep -u "$USER" "\bdwm$")" ;;
 	'🐻 quit') loginctl terminate-session $XDG_SESSION_ID ;;
