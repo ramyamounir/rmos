@@ -12,7 +12,6 @@ alias pen='sudo ~/Downloads/Linux_Pentablet_V1.2.14.1/Pentablet_Driver.sh'
 alias MI='mediainfo --Inform="Video;Width=%Width%, Height=%Height%, Duration=%Duration%, FPS=%FrameRate%, NumFrames=%FrameCount%"'
 alias open='xdg-open'
 alias svim='sudoedit'
-### NAVIGATION & HELPER ###
 
 ### CONDA ###
 alias aa='a torch'
@@ -20,11 +19,9 @@ alias aaa='a ramy_torch'
 alias d='conda deactivate'
 a() { conda deactivate; conda activate $1; }
 alias tb='tensorboard --samples_per_plugin="images=0" --logdir'
-### CONDA ###
 
-### GP ###
-alias gpc='nmcli connection up usf --ask'
-alias gpd='nmcli connection down usf'
+### GIT ###
+alias glg='git-igitt'
 
 ### NGROK ###
 alias ngbot='aaa; python ~/apps/ngrok-bot.py; d'
@@ -32,27 +29,8 @@ alias nga='~/apps/ngrok start -all'
 alias ng='~/apps/ngrok start'
 alias ngp='~/apps/ngrok http'
 
-### SSH ###
-alias deepv='ssh deepv'
-alias beast='ssh beast'
-alias puppy='ssh puppy'
-alias gaivi='ssh gaivi'
-alias hpg='ssh hpg'
-alias seedbox='ssh seedbox'
-alias margoz='ssh margoz'
-alias rpi='ssh rpi'
-alias lab='ssh lab'
-
-### mounting ###
-alias MSujal='sudo mount nec200a.ssh.sujal.tv:/storage/hdd/shared /data/D1/sujal --mkdir'
-alias USujal='sudo umount /data/D1/sujal && rm -rf /data/D1/sujal'
-
-
+### RMOS ###
 alias rmos="git --git-dir $HOME/.rmos --work-tree $HOME"
-# alias vpn-nord-connect="nordvpn connect"
-# alias vpn-nord-disconnect="nordvpn disconnect"
-# alias vpn-gp-connect="vpn-nord-disconnect; globalprotect connect"
-# alias vpn-gp-disconnect="globalprotect disconnect"
 
 # miscellaneous
 function u1() {
