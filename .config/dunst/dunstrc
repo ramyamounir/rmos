@@ -2,7 +2,7 @@
     monitor = 0
     follow = keyboard
     width = 400
-    height = 400
+    height = 100
     offset = 25x55
     padding = 10
     corner_radius = 5
