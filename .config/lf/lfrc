@@ -136,3 +136,4 @@ map D delete
 map y copy
 map Y yank-path
 map x cut
+map S :set sortby time; set info time; set reverse
