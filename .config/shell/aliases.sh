@@ -7,7 +7,7 @@ alias lsa='ls -alh'
 alias ipe='curl ipinfo.io/ip;echo ""'
 alias ipi="ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1'"
 alias psg='ps -eaf | grep -P'
-alias cursor='find-cursor --repeat 0 --follow --distance 1 --line-width 16 --size 16 --color red'
+# alias cursor='find-cursor --repeat 0 --follow --distance 1 --line-width 16 --size 16 --color red'
 alias pen='sudo ~/Downloads/Linux_Pentablet_V1.2.14.1/Pentablet_Driver.sh'
 alias MI='mediainfo --Inform="Video;Width=%Width%, Height=%Height%, Duration=%Duration%, FPS=%FrameRate%, NumFrames=%FrameCount%"'
 alias open='xdg-open'
