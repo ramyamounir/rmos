@@ -33,9 +33,14 @@ local function lsp_keymaps(bufnr)
 end
 
 local on_attach = function(client, bufnr)
-    if client.name == "tsserver" then
+
+    if client.name == 'ruff' then
+        -- disable ruff's hover in favour of Pyright's
+        client.server_capabilities.hoverProvider = false
+    elseif client.name == "tsserver" then
       client.server_capabilities.documentFormattingProvider = false
     end
+
     lsp_keymaps(bufnr)
     lsp_highlight_document(client)
 end

@@ -14,8 +14,8 @@ local function config()
         debug = false,
         sources = {
             formatting.isort,
-            formatting.black.with({ extra_args = { "--fast" } }),
-            diagnostics.flake8
+            -- formatting.black.with({ extra_args = { "--fast", "--line-length=88"} }),
+            -- diagnostics.flake8.with({ extra_args = { "--max-line-length=88" } }),
         },
         on_attach = function(client, bufnr)
             if client.supports_method("textDocument/formatting") then
@@ -24,7 +24,8 @@ local function config()
                     group = augroup,
                     buffer = bufnr,
                     callback = function()
-                        vim.lsp.buf.format({async =false})
+                        -- vim.lsp.buf.format({async =false})
+                        vim.lsp.buf.format({bufnr = bufnr})
                     end,
                 })
             end

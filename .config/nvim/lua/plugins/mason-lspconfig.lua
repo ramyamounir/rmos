@@ -11,6 +11,7 @@ LspServers = {
 	"lua_ls",
 	"markdown_oxide",
 	"pyright",
+	"ruff",
     "texlab",
 	"typos_lsp",
 	"yamlls",
