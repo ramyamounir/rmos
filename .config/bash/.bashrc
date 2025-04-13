@@ -5,7 +5,7 @@
 
 source $XDG_CONFIG_HOME/shell/rc.sh
 
-theme_shell "bash"; # theme shell before aliases
+theme_shell "bash" # theme shell before aliases
 source $XDG_CONFIG_HOME/bash/aliases.bash
 
-[ -t 0 ] && clear;
+[ -t 0 ] && clear

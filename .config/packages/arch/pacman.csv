@@ -1,7 +1,6 @@
 Manager,    Package,                                               Comments
 p,          aerc,                                                  email client
 p,          alacritty,                                             terminal emulator
-p,          arc-gtk-theme,                                         GTK theme
 p,          aria2,                                                 multiple protocol download (including via torrents)
 p,          bat,                                                   Better cat
 p,          bc,                                                    precision calculator
