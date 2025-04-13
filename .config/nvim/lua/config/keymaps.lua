@@ -55,5 +55,24 @@ keymap("n", "<leader>e", ":Neotree toggle<cr>", opts)
 keymap('n', 'zR', [[<Cmd>lua require('ufo').openAllFolds()<CR>]], opts)
 keymap('n', 'zM', [[<Cmd>lua require('ufo').closeAllFolds()<CR>]], opts)
 
+-- Iron
+keymap('n', '<Leader>rr', [[<cmd>IronRepl<CR>]], { noremap = true, silent = true })
+keymap('n', '<Leader>rs', [[<cmd>IronRestart<CR>]], { noremap = true, silent = true })
+keymap('n', '<Leader>rll', [[<cmd>IronFocus<CR>]], { noremap = true, silent = true })
+keymap('n', '<Leader>rh', [[<cmd>IronHide<CR>]], { noremap = true, silent = true })
 
-
+-- Go-replace-in in-house keymaps to circumvent an error from hell
+keymap("n", "griw", "viw\"_dP", { noremap = true, silent = true })
+keymap("n", "griW", "viW\"_dP", { noremap = true, silent = true })
+keymap("n", "grip", "vip\"_dP", { noremap = true, silent = true })
+keymap("n", "grit", "vit\"_dP", { noremap = true, silent = true })
+keymap("n", "gri(", "vi(\"_dP", { noremap = true, silent = true })
+keymap("n", "gri)", "vi(\"_dP", { noremap = true, silent = true })
+keymap("n", "gri[", "vi[\"_dP", { noremap = true, silent = true })
+keymap("n", "gri]", "vi]\"_dP", { noremap = true, silent = true })
+keymap("n", "gri{", "vi{\"_dP", { noremap = true, silent = true })
+keymap("n", "gri}", "vi}\"_dP", { noremap = true, silent = true })
+keymap("n", "gri<", "vi<\"_dP", { noremap = true, silent = true })
+keymap("n", "gri>", "vi>\"_dP", { noremap = true, silent = true })
+keymap("n", "gri'", "vi'\"_dP", { noremap = true, silent = true })
+keymap("n", "gri\"", "vi\"\"_dP", { noremap = true, silent = true })

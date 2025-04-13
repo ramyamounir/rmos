@@ -1,7 +1,7 @@
-require("config.options")     -- vim options
-require("config.autocmds")    -- vim auto commands
-require("config.keymaps")     -- vim keymaps
-require("config.utils")       -- vim utils
+require("config.options")  -- vim options
+require("config.autocmds") -- vim auto commands
+require("config.keymaps")  -- vim keymaps
+require("config.utils")    -- vim utils
 
 -- Bootstrap lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
@@ -11,7 +11,7 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
     if vim.v.shell_error ~= 0 then
         vim.api.nvim_echo({
             { "Failed to clone lazy.nvim:\n", "ErrorMsg" },
-            { out, "WarningMsg" },
+            { out,                            "WarningMsg" },
             { "\nPress any key to exit..." },
         }, true, {})
         vim.fn.getchar()
@@ -43,6 +43,7 @@ local plugins = {
     PreparePackage("lervag/vimtex", require("plugins.vimtex")),
     PreparePackage("hrsh7th/nvim-cmp", require("plugins.nvim-cmp")),
     PreparePackage("ramyamounir/codeium.nvim", require("plugins.codeium")),
+    -- PreparePackage("hkupty/iron.nvim", require("plugins.iron")),
     PreparePackage("saadparwaiz1/cmp_luasnip"),
     PreparePackage("hrsh7th/cmp-buffer"),
     PreparePackage("hrsh7th/cmp-path"),
@@ -54,9 +55,10 @@ local plugins = {
     PreparePackage("williamboman/mason.nvim", require("plugins.mason")),
     PreparePackage("williamboman/mason-lspconfig.nvim", require("plugins.mason-lspconfig")),
     PreparePackage("neovim/nvim-lspconfig", require("plugins.nvim-lspconfig")),
-    PreparePackage("jose-elias-alvarez/null-ls.nvim", require("plugins.null-ls")),
+    PreparePackage("stevearc/conform.nvim", require("plugins.conform")),
     PreparePackage("mfussenegger/nvim-lint"),
     PreparePackage("rshkarin/mason-nvim-lint", require("plugins.mason-lintconfig")),
+    PreparePackage("yetone/avante.nvim", require("plugins.avante")),
 
     -- miscellaneous
     PreparePackage("machakann/vim-sandwich", require("plugins.sandwich")),
@@ -69,7 +71,6 @@ local plugins = {
 
 return require("lazy").setup({
     spec = plugins,
-    install = { colorscheme = { "habamax" }},
+    install = { colorscheme = { "habamax" } },
     checker = { enabled = true }
 })
-

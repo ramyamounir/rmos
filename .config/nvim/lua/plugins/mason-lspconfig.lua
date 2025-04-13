@@ -1,7 +1,6 @@
 LspServers = {
 	"bashls",
 	"clangd",
-	"cmake",
 	"cssls",
 	"dockerls",
 	"dotls",

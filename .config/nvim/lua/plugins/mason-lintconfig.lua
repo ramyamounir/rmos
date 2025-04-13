@@ -1,7 +1,12 @@
 local LintingFormattingServers = {
-    "flake8",
-    "black",
-    "isort"
+    "docformatter",
+    "fixjson",
+    "latexindent",
+    "prettier",
+    "shfmt",
+    "tex-fmt",
+    "xmlformatter",
+    "yamlfix",
 }
 
 local opts = {

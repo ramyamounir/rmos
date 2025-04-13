@@ -24,5 +24,3 @@ function ClearMarks()
     vim.cmd("delm A-Za-z0-9")
 end
 
-
-
