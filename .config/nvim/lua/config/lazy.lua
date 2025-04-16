@@ -58,7 +58,7 @@ local plugins = {
     PreparePackage("stevearc/conform.nvim", require("plugins.conform")),
     PreparePackage("mfussenegger/nvim-lint"),
     PreparePackage("rshkarin/mason-nvim-lint", require("plugins.mason-lintconfig")),
-    PreparePackage("yetone/avante.nvim", require("plugins.avante")),
+    -- PreparePackage("yetone/avante.nvim", require("plugins.avante")),
 
     -- miscellaneous
     PreparePackage("machakann/vim-sandwich", require("plugins.sandwich")),

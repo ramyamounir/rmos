@@ -58,7 +58,12 @@ local opts = {
     },
     messages = {
         enabled = false,
-    }
+    },
+    lsp = {
+        signature = {
+            enabled = false,
+        },
+    },
 }
 
 return {

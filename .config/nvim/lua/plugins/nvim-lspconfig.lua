@@ -1,4 +1,3 @@
-
 local function lsp_highlight_document(client)
     -- Set autocommands conditional on server_capabilities
     if client.server_capabilities.documentHighlight then
@@ -20,7 +19,7 @@ local function lsp_keymaps(bufnr)
     vim.api.nvim_buf_set_keymap(bufnr, "n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
     vim.api.nvim_buf_set_keymap(bufnr, "n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
     vim.api.nvim_buf_set_keymap(bufnr, "n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
-    vim.api.nvim_buf_set_keymap( bufnr, "n", "gl", '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
+    vim.api.nvim_buf_set_keymap(bufnr, "n", "gl", '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
     vim.api.nvim_buf_set_keymap(bufnr, "n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
     vim.api.nvim_buf_set_keymap(bufnr, "n", "gR", "<cmd>lua vim.lsp.buf.references()<CR>", opts)
     -- vim.api.nvim_buf_set_keymap(bufnr, "n", "<C-k>", "<cmd>lua vim.lsp.buf.signature_help()<CR>", opts)
@@ -33,12 +32,11 @@ local function lsp_keymaps(bufnr)
 end
 
 local on_attach = function(client, bufnr)
-
     if client.name == 'ruff' then
         -- disable ruff's hover in favour of Pyright's
         client.server_capabilities.hoverProvider = false
     elseif client.name == "tsserver" then
-      client.server_capabilities.documentFormattingProvider = false
+        client.server_capabilities.documentFormattingProvider = false
     end
 
     lsp_keymaps(bufnr)
@@ -46,7 +44,7 @@ local on_attach = function(client, bufnr)
 end
 
 
-local function diagnostics_setup ()
+local function diagnostics_setup()
     local signs = {
         { name = "DiagnosticSignError", text = "" },
         { name = "DiagnosticSignWarn", text = "" },
@@ -91,7 +89,6 @@ end
 
 
 local function init()
-
     local cmp_status_ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
     if cmp_status_ok then
         Capabilities = cmp_nvim_lsp.default_capabilities()
@@ -102,7 +99,6 @@ local function init()
 
     local opts = {}
     for _, server in pairs(LspServers) do
-
         opts = {
             on_attach = on_attach,
             capabilities = Capabilities,
@@ -118,7 +114,6 @@ local function init()
     end
 
     diagnostics_setup()
-
 end
 
 return {
