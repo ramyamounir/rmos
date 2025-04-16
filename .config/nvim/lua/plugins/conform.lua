@@ -1,14 +1,20 @@
+local function in_git_repo()
+    local git_dir = vim.fn.systemlist("git rev-parse --is-inside-work-tree")[1]
+    return git_dir == "true"
+end
+
 local function ruff_format_custom(bufnr)
     vim.cmd("write")
 
     local filename = vim.api.nvim_buf_get_name(bufnr)
     local relpath = vim.fn.fnamemodify(filename, ":.")
-    -- if filename == "" then return {} end
+
+    if not in_git_repo() then
+        return { "ruff_fix", "ruff_format", "ruff_organize_imports" }
+    end
 
     -- Get hunks from git diff
     local diff = vim.fn.systemlist("git diff -U1 --no-color -- " .. relpath)
-    -- if vim.v.shell_error ~= 0 or vim.tbl_isempty(diff) then return {} end
-
     local ranges = {}
 
     for _, line in ipairs(diff) do
