@@ -12,19 +12,20 @@ local function config(plugins, opts)
             scratch_repl = true,
             repl_definition = {
                 python = {
-                    command = {
-                        "ipython",
-                        "-i",
-                        "--no-banner",
-                        "-c",
-                        "import IPython; ip = IPython.get_ipython(); ip.run_line_magic('load_ext', 'autoreload'); ip.run_line_magic('autoreload', '2')",
-                        "--no-confirm-exit",
-                        "--no-autoindent"
-                    },
+                    command = { "python" },
                     format = common.bracketed_paste_python,
                 },
+                -- sh = {
+                --     command = { "sh" },
+                --     format = common.bracketed_paste,
+                -- },
+                lua = {
+                    command = { "lua" },
+                    format = common.bracketed_paste,
+                },
             },
-            repl_open_cmd = view.right(80),
+            repl_open_cmd = view.split.vertical.botright(50),
+            -- repl_open_cmd = view.right(80),
         },
         repl_filetype = function(bufnr, ft)
             return ft
@@ -32,11 +33,9 @@ local function config(plugins, opts)
         keymaps = {
             send_motion = "<Leader>rc",
             visual_send = "<Leader>rl",
-            send_file = "<Leader>rf",
             send_line = "<Leader>rl",
+            send_file = "<Leader>rf",
             send_mark = "<Leader>rm",
-            cr = "<Leader>r<cr>",
-            interrupt = "<Leader>r<Leader>",
             exit = "<Leader>rq",
             clear = "<Leader>rx",
         },
@@ -50,7 +49,3 @@ end
 return {
     config = config
 }
-
-
-
--- ipython -i --no-banner --no-tip -c "import IPython; ip = IPython.get_ipython(); ip.run_line_magic('load_ext', 'autoreload'); ip.run_line_magic('autoreload', '2')" --no-confirm-exit

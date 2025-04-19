@@ -43,7 +43,7 @@ local plugins = {
     PreparePackage("lervag/vimtex", require("plugins.vimtex")),
     PreparePackage("hrsh7th/nvim-cmp", require("plugins.nvim-cmp")),
     PreparePackage("ramyamounir/codeium.nvim", require("plugins.codeium")),
-    -- PreparePackage("hkupty/iron.nvim", require("plugins.iron")),
+    PreparePackage("hkupty/iron.nvim", require("plugins.iron")),
     PreparePackage("saadparwaiz1/cmp_luasnip"),
     PreparePackage("hrsh7th/cmp-buffer"),
     PreparePackage("hrsh7th/cmp-path"),

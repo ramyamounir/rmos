@@ -35,11 +35,15 @@ keymap("n", "ZZ", ":wqa<cr>", opts)
 
 -- Terminal --
 -- Better terminal navigation
+keymap("t", "<Esc>", "<C-\\><C-N>", term_opts)
 keymap("t", "<C-h>", "<C-\\><C-N><C-w>h", term_opts)
 keymap("t", "<C-j>", "<C-\\><C-N><C-w>j", term_opts)
 keymap("t", "<C-k>", "<C-\\><C-N><C-w>k", term_opts)
 keymap("t", "<C-l>", "<C-\\><C-N><C-w>l", term_opts)
-
+keymap("i", "<C-h>", "<Esc><C-w>h", term_opts)
+keymap("i", "<C-j>", "<Esc><C-w>j", term_opts)
+keymap("i", "<C-k>", "<Esc><C-w>k", term_opts)
+keymap("i", "<C-l>", "<Esc><C-w>l", term_opts)
 
 
 -- Telescope
@@ -57,9 +61,7 @@ keymap('n', 'zM', [[<Cmd>lua require('ufo').closeAllFolds()<CR>]], opts)
 
 -- Iron
 keymap('n', '<Leader>rr', [[<cmd>IronRepl<CR>]], { noremap = true, silent = true })
-keymap('n', '<Leader>rs', [[<cmd>IronRestart<CR>]], { noremap = true, silent = true })
-keymap('n', '<Leader>rll', [[<cmd>IronFocus<CR>]], { noremap = true, silent = true })
-keymap('n', '<Leader>rh', [[<cmd>IronHide<CR>]], { noremap = true, silent = true })
+keymap('n', '<Leader>rR', [[<cmd>IronRestart<CR>]], { noremap = true, silent = true })
 
 -- Go-replace-in in-house keymaps to circumvent an error from hell
 keymap("n", "griw", "viw\"_dP", { noremap = true, silent = true })

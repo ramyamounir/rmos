@@ -40,41 +40,21 @@ local opts = {
             insert = "<CR>"
         }
     },
-    provider = "blah",
+    behaviour = {
+        -- use_cwd_as_project_root = true,
+        auto_suggestions = false,
+    },
+    provider = "LLM",
     vendors = {
-        blah = {
+        LLM = {
             __inherited_from = "openai",
-            api_key_name = "OPENAI_API_KEY",
-            endpoint = "https://api.openai.com/v1",
-            model = "gpt-4o",
-            temperature = 0.0,
+            api_key_name = "LLM_API_KEY",
+            endpoint = "http://localhost:3000/api",
+            model = "dolphin3:latest",
+            temperature = 0.8,
             disable_tools = true,
         }
     }
-    -- provider = "openai",
-    -- openai = {
-    --     endpoint = "https://api.openai.com/v1",
-    --     model = "gpt-4.1-2025-04-14",
-    --     timeout = 30000, -- in milliseconds
-    --     temperature = 0,
-    --     disable_tools = true,
-    -- },
-    -- auto_suggestions_provider = "ollama",
-    -- behaviour = {
-    --     auto_suggestions = false
-    -- },
-    -- provider = "ollama",
-    -- vendors = {
-    --     ollama = {
-    --         __inherited_from = "openai",
-    --         api_key_name = "LLM_API_KEY",
-    --         endpoint = "https://llm.lab.ramymounir.com/api",
-    --         -- endpoint = "https://llm.sujal.tv/api",
-    --         model = "gpt-4o",
-    --         temperature = 0.8,
-    --         disable_tools = true,
-    --     }
-    -- }
 }
 
 local function is_enabled()
@@ -90,7 +70,7 @@ return {
     enabled = is_enabled(),
     event = "VeryLazy",
     lazy = false,
-    version = false,
+    version = "*",
     opts = opts,
     build = "make",
     dependencies = dependencies
