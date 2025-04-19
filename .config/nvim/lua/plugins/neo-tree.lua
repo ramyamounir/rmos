@@ -2,27 +2,8 @@ local dependencies = {
     "nvim-lua/plenary.nvim",
     "nvim-tree/nvim-web-devicons",
     "MunifTanjim/nui.nvim",
-    -- "3rd/image.nvim",
+    "3rd/image.nvim",
 }
-
-local function init()
-    vim.fn.sign_define("DiagnosticSignError", { text = " ", texthl = "DiagnosticSignError" })
-    vim.fn.sign_define("DiagnosticSignWarn", { text = "", texthl = "DiagnosticSignWarn" })
-    vim.fn.sign_define("DiagnosticSignInfo", { text = " ", texthl = "DiagnosticSignInfo" })
-    vim.fn.sign_define("DiagnosticSignHint", { text = "󱩕", texthl = "DiagnosticSignHint" })
-
-    -- Auto command to show tree on VimEnter Event
-
-    -- vim.api.nvim_create_augroup("neotree", {})
-    -- vim.api.nvim_create_autocmd("VimEnter", { pattern = "*", command = "Neotree show" })
-    -- vim.api.nvim_create_autocmd("UIEnter", {
-    --     desc = "Open Neotree automatically",
-    --     group = "neotree",
-    --     callback = function()
-    --         vim.cmd("Neotree toggle")
-    --     end,
-    -- })
-end
 
 local function traverse_to_the_end(state)
     local status_ok, renderer = pcall(require, "neo-tree.ui.renderer")
@@ -65,7 +46,7 @@ local function traverse_in_directory(state)
 end
 
 local opts = {
-    enable_diagnostics = true,
+    enable_diagnostics = false,
     default_component_configs = {
         indent = {
             last_indent_marker = "╰╴",
@@ -134,5 +115,4 @@ local opts = {
 return {
     dependencies = dependencies,
     opts = opts,
-    init = init
 }
