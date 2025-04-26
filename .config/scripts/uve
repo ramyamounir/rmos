@@ -1,0 +1,74 @@
+#!/usr/bin/bash
+
+UV_VENV_HOME=${UV_VENV_HOME:-"$XDG_CACHE_HOME/uv/venv"}
+
+if [ -z "$1" ]; then
+    echo ""
+    echo -e "Virtual environment home (\$UV_VENV_HOME): $UV_VENV_HOME "
+    echo ""
+    echo -e "\tuve env [OPTIONS] ENVIRONMENT\t\tCreate virtual environment"
+    echo -e "\tuve a[ctivate] ENVIRONMENT\t\tActivate virtual environment"
+    echo -e "\tuve d[eactivate]\t\t\tDeactivate current virtual environment"
+    echo -e "\tuve ls\t\t\t\t\tList virtual environments"
+    echo -e "\tuve rm ENVIRONMENT\t\t\tRemove virtual environment"
+    echo -e "\tuve add PACKAGE...\t\t\tAdd packages to active environment"
+    echo -e "\tuve remove PACKAGE...\t\tRemove packages from active environment"
+    echo ""
+    exit 0
+fi
+
+case "$1" in
+    "env")
+        shift
+        if [ -z "$1" ]; then
+            echo "uve env [OPTIONS] ENV_NAME"
+        elif [ -d "$UV_VENV_HOME/$1" ]; then
+            echo "Environment already exists."
+        else
+            ENV_NAME="${!#}"
+            OPTIONS="${@:2:$#-2}"
+
+            uv venv $OPTIONS "$UV_VENV_HOME/$ENV_NAME"
+            echo "Or simply run: uve a $ENV_NAME"
+        fi
+        ;;
+    "a" | "activate")
+        shift
+        echo "$1"
+        echo "$UV_VENV_HOME/$1/bin/activate"
+        exit
+        if ! [ -d "$UV_VENV_HOME/$1" ]; then
+            echo "$1 does not exist."
+        elif [ -z "$1" ]; then
+            echo "source uve a[ctivate] ENV_NAME"
+        else
+            . "$UV_VENV_HOME/$1/bin/activate"
+        fi
+        ;;
+    "ls")
+        if [ -d "$UV_VENV_HOME" ]; then
+            ls -l "$UV_VENV_HOME" | tail -n +2 | rev | cut -d ' ' -f 1 | rev
+        fi
+        ;;
+    "rm")
+        shift
+        if [ -z "$1" ]; then
+            echo "uve rm ENV_NAME"
+        else
+            if [ -d "$UV_VENV_HOME/$1" ]; then
+                rm -r "$UV_VENV_HOME/$1"
+                echo "Removed environment."
+            else
+                echo "No such environment."
+            fi
+        fi
+        ;;
+    "add")
+        shift
+        uv add "$@" --active
+        ;;
+    "remove")
+        shift
+        uv remove "$@" --active
+        ;;
+esac
