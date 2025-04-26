@@ -78,3 +78,9 @@ keymap("n", "gri<", "vi<\"_dP", { noremap = true, silent = true })
 keymap("n", "gri>", "vi>\"_dP", { noremap = true, silent = true })
 keymap("n", "gri'", "vi'\"_dP", { noremap = true, silent = true })
 keymap("n", "gri\"", "vi\"\"_dP", { noremap = true, silent = true })
+
+-- goto preview keymaps
+keymap("n", "gpd", [[:lua require("goto-preview").goto_preview_definition()<CR>]], { noremap = true, silent = true })
+keymap("n", "gpD", [[:lua require('goto-preview').goto_preview_declaration()<CR>]], { noremap = true, silent = true })
+keymap("n", "gpr", [[:lua require('goto-preview').goto_preview_references()<CR>]], { noremap = true, silent = true })
+keymap("n", "<Esc>", [[:lua require("goto-preview").close_all_win()<CR>]], { noremap = true, silent = true })

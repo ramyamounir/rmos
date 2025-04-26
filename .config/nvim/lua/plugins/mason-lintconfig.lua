@@ -10,10 +10,10 @@ local LintingFormattingServers = {
 }
 
 local opts = {
-    ensure_installed = LintingFormattingServers,
+    -- ensure_installed = LintingFormattingServers,
     automatic_installation = true,
 }
 
 return {
-	opts = opts,
+    opts = opts,
 }

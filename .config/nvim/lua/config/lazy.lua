@@ -63,6 +63,8 @@ local plugins = {
     -- miscellaneous
     PreparePackage("machakann/vim-sandwich", require("plugins.sandwich")),
     PreparePackage("kevinhwang91/nvim-ufo", require("plugins.ufo")),
+    PreparePackage("vim-test/vim-test", require("plugins.vim-test")),
+    PreparePackage("rmagatti/goto-preview", require("plugins.goto-preview")),
     PreparePackage("machakann/vim-highlightedyank"),
     PreparePackage("vim-scripts/ReplaceWithRegister"),
     PreparePackage("tpope/vim-commentary"),
