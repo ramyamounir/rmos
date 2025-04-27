@@ -66,10 +66,12 @@ local opts = {
             return require("codecompanion.adapters").extend("ollama", {
                 env = {
                     model = "llama3.2:3b",
-                    url = "http://localhost:7869",
+                    url = "https://ollama.sujal.tv",
+                    api_key = "OLLAMA_API_KEY",
                 },
                 headers = {
                     ["Content-Type"] = "application/json",
+                    ["Authorization"] = "Bearer ${api_key}",
                 },
                 parameters = {
                     sync = true,

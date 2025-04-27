@@ -54,6 +54,7 @@ p,          tmux,                                                  tmux session 
 p,          ufw,                                                   firewall
 p,          unison,                                                file synchronisation tool
 p,          vlc,                                                   VLC media player
+p,          lazygit,                                               Git TUI tool
 p,          zoxide,                                                Zoxide
 p,          zsh,                                                   shell
 p,          xcape,                                                 configure keys remaps

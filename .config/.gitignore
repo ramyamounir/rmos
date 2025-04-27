@@ -39,6 +39,8 @@
 !tmux/
 !vim/
 !vscode/
+!lazydocker/
+!lazygit/
 !wallpapers/
 !wget/
 !x11/
