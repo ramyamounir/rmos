@@ -84,3 +84,15 @@ keymap("n", "gpd", [[:lua require("goto-preview").goto_preview_definition()<CR>]
 keymap("n", "gpD", [[:lua require('goto-preview').goto_preview_declaration()<CR>]], { noremap = true, silent = true })
 keymap("n", "gpr", [[:lua require('goto-preview').goto_preview_references()<CR>]], { noremap = true, silent = true })
 keymap("n", "<Esc>", [[:lua require("goto-preview").close_all_win()<CR>]], { noremap = true, silent = true })
+
+-- codecompanion keymaps
+keymap("n", "<leader>gg", [[:lua require("codecompanion").toggle()<CR>]], { noremap = true, silent = true })
+keymap("n", "<leader>gn", [[:lua require("codecompanion").chat()<CR>]], { noremap = true, silent = true })
+keymap("v", "<leader>ge", ":'<,'>CodeCompanion /explain<CR>",
+    { noremap = true, silent = true, desc = "Explain selection" })
+keymap("v", "<leader>gf", ":'<,'>CodeCompanion /fix<CR>",
+    { noremap = true, silent = true, desc = "Fix code for selection" })
+keymap("v", "<leader>gu", ":'<,'>CodeCompanion /tests<CR>",
+    { noremap = true, silent = true, desc = "Create Unit Tests for selection" })
+keymap("v", "<leader>gc", ":'<,'>CodeCompanion /commit<CR>",
+    { noremap = true, silent = true, desc = "Create commit message for selection" })

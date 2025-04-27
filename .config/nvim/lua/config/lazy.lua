@@ -37,6 +37,7 @@ local plugins = {
 
     -- editor
     PreparePackage("iamcco/markdown-preview.nvim", require("plugins.markdown-preview")),
+    PreparePackage("MeanderingProgrammer/render-markdown.nvim", require("plugins.render-markdown")),
     PreparePackage("ibhagwan/fzf-lua", require("plugins.fzf")),
 
     -- coding
@@ -50,7 +51,6 @@ local plugins = {
     PreparePackage("hrsh7th/cmp-nvim-lua"),
     PreparePackage("hrsh7th/cmp-nvim-lsp"),
 
-
     -- LSP
     PreparePackage("williamboman/mason.nvim", require("plugins.mason")),
     PreparePackage("williamboman/mason-lspconfig.nvim", require("plugins.mason-lspconfig")),
@@ -58,7 +58,7 @@ local plugins = {
     PreparePackage("stevearc/conform.nvim", require("plugins.conform")),
     PreparePackage("mfussenegger/nvim-lint"),
     PreparePackage("rshkarin/mason-nvim-lint", require("plugins.mason-lintconfig")),
-    -- PreparePackage("yetone/avante.nvim", require("plugins.avante")),
+    PreparePackage("olimorris/codecompanion.nvim", require("plugins.codecompanion")),
 
     -- miscellaneous
     PreparePackage("machakann/vim-sandwich", require("plugins.sandwich")),
