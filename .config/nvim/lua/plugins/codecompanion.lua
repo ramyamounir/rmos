@@ -66,7 +66,7 @@ local opts = {
             return require("codecompanion.adapters").extend("ollama", {
                 schema = {
                     model = {
-                        default = "deepseek-r1:7b",
+                        default = "granite3.3:8b",
                     },
                 },
                 env = {
