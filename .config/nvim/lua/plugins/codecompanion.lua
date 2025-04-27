@@ -64,9 +64,13 @@ local opts = {
     adapters = {
         ollama = function()
             return require("codecompanion.adapters").extend("ollama", {
+                schema = {
+                    model = {
+                        default = "deepseek-r1:7b",
+                    },
+                },
                 env = {
-                    model = "llama3.2:3b",
-                    url = "https://ollama.sujal.tv",
+                    url = "https://ollama.lab.ramymounir.com",
                     api_key = "OLLAMA_API_KEY",
                 },
                 headers = {
