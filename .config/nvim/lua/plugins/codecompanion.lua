@@ -62,9 +62,18 @@ local opts = {
         },
         ollama = function()
             return require("codecompanion.adapters").extend("ollama", {
+                name = "LLM",
                 schema = {
                     model = {
-                        default = "codellama:13b",
+                        -- default = "codellama:13b",
+                        default = "granite3.3:8b",
+                    },
+                    num_ctx = {
+                        -- default = 15000,
+                        default = 130000,
+                    },
+                    num_predict = {
+                        default = -1,
                     },
                 },
                 env = {
