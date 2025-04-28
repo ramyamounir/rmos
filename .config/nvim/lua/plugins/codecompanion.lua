@@ -64,14 +64,18 @@ local opts = {
     adapters = {
         ollama = function()
             return require("codecompanion.adapters").extend("ollama", {
+                schema = {
+                    model = {
+                        default = "granite3.3:8b",
+                    },
+                },
                 env = {
-                    model = "granite3.3:8b",
                     url = "https://ollama.lab.ramymounir.com",
-                    -- api_key = "OLLAMA_API_KEY",
+                    api_key = "OLLAMA_API_KEY",
                 },
                 headers = {
                     ["Content-Type"] = "application/json",
-                    -- ["Authorization"] = "Bearer ${api_key}",
+                    ["Authorization"] = "Bearer ${api_key}",
                 },
                 parameters = {
                     sync = true,
