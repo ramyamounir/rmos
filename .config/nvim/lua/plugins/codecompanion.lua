@@ -9,7 +9,7 @@ local opts = {
         chat = {
             roles = {
                 llm = function(adapter)
-                    return adapter.formatted_name
+                    return adapter.schema.model.default
                 end,
                 user = "Ramy",
             },
@@ -64,7 +64,7 @@ local opts = {
             return require("codecompanion.adapters").extend("ollama", {
                 schema = {
                     model = {
-                        default = "granite3.3:8b",
+                        default = "codellama:13b",
                     },
                 },
                 env = {
