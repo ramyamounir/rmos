@@ -88,7 +88,8 @@ local opts = {
         },
     },
     prompt_library = {
-        ['Send Code'] = require("plugins.codecompanion.prompts").send_code
+        ['Send Code'] = require("plugins.codecompanion.prompts").send_code,
+        ['Unit Tests'] = { strategy = "chat" },
     },
 }
 
