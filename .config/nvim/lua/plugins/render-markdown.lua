@@ -5,9 +5,6 @@ local dependencies = {
 
 return {
     dependencies = dependencies,
-
-    ---@module 'render-markdown'
-    ---@type 'render.md.UserConfig
     opts = {
         file_types = { "markdown", "codecompanion" },
     },

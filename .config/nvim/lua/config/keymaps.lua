@@ -49,8 +49,8 @@ keymap("i", "<C-l>", "<Esc><C-w>l", term_opts)
 -- Telescope
 keymap("n", "<c-p>", "<cmd>Telescope find_files<cr>", opts)
 keymap("n", "<c-t>", "<cmd>Telescope live_grep<cr>", opts)
-keymap("n", "<c-S-p>", ":FzfLua files cwd=~ <CR>", { noremap = true, silent = true })
-keymap("n", "<c-S-T>", ":FzfLua grep cwd=~ <CR>", { noremap = true, silent = true })
+keymap("n", "<c-S-p>", ":FzfLua files cwd=~ <CR>", opts)
+keymap("n", "<c-S-T>", ":FzfLua grep cwd=~ <CR>", opts)
 
 -- Nvimtree
 keymap("n", "<leader>e", ":Neotree toggle<cr>", opts)
@@ -60,39 +60,37 @@ keymap('n', 'zR', [[<Cmd>lua require('ufo').openAllFolds()<CR>]], opts)
 keymap('n', 'zM', [[<Cmd>lua require('ufo').closeAllFolds()<CR>]], opts)
 
 -- Iron
-keymap('n', '<Leader>rr', [[<cmd>IronRepl<CR>]], { noremap = true, silent = true })
-keymap('n', '<Leader>rR', [[<cmd>IronRestart<CR>]], { noremap = true, silent = true })
+keymap('n', '<Leader>rr', [[<cmd>IronRepl<CR>]], opts)
+keymap('n', '<Leader>rR', [[<cmd>IronRestart<CR>]], opts)
 
 -- Go-replace-in in-house keymaps to circumvent an error from hell
-keymap("n", "griw", "viw\"_dP", { noremap = true, silent = true })
-keymap("n", "griW", "viW\"_dP", { noremap = true, silent = true })
-keymap("n", "grip", "vip\"_dP", { noremap = true, silent = true })
-keymap("n", "grit", "vit\"_dP", { noremap = true, silent = true })
-keymap("n", "gri(", "vi(\"_dP", { noremap = true, silent = true })
-keymap("n", "gri)", "vi(\"_dP", { noremap = true, silent = true })
-keymap("n", "gri[", "vi[\"_dP", { noremap = true, silent = true })
-keymap("n", "gri]", "vi]\"_dP", { noremap = true, silent = true })
-keymap("n", "gri{", "vi{\"_dP", { noremap = true, silent = true })
-keymap("n", "gri}", "vi}\"_dP", { noremap = true, silent = true })
-keymap("n", "gri<", "vi<\"_dP", { noremap = true, silent = true })
-keymap("n", "gri>", "vi>\"_dP", { noremap = true, silent = true })
-keymap("n", "gri'", "vi'\"_dP", { noremap = true, silent = true })
-keymap("n", "gri\"", "vi\"\"_dP", { noremap = true, silent = true })
+keymap("n", "griw", "viw\"_dP", opts)
+keymap("n", "griW", "viW\"_dP", opts)
+keymap("n", "grip", "vip\"_dP", opts)
+keymap("n", "grit", "vit\"_dP", opts)
+keymap("n", "gri(", "vi(\"_dP", opts)
+keymap("n", "gri)", "vi(\"_dP", opts)
+keymap("n", "gri[", "vi[\"_dP", opts)
+keymap("n", "gri]", "vi]\"_dP", opts)
+keymap("n", "gri{", "vi{\"_dP", opts)
+keymap("n", "gri}", "vi}\"_dP", opts)
+keymap("n", "gri<", "vi<\"_dP", opts)
+keymap("n", "gri>", "vi>\"_dP", opts)
+keymap("n", "gri'", "vi'\"_dP", opts)
+keymap("n", "gri\"", "vi\"\"_dP", opts)
 
 -- goto preview keymaps
-keymap("n", "gpd", [[:lua require("goto-preview").goto_preview_definition()<CR>]], { noremap = true, silent = true })
-keymap("n", "gpD", [[:lua require('goto-preview').goto_preview_declaration()<CR>]], { noremap = true, silent = true })
-keymap("n", "gpr", [[:lua require('goto-preview').goto_preview_references()<CR>]], { noremap = true, silent = true })
-keymap("n", "<Esc>", [[:lua require("goto-preview").close_all_win()<CR>]], { noremap = true, silent = true })
+keymap("n", "gpd", [[:lua require("goto-preview").goto_preview_definition()<CR>]], opts)
+keymap("n", "gpD", [[:lua require('goto-preview').goto_preview_declaration()<CR>]], opts)
+keymap("n", "gpr", [[:lua require('goto-preview').goto_preview_references()<CR>]], opts)
+keymap("n", "<Esc>", [[:lua require("goto-preview").close_all_win()<CR>]], opts)
 
 -- codecompanion keymaps
-keymap("n", "<leader>gg", [[:lua require("codecompanion").toggle()<CR>]], { noremap = true, silent = true })
-keymap("n", "<leader>gn", [[:lua require("codecompanion").chat()<CR>]], { noremap = true, silent = true })
-keymap("v", "<leader>ge", ":'<,'>CodeCompanion /explain<CR>",
-    { noremap = true, silent = true, desc = "Explain selection" })
-keymap("v", "<leader>gf", ":'<,'>CodeCompanion /fix<CR>",
-    { noremap = true, silent = true, desc = "Fix code for selection" })
-keymap("v", "<leader>gu", ":'<,'>CodeCompanion /tests<CR>",
-    { noremap = true, silent = true, desc = "Create Unit Tests for selection" })
-keymap("v", "<leader>gc", ":'<,'>CodeCompanion /commit<CR>",
-    { noremap = true, silent = true, desc = "Create commit message for selection" })
+keymap("n", "<leader>gg", [[:lua require("codecompanion").toggle()<CR>]], opts)
+keymap("n", "<leader>gn", [[:lua require("codecompanion").chat()<CR>]], opts)
+keymap("v", "<leader>ge", ":'<,'>CodeCompanion /explain<CR>", opts)
+keymap("v", "<leader>gf", ":'<,'>CodeCompanion /fix<CR>", opts)
+keymap("v", "<leader>gu", ":'<,'>CodeCompanion /tests<CR>", opts)
+keymap("v", "<leader>gc", ":'<,'>CodeCompanion /commit<CR>", opts)
+keymap("v", "<leader>gl", ":'<,'>CodeCompanion /send<CR>", opts)
+keymap("n", "<Leader>g-", [[:lua require("plugins.codecompanion.pickers").pick_chat()<CR>]], opts)

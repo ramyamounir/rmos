@@ -3,55 +3,50 @@ local dependencies = {
     "nvim-treesitter/nvim-treesitter",
 }
 
+
 local opts = {
     strategies = {
         chat = {
             roles = {
-                ---The header name for the LLM's messages
-                ---@type string|fun(adapter: CodeCompanion.Adapter): string
                 llm = function(adapter)
-                    return "CodeCompanion (" .. adapter.formatted_name .. ")"
+                    return adapter.formatted_name
                 end,
-
-                ---The header name for your messages
-                ---@type string
                 user = "Ramy",
             },
             adapter = "ollama",
             keymaps = {
+                send = {
+                    modes = { n = '<Enter>' },
+                    callback = "keymaps.send",
+                    description = "Send Message"
+                },
                 close = {
                     modes = { n = "<leader>gq" },
-                    index = 4,
                     callback = "keymaps.close",
                     description = "Close Chat",
                 },
                 clear = {
                     modes = { n = "<leader>gx" },
-                    index = 6,
                     callback = "keymaps.clear",
                     description = "Clear Chat",
                 },
                 next_chat = {
                     modes = { n = "]]" },
-                    index = 11,
                     callback = "keymaps.next_chat",
                     description = "Next Chat",
                 },
                 previous_chat = {
                     modes = { n = "[[" },
-                    index = 12,
                     callback = "keymaps.previous_chat",
                     description = "Previous Chat",
                 },
                 next_header = {
                     modes = { n = "}" },
-                    index = 13,
                     callback = "keymaps.next_header",
                     description = "Next Header",
                 },
                 previous_header = {
                     modes = { n = "{" },
-                    index = 14,
                     callback = "keymaps.previous_header",
                     description = "Previous Header",
                 },
@@ -62,6 +57,9 @@ local opts = {
         },
     },
     adapters = {
+        opts = {
+            show_defaults = false,
+        },
         ollama = function()
             return require("codecompanion.adapters").extend("ollama", {
                 schema = {
@@ -88,6 +86,9 @@ local opts = {
             auto_scroll = false,
             show_token_count = false,
         },
+    },
+    prompt_library = {
+        ['Send Code'] = require("plugins.codecompanion.prompts").send_code
     },
 }
 
