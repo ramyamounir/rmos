@@ -65,12 +65,10 @@ local opts = {
                 name = "LLM",
                 schema = {
                     model = {
-                        -- default = "codellama:13b",
-                        default = "granite3.3:8b",
+                        default = "llama3.1:8b",
                     },
                     num_ctx = {
-                        -- default = 15000,
-                        default = 130000,
+                        default = 131072,
                     },
                     num_predict = {
                         default = -1,
