@@ -34,6 +34,7 @@ local plugins = {
     PreparePackage("nvim-telescope/telescope.nvim", require("plugins.telescope")),
     PreparePackage("nvim-tree/nvim-web-devicons", require("plugins.web-dev-icons")),
     PreparePackage("ellisonleao/gruvbox.nvim", require("plugins.gruvbox")),
+    PreparePackage("akinsho/toggleterm.nvim", require("plugins.toggleterm")),
 
     -- editor
     PreparePackage("iamcco/markdown-preview.nvim", require("plugins.markdown-preview")),

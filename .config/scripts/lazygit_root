@@ -1,0 +1,58 @@
+#!/bin/sh
+
+TERMINAL="alacritty"
+
+# Get focused window ID and PID
+win_id=$(xdotool getwindowfocus)
+pid=$(xdotool getwindowpid "$win_id")
+
+# Recursively find a shell-like process under the given PID
+get_shell_pid_deep() {
+  local root_pid=$1
+  local queue=("$root_pid")
+
+  while [ ${#queue[@]} -gt 0 ]; do
+    local current_pid="${queue[0]}"
+    queue=("${queue[@]:1}")
+
+    local cmd
+    cmd=$(ps -p "$current_pid" -o comm= 2>/dev/null)
+
+    if [[ "$cmd" =~ ^(bash|zsh|fish|dash|sh)$ ]]; then
+      echo "$current_pid"
+      return 0
+    fi
+
+    local children
+    children=$(pgrep -P "$current_pid")
+    for c in $children; do
+      queue+=("$c")
+    done
+  done
+  return 1
+}
+
+# Find shell PID and its cwd
+shell_pid=$(get_shell_pid_deep "$pid")
+cwd="/home/$USER"
+if [ -n "$shell_pid" ] && [ -e "/proc/$shell_pid/cwd" ]; then
+  cwd=$(readlink "/proc/$shell_pid/cwd")
+fi
+
+# Use GIT_ROOT if defined, fallback to cwd
+target_dir="${GIT_ROOT:-$cwd}"
+
+# Use GIT_NAME if defined
+if [ -n "$GIT_NAME" ]; then
+  lg_cmd="lazygit -g \"$GIT_NAME\""
+else
+  lg_cmd="lazygit"
+fi
+
+# Build shell command
+cmd="cd \"$target_dir\" && $lg_cmd"
+
+# Launch terminal
+cd "$target_dir" || exit 1
+xdotool key super+Shift+y
+$TERMINAL -e zsh -c "$cmd"

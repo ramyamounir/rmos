@@ -33,6 +33,18 @@ keymap("n", "Y", "y$", opts)
 keymap("n", "zz", ":wa<cr>", opts)
 keymap("n", "ZZ", ":wqa<cr>", opts)
 
+-- Start terminal and lazygit windows respecting direnv
+vim.keymap.set({ "n", "i", "v", "t" }, "<C-Enter>", function()
+    vim.fn.jobstart({ "terminal_clone" }, {
+        detach = true,
+    })
+end, { desc = "Open project terminal" })
+vim.keymap.set({ "n", "i", "v", "t" }, "<C-\\>", function()
+    vim.fn.jobstart({ "lazygit_root" }, {
+        detach = true,
+    })
+end, { desc = "Open lazygit" })
+
 -- Terminal --
 -- Better terminal navigation
 keymap("t", "<Esc>", "<C-\\><C-N>", term_opts)
@@ -47,10 +59,12 @@ keymap("i", "<C-l>", "<Esc><C-w>l", term_opts)
 
 
 -- Telescope
-keymap("n", "<c-p>", "<cmd>Telescope find_files<cr>", opts)
-keymap("n", "<c-t>", "<cmd>Telescope live_grep<cr>", opts)
-keymap("n", "<c-S-p>", ":FzfLua files cwd=~ <CR>", opts)
-keymap("n", "<c-S-T>", ":FzfLua grep cwd=~ <CR>", opts)
+vim.keymap.set("n", "<c-p>", function()
+    require("plugins.telescope.wrappers").find_files()
+end, { desc = "Find files in project root" })
+vim.keymap.set("n", "<c-t>", function()
+    require("plugins.telescope.wrappers").live_grep()
+end, { desc = "Live grep in project root" })
 
 -- Nvimtree
 keymap("n", "<leader>e", ":Neotree toggle<cr>", opts)

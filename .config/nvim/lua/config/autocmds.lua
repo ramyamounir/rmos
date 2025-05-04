@@ -47,3 +47,15 @@ vim.api.nvim_create_autocmd({ "BufWinEnter", "TermOpen" }, {
     end,
 })
 
+-- This toggles auto format for the current buffer
+vim.api.nvim_create_user_command("FormatToggle", function()
+    if vim.b.disable_autoformat then
+        vim.b.disable_autoformat = false
+        vim.notify("Autoformat on save: enabled", vim.log.levels.INFO)
+    else
+        vim.b.disable_autoformat = true
+        vim.notify("Autoformat on save: disabled", vim.log.levels.WARN)
+    end
+end, {
+    desc = "Toggle autoformat-on-save for the current buffer",
+})
