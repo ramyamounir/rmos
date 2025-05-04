@@ -34,7 +34,6 @@ local plugins = {
     PreparePackage("nvim-telescope/telescope.nvim", require("plugins.telescope")),
     PreparePackage("nvim-tree/nvim-web-devicons", require("plugins.web-dev-icons")),
     PreparePackage("ellisonleao/gruvbox.nvim", require("plugins.gruvbox")),
-    PreparePackage("akinsho/toggleterm.nvim", require("plugins.toggleterm")),
 
     -- editor
     PreparePackage("iamcco/markdown-preview.nvim", require("plugins.markdown-preview")),
@@ -45,7 +44,6 @@ local plugins = {
     PreparePackage("lervag/vimtex", require("plugins.vimtex")),
     PreparePackage("hrsh7th/nvim-cmp", require("plugins.nvim-cmp")),
     PreparePackage("ramyamounir/codeium.nvim", require("plugins.codeium")),
-    PreparePackage("hkupty/iron.nvim", require("plugins.iron")),
     PreparePackage("saadparwaiz1/cmp_luasnip"),
     PreparePackage("hrsh7th/cmp-buffer"),
     PreparePackage("hrsh7th/cmp-path"),
