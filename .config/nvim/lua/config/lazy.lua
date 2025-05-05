@@ -49,6 +49,7 @@ local plugins = {
     PreparePackage("hrsh7th/cmp-path"),
     PreparePackage("hrsh7th/cmp-nvim-lua"),
     PreparePackage("hrsh7th/cmp-nvim-lsp"),
+    PreparePackage("mfussenegger/nvim-dap", require("plugins.nvim-dap")),
 
     -- LSP
     PreparePackage("williamboman/mason.nvim", require("plugins.mason")),

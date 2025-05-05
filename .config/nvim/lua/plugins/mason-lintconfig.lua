@@ -7,6 +7,7 @@ local LintingFormattingServers = {
     "tex-fmt",
     "xmlformatter",
     "yamlfix",
+    "debugpy",
 }
 
 local opts = {
