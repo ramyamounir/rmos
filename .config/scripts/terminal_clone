@@ -44,9 +44,6 @@ start_dir="${PROJECT_ROOT:-$cwd}"
 
 # Build shell command
 cmd="cd \"$start_dir\" && "
-if [ -n "$PROJECT_ENV" ]; then
-  cmd+="source ~/.local/data/anaconda3/etc/profile.d/conda.sh && conda activate \"$PROJECT_ENV\" && "
-fi
 cmd+="clear; exec zsh"
 
 # Launch terminal in correct directory

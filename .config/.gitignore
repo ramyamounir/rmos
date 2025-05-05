@@ -12,6 +12,7 @@
 !conda/
 !ctpv/
 !dunst/
+!direnv/
 !fontconfig/
 !gh/
 !git/
