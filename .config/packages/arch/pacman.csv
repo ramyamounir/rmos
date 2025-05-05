@@ -16,6 +16,7 @@ p,          certbot,                                               SSL certifica
 p,          certbot-nginx,                                         certbot plugin for nginx
 p,          dua-cli,                                               Better du (disc usage)
 p,          duf,                                                   Better df 
+p,          direnv,                                                directory specific environment variables
 p,          evtest,                                                Listening to events--useful for debugging
 p,          fail2ban,                                              Protecting servers with failures to authentication being banned
 p,          ffmpeg,                                                Solution to record; convert and stream audio and video
@@ -31,6 +32,7 @@ p,          man-db,                                                manual pages
 p,          man-pages,                                             manual pages
 p,          mpv,                                                   video player
 p,          nginx,                                                 reverse proyx server
+p,          ncdu,                                                  TUI for storage information
 p,          obs-studio,                                            screen recorder (Open Broadcaster Software)
 p,          openconnect,                                           VPN
 p,          pass,                                                  Password manager
