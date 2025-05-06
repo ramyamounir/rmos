@@ -121,10 +121,13 @@ local function config()
         require("telescope").extensions.dap.configurations()
     end, { desc = "Debug: Choose Configuration" })
     vim.keymap.set("n", "<Leader>dq", function()
-        dap_view.close(true)    -- Close the UI and terminal
-        dap.clear_breakpoints() -- Remove all breakpoints
-        dap.terminate()         -- Stop the debug adapter
+        dap_view.close(true)
+        dap.clear_breakpoints()
+        dap.terminate()
     end, { desc = "Debug: Quit and Clear Breakpoints" })
+    vim.keymap.set("n", "<leader>dw", "<cmd>DapViewWatch<cr>", {
+        desc = "DAP: Add cursor variable to expressions",
+    })
 end
 
 
