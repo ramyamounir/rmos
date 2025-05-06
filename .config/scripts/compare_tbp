@@ -1,0 +1,136 @@
+#!/usr/bin/env python3
+
+import argparse
+import shutil
+import subprocess
+import sys
+from pathlib import Path
+from typing import List
+
+import pandas as pd
+
+RESULTS_CACHE = Path("/home/ramy/tbp/results/monty/projects/benchmarks_comparisons")
+RESULT_FILENAME = "eval_stats.csv"
+BENCHMARK_RESULTS_DIR = Path(
+    "/home/ramy/tbp/results/monty/projects/evidence_eval_runs/logs"
+)
+BENCHMARK_CMD_TEMPLATE = "wandb offline && python benchmarks/run.py -e {exp}"
+
+
+def get_current_branch() -> str:
+    return (
+        subprocess.check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"])
+        .decode()
+        .strip()
+    )
+
+
+def run_benchmark(exp: str):
+    print(f"▶️ Running benchmark: {exp}")
+    subprocess.run(BENCHMARK_CMD_TEMPLATE.format(exp=exp), shell=True, check=True)
+
+
+def copy_result(exp: str, branch: str):
+    src = BENCHMARK_RESULTS_DIR / exp / RESULT_FILENAME
+    if not src.exists():
+        print(f"❌ Result file not found: {src}")
+        sys.exit(1)
+    dest_dir = RESULTS_CACHE / branch
+    dest_dir.mkdir(parents=True, exist_ok=True)
+    dest = dest_dir / f"{exp}.csv"
+    shutil.copy(src, dest)
+    print(f"✅ Copied result to: {dest}")
+
+
+def result_exists(exp: str, branch: str) -> bool:
+    return (RESULTS_CACHE / branch / f"{exp}.csv").exists()
+
+
+def compare_results(exp: str, branch1: str, branch2: str) -> bool:
+    file1 = RESULTS_CACHE / branch1 / f"{exp}.csv"
+    file2 = RESULTS_CACHE / branch2 / f"{exp}.csv"
+
+    if not file1.exists() or not file2.exists():
+        print(f"❌ Missing result file(s) for comparison: {file1}, {file2}")
+        return False
+
+    df1 = pd.read_csv(file1)
+    df2 = pd.read_csv(file2)
+
+    if "time" in df1.columns and "time" in df2.columns:
+        time1 = df1["time"].mean()
+        time2 = df2["time"].mean()
+        diff = time1 - time2
+        trend = "increased" if diff > 0 else "decreased"
+        print(f"⏱️ Mean time on '{branch1}': {time1:.4f}")
+        print(f"⏱️ Mean time on '{branch2}': {time2:.4f}")
+        print(f"📉 Mean time has {trend} by {abs(diff):.4f} seconds\n")
+
+    df1 = df1.drop(columns=["time"], errors="ignore").sort_index(axis=1)
+    df2 = df2.drop(columns=["time"], errors="ignore").sort_index(axis=1)
+
+    if df1.equals(df2):
+        print(f"[✅ MATCH] {exp}")
+        return True
+    else:
+        print(f"[❌ MISMATCH] {exp}")
+        return False
+
+
+def checkout_branch(branch: str):
+    subprocess.run(["git", "checkout", branch], check=True)
+
+
+def process_branch(branch: str, experiments: List[str], reuse: bool):
+    current = get_current_branch()
+    if current != branch:
+        print(f"📦 Checking out '{branch}'...")
+        checkout_branch(branch)
+
+    try:
+        for exp in experiments:
+            if reuse and result_exists(exp, branch):
+                print(f"🟡 Skipping {exp} on {branch} (cached)")
+                continue
+            run_benchmark(exp)
+            copy_result(exp, branch)
+    finally:
+        if get_current_branch() != current:
+            print(f"🔄 Switching back to original branch: {current}")
+            checkout_branch(current)
+
+
+def main(branch1: str, branch2: str, experiments: List[str], reuse: bool):
+    print(f"🔍 Preparing to compare: {branch1} vs {branch2}")
+    process_branch(branch1, experiments, reuse)
+    process_branch(branch2, experiments, reuse)
+
+    print("\n📊 Comparing benchmark results...")
+    all_passed = True
+    for exp in experiments:
+        if not compare_results(exp, branch1, branch2):
+            all_passed = False
+
+    if all_passed:
+        print("\n✅ All experiments matched between branches.")
+        sys.exit(0)
+    else:
+        print("\n❌ Some experiments differ between branches.")
+        sys.exit(1)
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(
+        description="Compare benchmark results between two branches."
+    )
+    parser.add_argument("branch1", help="First git branch name")
+    parser.add_argument("branch2", help="Second git branch name")
+    parser.add_argument(
+        "experiments", nargs="+", help="Experiment names to run and compare"
+    )
+    parser.add_argument(
+        "--reuse", action="store_true", help="Reuse cached results if available"
+    )
+
+    args = parser.parse_args()
+    main(args.branch1, args.branch2, args.experiments, args.reuse)
