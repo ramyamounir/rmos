@@ -10,11 +10,11 @@ local dependencies = {
         opts = {
             winbar = {
                 show = true,
-                sections = { "watches", "scopes", "exceptions", "breakpoints", "threads", "repl" },
+                sections = { "watches", "scopes", "exceptions", "breakpoints", "threads", "repl", "console" },
                 default_section = "watches",
                 controls = {
-                    enabled = false,
-                    position = "right",
+                    enabled = true,
+                    position = "left",
                     buttons = {
                         "play",
                         "step_into",
@@ -47,6 +47,9 @@ local dependencies = {
 local function config()
     local dap = require("dap")
     local dap_view = require("dap-view")
+
+    local project_root = vim.env.PROJECT_ROOT or vim.fn.getcwd()
+    require("dap.ext.vscode").load_launchjs(project_root .. "/launch.json", { python = { "python" } })
 
     -- dap.configurations.python = {
     --     {
@@ -81,21 +84,26 @@ local function config()
         linehl = "",
         numhl = "",
     })
-
     vim.fn.sign_define("DapStopped", {
         text = "▶️",
         texthl = "DapStopped",
         linehl = "Visual",
         numhl = "",
     })
+    vim.fn.sign_define("DapBreakpointCondition", {
+        text = "🟡",
+        texthl = "DapBreakpointCondition",
+        linehl = "",
+        numhl = "",
+    })
     vim.api.nvim_set_hl(0, "DapBreakpoint", { fg = "#E06C75" })
-    vim.api.nvim_set_hl(0, "DapLogPoint", { fg = "#61AFEF" })
-    vim.api.nvim_set_hl(0, "DapStopped", { fg = "#98C379", bg = "#3E4452" })
+    vim.api.nvim_set_hl(0, "DapBreakpointCondition", { fg = "#E5C07B" })
 
-    dap.listeners.before.attach["dap-view-config"] = function() dap_view.open() end
-    dap.listeners.before.launch["dap-view-config"] = function() dap_view.open() end
-    dap.listeners.before.event_terminated["dap-view-config"] = function() dap_view.close() end
-    dap.listeners.before.event_exited["dap-view-config"] = function() dap_view.close() end
+    -- These are listeners to open and close the debugger view on hooks
+    -- dap.listeners.before.attach["dap-view-config"] = function() dap_view.open() end
+    -- dap.listeners.before.launch["dap-view-config"] = function() dap_view.open() end
+    -- dap.listeners.before.event_terminated["dap-view-config"] = function() dap_view.close() end
+    -- dap.listeners.before.event_exited["dap-view-config"] = function() dap_view.close() end
 
     -- Keymaps
     vim.keymap.set("n", "<Leader>dc", dap.continue, { desc = "Debug: Start/Continue" })

@@ -32,6 +32,7 @@ local plugins = {
     PreparePackage("nvim-treesitter/nvim-treesitter", require("plugins.nvim-treesitter")),
     PreparePackage("rcarriga/nvim-notify", require("plugins.nvim-notify")),
     PreparePackage("nvim-telescope/telescope.nvim", require("plugins.telescope")),
+    PreparePackage("nvim-telescope/telescope-ui-select.nvim", require("plugins.telescope-ui-select")),
     PreparePackage("nvim-tree/nvim-web-devicons", require("plugins.web-dev-icons")),
     PreparePackage("ellisonleao/gruvbox.nvim", require("plugins.gruvbox")),
 

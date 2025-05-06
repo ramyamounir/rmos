@@ -39,7 +39,7 @@ vim.keymap.set({ "n", "i", "v", "t" }, "<C-Enter>", function()
         detach = true,
     })
 end, { desc = "Open project terminal" })
-vim.keymap.set({ "n", "i", "v", "t" }, "<C-\\>", function()
+vim.keymap.set({ "n", "i", "v", "t" }, "<C-'>", function()
     vim.fn.jobstart({ "lazygit_root" }, {
         detach = true,
     })
