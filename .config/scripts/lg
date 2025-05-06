@@ -1,0 +1,16 @@
+#!/bin/zsh
+
+# Determine git root if available
+if GIT_ROOT=$(git rev-parse --show-toplevel 2>/dev/null); then
+    TARGET_DIR="$GIT_ROOT"
+    LAZYGIT_CMD="lazygit"
+elif [[ -n "$PROJECT_ROOT" ]]; then
+    TARGET_DIR="$PROJECT_ROOT"
+    LAZYGIT_CMD="lazygit"
+else
+    TARGET_DIR="$HOME"
+    LAZYGIT_CMD="lazygit -g .rmos"
+fi
+
+# Launch Alacritty in the target directory and run lazygit
+alacritty --working-directory "$TARGET_DIR" -T "Lazygit" -e zsh -c "$LAZYGIT_CMD"
