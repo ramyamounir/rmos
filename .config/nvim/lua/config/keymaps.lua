@@ -35,7 +35,7 @@ keymap("n", "ZZ", ":wqa<cr>", opts)
 
 -- Start terminal and lazygit windows respecting direnv
 vim.keymap.set({ "n", "i", "v", "t" }, "<C-Enter>", function()
-    vim.fn.jobstart({ "terminal_clone" }, {
+    vim.fn.jobstart({ "terminal_root" }, {
         detach = true,
     })
 end, { desc = "Open project terminal" })
