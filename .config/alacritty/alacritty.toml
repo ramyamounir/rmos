@@ -94,6 +94,16 @@ general.live_config_reload = true
         key = "d"
         action = "ScrollToBottom"
 
+    [[keyboard.bindings]]
+        key = "'"
+        mods = "Alt"
+        command = { program = "lg" }
+
+    [[keyboard.bindings]]
+        key = "Enter"
+        mods = "Alt"
+        command = { program = "terminal_clone" }
+
 
 
 [selection]
