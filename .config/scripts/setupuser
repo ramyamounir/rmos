@@ -44,7 +44,7 @@ function cloneconfigs() {
     git --git-dir $HOME/.rmos remote set-url origin git@github.com:ramyamounir/rmos.git
 
     # set some basic configs
-    git --git-dir $HOME/.rmos config --local status.showuntrackedfiles no
+    git --git-dir $HOME/.rmos config --local status.showuntrackedfiles yes
     git --git-dir $HOME/.rmos config --local pull.rebase off
     git --git-dir $HOME/.rmos config --local pull.default current
     git --git-dir $HOME/.rmos config --local push.default current    
