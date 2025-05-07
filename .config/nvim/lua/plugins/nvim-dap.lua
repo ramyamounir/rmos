@@ -46,10 +46,14 @@ local dependencies = {
 
 local function config()
     local dap = require("dap")
+    local dap_python = require("dap-python")
     local dap_view = require("dap-view")
+
+    dap_python.test_runner = "pytest"
 
     local project_root = vim.env.PROJECT_ROOT or vim.fn.getcwd()
     require("dap.ext.vscode").load_launchjs(project_root .. "/launch.json", { python = { "python" } })
+
 
     -- dap.configurations.python = {
     --     {
@@ -121,13 +125,24 @@ local function config()
         require("telescope").extensions.dap.configurations()
     end, { desc = "Debug: Choose Configuration" })
     vim.keymap.set("n", "<Leader>dq", function()
-        dap_view.close(true)
         dap.clear_breakpoints()
+        dap_view.close(true)
         dap.terminate()
     end, { desc = "Debug: Quit and Clear Breakpoints" })
     vim.keymap.set("n", "<leader>dw", "<cmd>DapViewWatch<cr>", {
         desc = "DAP: Add cursor variable to expressions",
     })
+
+    -- nvim-dap-python unit testing keybindings
+    vim.keymap.set("n", "<leader>dt", function()
+        dap_python.test_method()
+    end, { desc = "Debug test method under cursor" })
+    vim.keymap.set("n", "<leader>dT", function()
+        dap_python.test_class()
+    end, { desc = "Debug test class under cursor" })
+    vim.keymap.set("v", "<leader>ds", function()
+        dap_python.debug_selection()
+    end, { desc = "Debug selected code" })
 end
 
 
