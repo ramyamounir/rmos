@@ -40,11 +40,11 @@ local plugins = {
     PreparePackage("iamcco/markdown-preview.nvim", require("plugins.markdown-preview")),
     PreparePackage("MeanderingProgrammer/render-markdown.nvim", require("plugins.render-markdown")),
     PreparePackage("ibhagwan/fzf-lua", require("plugins.fzf")),
+    -- PreparePackage("ThePrimeagen/harpoon", require("plugins.harpoon")),
 
     -- coding
     PreparePackage("lervag/vimtex", require("plugins.vimtex")),
     PreparePackage("hrsh7th/nvim-cmp", require("plugins.nvim-cmp")),
-    PreparePackage("ramyamounir/codeium.nvim", require("plugins.codeium")),
     PreparePackage("saadparwaiz1/cmp_luasnip"),
     PreparePackage("hrsh7th/cmp-buffer"),
     PreparePackage("hrsh7th/cmp-path"),
@@ -60,6 +60,7 @@ local plugins = {
     PreparePackage("mfussenegger/nvim-lint"),
     PreparePackage("rshkarin/mason-nvim-lint", require("plugins.mason-lintconfig")),
     PreparePackage("olimorris/codecompanion.nvim", require("plugins.codecompanion")),
+    -- PreparePackage("Kurama622/llm.nvim", require("plugins.llm")),
 
     -- miscellaneous
     PreparePackage("machakann/vim-sandwich", require("plugins.sandwich")),

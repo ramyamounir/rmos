@@ -1,10 +1,10 @@
 local dependencies = {
-    "ramyamounir/codeium.nvim",     -- Codeium
     "L3MON4D3/LuaSnip",             -- snippet dropdown
     "rafamadriz/friendly-snippets", -- snippet preview
     "hrsh7th/cmp-buffer",           -- buffer
     "hrsh7th/cmp-path",             -- path
     "hrsh7th/cmp-nvim-lsp",         -- language server protocol for neovim
+    -- "Kurama622/llm.nvim"            -- llm plugin
 }
 
 
@@ -53,7 +53,7 @@ local kind_icons = {
     Event = "",
     Operator = "",
     TypeParameter = "󰉺",
-    Codeium = "",
+    -- llm = "",
 }
 
 
@@ -128,7 +128,7 @@ local function config()
                 vim_item.kind = string.format('%s %s', kind_icons[vim_item.kind], vim_item.kind) -- This concatinates the icons with the name of the item kind
                 vim_item.menu = ({
                     nvim_lsp = "[LSP]",
-                    codeium = "[AI]",
+                    -- llm = "[AI]",
                     nvim_lua = "[NVIM_LUA]",
                     luasnip = "[Snippet]",
                     buffer = "[Buffer]",
@@ -139,7 +139,7 @@ local function config()
         },
         sources = {
             { name = "nvim_lsp" },
-            { name = "codeium", max_item_count = 3 },
+            -- { name = "llm",     group_index = 1,   priority = 100 },
             { name = "nvim_lua" },
             { name = "luasnip", max_item_count = 3 },
             { name = "buffer" },
@@ -156,6 +156,9 @@ local function config()
             ghost_text = false,
             native_menu = false,
         },
+        -- performance = {
+        --     fetching_timeout = 5000,
+        -- }
     }
 
     return config
