@@ -5,16 +5,14 @@ import shutil
 import subprocess
 import sys
 from pathlib import Path
-from typing import List
+from typing import Any, Dict, List, Set
 
+import numpy as np
 import pandas as pd
+import yaml
+from tabulate import tabulate
 
-RESULTS_CACHE = Path("/home/ramy/tbp/results/monty/projects/benchmarks_comparisons")
-RESULT_FILENAME = "eval_stats.csv"
-BENCHMARK_RESULTS_DIR = Path(
-    "/home/ramy/tbp/results/monty/projects/evidence_eval_runs/logs"
-)
-BENCHMARK_CMD_TEMPLATE = "wandb offline && python benchmarks/run.py -e {exp}"
+DEFAULT_CONFIG_PATH = Path.home() / ".config" / "tbp" / "compare_configs.yaml"
 
 
 def get_current_branch() -> str:
@@ -25,30 +23,33 @@ def get_current_branch() -> str:
     )
 
 
-def run_benchmark(exp: str):
+def run_benchmark(exp: str, cmd_template: str):
     print(f"▶️ Running benchmark: {exp}")
-    subprocess.run(BENCHMARK_CMD_TEMPLATE.format(exp=exp), shell=True, check=True)
+    cmd = cmd_template.format(exp=exp)
+    subprocess.run(cmd, shell=True, check=True)
 
 
-def copy_result(exp: str, branch: str):
-    src = BENCHMARK_RESULTS_DIR / exp / RESULT_FILENAME
+def copy_result(
+    exp: str, branch: str, result_dir: Path, result_filename: str, cache_dir: Path
+):
+    src = result_dir / exp / result_filename
     if not src.exists():
         print(f"❌ Result file not found: {src}")
         sys.exit(1)
-    dest_dir = RESULTS_CACHE / branch
+    dest_dir = cache_dir / branch
     dest_dir.mkdir(parents=True, exist_ok=True)
     dest = dest_dir / f"{exp}.csv"
     shutil.copy(src, dest)
     print(f"✅ Copied result to: {dest}")
 
 
-def result_exists(exp: str, branch: str) -> bool:
-    return (RESULTS_CACHE / branch / f"{exp}.csv").exists()
+def result_exists(exp: str, branch: str, cache_dir: Path) -> bool:
+    return (cache_dir / branch / f"{exp}.csv").exists()
 
 
-def compare_results(exp: str, branch1: str, branch2: str) -> bool:
-    file1 = RESULTS_CACHE / branch1 / f"{exp}.csv"
-    file2 = RESULTS_CACHE / branch2 / f"{exp}.csv"
+def compare_results(exp: str, branch1: str, branch2: str, cache_dir: Path) -> bool:
+    file1 = cache_dir / branch1 / f"{exp}.csv"
+    file2 = cache_dir / branch2 / f"{exp}.csv"
 
     if not file1.exists() or not file2.exists():
         print(f"❌ Missing result file(s) for comparison: {file1}, {file2}")
@@ -57,31 +58,88 @@ def compare_results(exp: str, branch1: str, branch2: str) -> bool:
     df1 = pd.read_csv(file1)
     df2 = pd.read_csv(file2)
 
-    if "time" in df1.columns and "time" in df2.columns:
-        time1 = df1["time"].mean()
-        time2 = df2["time"].mean()
-        diff = time1 - time2
-        trend = "increased" if diff > 0 else "decreased"
-        print(f"⏱️ Mean time on '{branch1}': {time1:.4f}")
-        print(f"⏱️ Mean time on '{branch2}': {time2:.4f}")
-        print(f"📉 Mean time has {trend} by {abs(diff):.4f} seconds\n")
+    mismatches = []
 
-    df1 = df1.drop(columns=["time"], errors="ignore").sort_index(axis=1)
-    df2 = df2.drop(columns=["time"], errors="ignore").sort_index(axis=1)
+    all_cols = set(df1.columns).intersection(df2.columns)
 
-    if df1.equals(df2):
+    for col in sorted(all_cols):
+        series1 = df1[col]
+        series2 = df2[col]
+
+        # Try to convert to numeric
+        try:
+            v1 = pd.to_numeric(series1, errors="raise")
+            v2 = pd.to_numeric(series2, errors="raise")
+            mean1 = np.mean(v1)
+            mean2 = np.mean(v2)
+            delta = mean2 - mean1
+            if not np.isclose(mean1, mean2, atol=1e-6):
+                mismatches.append(
+                    [col, f"{mean1:.4f}", f"{mean2:.4f}", f"{delta:+.4f}"]
+                )
+        except Exception:
+            # Fallback for non-numeric columns
+            if not series1.equals(series2):
+                mismatches.append([col, "MISMATCH", "MISMATCH", "MISMATCH"])
+
+    if mismatches:
+        print(f"\n📌 Differences found in experiment: {exp}")
+        table = tabulate(
+            mismatches,
+            headers=["Metric", f"{branch1}", f"{branch2}", "Δ (delta)"],
+            tablefmt="github",
+        )
+        print(table)
+        return False
+    else:
         print(f"[✅ MATCH] {exp}")
         return True
-    else:
-        print(f"[❌ MISMATCH] {exp}")
-        return False
+
+
+# def compare_results(exp: str, branch1: str, branch2: str, cache_dir: Path):
+#     file1 = cache_dir / branch1 / f"{exp}.csv"
+#     file2 = cache_dir / branch2 / f"{exp}.csv"
+
+#     if not file1.exists() or not file2.exists():
+#         print(f"❌ Missing result file(s) for comparison: {file1}, {file2}")
+#         return False
+
+#     df1 = pd.read_csv(file1)
+#     df2 = pd.read_csv(file2)
+
+#     if "time" in df1.columns and "time" in df2.columns:
+#         time1 = df1["time"].mean()
+#         time2 = df2["time"].mean()
+#         diff = time1 - time2
+#         trend = "increased" if diff > 0 else "decreased"
+#         print(f"⏱️ Mean time on '{branch1}': {time1:.4f}")
+#         print(f"⏱️ Mean time on '{branch2}': {time2:.4f}")
+#         print(f"📉 Mean time has {trend} by {abs(diff):.4f} seconds\n")
+
+#     df1 = df1.drop(columns=["time"], errors="ignore").sort_index(axis=1)
+#     df2 = df2.drop(columns=["time"], errors="ignore").sort_index(axis=1)
+
+#     if df1.equals(df2):
+#         print(f"[✅ MATCH] {exp}")
+#         return True
+#     else:
+#         print(f"[❌ MISMATCH] {exp}")
+#         return False
 
 
 def checkout_branch(branch: str):
     subprocess.run(["git", "checkout", branch], check=True)
 
 
-def process_branch(branch: str, experiments: List[str], rerun: bool):
+def process_branch(
+    branch: str,
+    experiments: List[str],
+    rerun_exps: Set[str],
+    cache_dir: Path,
+    result_dir: Path,
+    result_filename: str,
+    cmd_template: str,
+):
     current = get_current_branch()
     if current != branch:
         print(f"📦 Checking out '{branch}'...")
@@ -89,32 +147,72 @@ def process_branch(branch: str, experiments: List[str], rerun: bool):
 
     try:
         for exp in experiments:
-            if result_exists(exp, branch) and not rerun:
+            if result_exists(exp, branch, cache_dir) and exp not in rerun_exps:
                 print(f"🟡 Skipping {exp} on {branch} (cached)")
                 continue
-            run_benchmark(exp)
-            copy_result(exp, branch)
+            run_benchmark(exp, cmd_template)
+            copy_result(exp, branch, result_dir, result_filename, cache_dir)
     finally:
         if get_current_branch() != current:
             print(f"🔄 Switching back to original branch: {current}")
             checkout_branch(current)
 
 
-def run_comparison(
-    branch1: str,
-    branch2: str,
-    experiments: List[str],
-    rerun_branch1: bool,
-    rerun_branch2: bool,
-):
-    print(f"🔍 Preparing to compare: {branch1} vs {branch2}")
-    process_branch(branch1, experiments, rerun=rerun_branch1)
-    process_branch(branch2, experiments, rerun=rerun_branch2)
+def run_comparison(config: Dict[str, Any]):
+    cache_dir = Path(config["paths"]["results_cache"])
+    result_dir = Path(config["paths"]["results_dir"])
+    result_filename = config["paths"]["result_filename"]
+    cmd_template = config["command"]
+
+    branches = config["branches"]
+    experiments = config["experiments"]
+    experiment_names = [e["name"] for e in experiments]
+    branch_names = [b["name"] for b in branches]
+
+    if len(branch_names) != 2:
+        print("❌ Exactly two branches must be specified for comparison.")
+        sys.exit(1)
+
+    # Initialize per-branch rerun experiment sets
+    rerun_exps: Dict[str, Set[str]] = {b: set() for b in branch_names}
+
+    for branch in branches:
+        bname = branch["name"]
+        if branch.get("rerun", False):
+            rerun_exps[bname].update(experiment_names)
+
+    for exp in experiments:
+        if exp.get("rerun", False):
+            for bname in branch_names:
+                rerun_exps[bname].add(exp["name"])
+
+    b1, b2 = branch_names
+    print(f"🔍 Preparing to compare: {b1} vs {b2}")
+
+    process_branch(
+        b1,
+        experiment_names,
+        rerun_exps[b1],
+        cache_dir,
+        result_dir,
+        result_filename,
+        cmd_template,
+    )
+
+    process_branch(
+        b2,
+        experiment_names,
+        rerun_exps[b2],
+        cache_dir,
+        result_dir,
+        result_filename,
+        cmd_template,
+    )
 
     print("\n📊 Comparing benchmark results...")
     all_passed = True
-    for exp in experiments:
-        if not compare_results(exp, branch1, branch2):
+    for exp in experiment_names:
+        if not compare_results(exp, b1, b2, cache_dir):
             all_passed = False
 
     if all_passed:
@@ -125,38 +223,29 @@ def run_comparison(
         sys.exit(1)
 
 
-if __name__ == "__main__":
-    """
-    # → Reuse both
-    compare_tbp.py main dev exp1 exp2
-
-    # → Rerun main, reuse dev
-    compare_tbp.py main dev exp1 exp2 --rerun main
-
-    # → Rerun both
-    compare_tbp.py main dev exp1 exp2 --rerun main --rerun dev
-    """
+def main():
     parser = argparse.ArgumentParser(
-        description="Compare benchmark results between two branches."
-    )
-    parser.add_argument("branch1", help="First git branch name")
-    parser.add_argument("branch2", help="Second git branch name")
-    parser.add_argument(
-        "experiments", nargs="+", help="Experiment names to run and compare"
+        description="Compare benchmark results between two git branches using a YAML config."
     )
     parser.add_argument(
-        "--rerun",
-        dest="rerun",
-        action="append",
-        default=[],
-        help="Branch name(s) to rerun (can be specified multiple times)",
+        "--config",
+        type=str,
+        default=None,
+        help=f"Optional path to YAML config file. Defaults to {DEFAULT_CONFIG_PATH}",
     )
 
     args = parser.parse_args()
+    config_path = Path(args.config) if args.config else DEFAULT_CONFIG_PATH
 
-    rerun_branch1 = args.branch1 in args.rerun
-    rerun_branch2 = args.branch2 in args.rerun
+    if not config_path.exists():
+        print(f"❌ Config file not found: {config_path}")
+        sys.exit(1)
 
-    run_comparison(
-        args.branch1, args.branch2, args.experiments, rerun_branch1, rerun_branch2
-    )
+    with open(config_path, "r") as f:
+        config = yaml.safe_load(f)
+
+    run_comparison(config)
+
+
+if __name__ == "__main__":
+    main()

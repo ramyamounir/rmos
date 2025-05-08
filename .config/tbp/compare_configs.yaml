@@ -1,0 +1,20 @@
+command: "wandb offline && python benchmarks/run.py -e {exp}"
+
+paths:
+    results_cache: /home/ramy/tbp/results/monty/projects/benchmarks_comparisons
+    result_filename: eval_stats.csv
+    results_dir: /home/ramy/tbp/results/monty/projects/evidence_eval_runs/logs
+
+branches:
+    - name: "main"
+      rerun: false
+
+    - name: "restructure_update_evidence"
+      rerun: false
+
+experiments:
+    - name: "randrot_noise_10distinctobj_dist_agent"
+      rerun: false
+
+    - name: "randrot_noise_10distinctobj_surf_agent"
+      rerun: false

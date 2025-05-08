@@ -38,6 +38,7 @@
 !systemd/
 !terminal-colors.d
 !tmux/
+!tbp/
 !vim/
 !vscode/
 !lazydocker/
