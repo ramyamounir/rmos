@@ -4,7 +4,7 @@ local dependencies = {
     "hrsh7th/cmp-buffer",           -- buffer
     "hrsh7th/cmp-path",             -- path
     "hrsh7th/cmp-nvim-lsp",         -- language server protocol for neovim
-    -- "Kurama622/llm.nvim"            -- llm plugin
+    "Kurama622/llm.nvim"            -- llm plugin
 }
 
 
@@ -53,7 +53,7 @@ local kind_icons = {
     Event = "",
     Operator = "",
     TypeParameter = "󰉺",
-    -- llm = "",
+    llm = "",
 }
 
 
@@ -106,6 +106,15 @@ local function get_mapping(cmp, luasnip)
             "i",
             "s",
         }),
+        ["<C-g>"] = cmp.mapping(function()
+            cmp.complete({
+                config = {
+                    sources = {
+                        { name = "llm" },
+                    },
+                },
+            })
+        end, { "i", "c" }),
     }
 end
 
@@ -128,7 +137,7 @@ local function config()
                 vim_item.kind = string.format('%s %s', kind_icons[vim_item.kind], vim_item.kind) -- This concatinates the icons with the name of the item kind
                 vim_item.menu = ({
                     nvim_lsp = "[LSP]",
-                    -- llm = "[AI]",
+                    llm = "[AI]",
                     nvim_lua = "[NVIM_LUA]",
                     luasnip = "[Snippet]",
                     buffer = "[Buffer]",
@@ -139,7 +148,7 @@ local function config()
         },
         sources = {
             { name = "nvim_lsp" },
-            -- { name = "llm",     group_index = 1,   priority = 100 },
+            { name = "llm",     group_index = 1,   priority = 100 },
             { name = "nvim_lua" },
             { name = "luasnip", max_item_count = 3 },
             { name = "buffer" },
@@ -156,9 +165,6 @@ local function config()
             ghost_text = false,
             native_menu = false,
         },
-        -- performance = {
-        --     fetching_timeout = 5000,
-        -- }
     }
 
     return config

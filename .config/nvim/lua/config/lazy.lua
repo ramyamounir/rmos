@@ -59,8 +59,8 @@ local plugins = {
     PreparePackage("stevearc/conform.nvim", require("plugins.conform")),
     PreparePackage("mfussenegger/nvim-lint"),
     PreparePackage("rshkarin/mason-nvim-lint", require("plugins.mason-lintconfig")),
-    PreparePackage("olimorris/codecompanion.nvim", require("plugins.codecompanion")),
-    -- PreparePackage("Kurama622/llm.nvim", require("plugins.llm")),
+    -- PreparePackage("olimorris/codecompanion.nvim", require("plugins.codecompanion")),
+    PreparePackage("Kurama622/llm.nvim", require("plugins.llm")),
 
     -- miscellaneous
     PreparePackage("machakann/vim-sandwich", require("plugins.sandwich")),

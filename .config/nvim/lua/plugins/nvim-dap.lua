@@ -6,6 +6,9 @@ local dependencies = {
         end,
     },
     {
+        "jbyuki/one-small-step-for-vimkind",
+    },
+    {
         "igorlfs/nvim-dap-view",
         opts = {
             winbar = {
@@ -53,6 +56,20 @@ local function config()
 
     local project_root = vim.env.PROJECT_ROOT or vim.fn.getcwd()
     require("dap.ext.vscode").load_launchjs(project_root .. "/launch.json", { python = { "python" } })
+
+    dap.configurations.lua = {
+        {
+            type = 'nlua',
+            request = 'attach',
+            name = "Attach to running Neovim instance",
+        }
+    }
+    dap.adapters.nlua = function(callback, config)
+        callback({ type = 'server', host = config.host or "127.0.0.1", port = config.port or 8086 })
+    end
+    vim.keymap.set('n', '<leader>dL', function()
+        require "osv".launch({ port = 8086 })
+    end, { noremap = true })
 
 
     -- dap.configurations.python = {
