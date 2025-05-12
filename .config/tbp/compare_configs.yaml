@@ -10,7 +10,7 @@ branches:
       rerun: false
 
     - name: "restructure_update_evidence"
-      rerun: false
+      rerun: true
 
 experiments:
     - name: "randrot_noise_10distinctobj_dist_agent"

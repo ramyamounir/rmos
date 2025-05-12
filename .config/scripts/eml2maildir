@@ -1,0 +1,178 @@
+#!/bin/bash
+# Copyright (C) 2015
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+# Translates .eml file to maildir format.
+# originally forked from https://gist.github.com/targzeta/7137182 by "Emanuele Tomasi <targzeta@gmail.com>"
+# latest version https://gist.github.com/mailme-gx/cfd187033fbf201018a8 by "GX"
+
+SCRIPT_NAME=${0##*/}
+SCRIPT_AUTHOR="GX"
+USER=ramy
+GROUP=ramy
+CUSTOM_HOST=""
+
+#############
+# FUNCTIONS #
+#############
+function _exit
+{
+  echo -e "${SCRIPT_NAME}: ${1}"
+  exit $2
+}
+
+function _help
+{
+  cat <<EOF
+Use: ${SCRIPT_NAME} [option]... <source file or directory> [destination directory]
+
+Translates a .eml file to a maildir filename. For setting hostname it uses
+-H option or the HOST environment variable or, if it isn't set, HOSTNAME.
+If no destination directory is specified the default name is new/ directory.
+
+Options:
+    -c    Setting the filename for a cur/ directory. You can set your flag by
+          setting the FLAG environment variable. Default FLAG is 'S'.
+    -d    Dovecot extension. Sets the 'W' option.
+    -H    Manually specify the hostname to use in maildir filename.
+    -h    Display this help and exit.
+
+by ${SCRIPT_AUTHOR}"
+EOF
+}
+
+function _check_extern_programs
+{
+  local error=0
+  local string_error
+
+  if ! which which >&/dev/null
+  then
+    error=1
+    string_error="/usr/bin/which : command not founds.\n";
+  else
+    for progr in $@
+    do
+      if ! which $progr >& /dev/null
+      then
+        error=1
+        string_error=${string_error}"${progr} : command not founds.\n"
+      fi
+    done
+  fi
+
+  if (( $error ))
+  then
+    _exit "You need to install these commands:\n$string_error" 1
+  fi
+}
+
+function rename_file {
+  _TMPFILE=$(mktemp)
+
+  [ -z ${_TMPFILE} ] && exit 1
+
+  cp "$file" $_TMPFILE
+
+  _HOST=${CUSTOM_HOST:-${HOST:-$HOSTNAME}}
+  _RANDOM=$(</dev/urandom tr -cd '[:digit:]' | head -c 6)
+  _DATE=$(sed -n '/^Date:/{s/Date: //;p;q}' "$file")
+  _TIMESTAMP=$(date --date="$_DATE" '+%s')
+  _SIZE=$(stat $_TMPFILE --printf='%s')
+
+  _FILENAME="${_TIMESTAMP}.P${_RANDOM}Q2.${_HOST},S=${_SIZE}"
+
+  if (( $OPT_D == 1 ))
+  then
+    _WSIZE=$(stat "$file" --printf='%s')
+    _FILENAME+=",W=${_WSIZE}"
+  fi
+
+  if (( $OPT_C == 1 ))
+  then
+    _FLAG=${FLAG:-S}
+    _FILENAME+=":2,${_FLAG}"
+  fi
+
+  _OUTPUT_FILE=${destdir}/${_FILENAME}
+  mv $_TMPFILE "$_OUTPUT_FILE"
+  touch --date="${_DATE}" "$_OUTPUT_FILE"
+  chown $USER:$GROUP "$_OUTPUT_FILE"
+}
+
+##########
+# CHECKS #
+##########
+enable getopts echo exit
+
+IFS=$'\n\t '
+
+OPT_C=0
+OPT_D=0
+while getopts :hcdH: opzione
+do
+  case $opzione in
+    c) OPT_C=1;;
+    d) OPT_D=1;;
+    H) CUSTOM_HOST="$OPTARG";;
+    h) _help; exit;;
+    ?) _exit "-${OPTARG} : not valid argument." 1;;
+  esac
+done
+
+while (( $OPTIND != 1 ))
+do
+  shift
+  let --OPTIND
+done
+
+[ -z "$1"  ] &&  _exit "missing argument. ${SCRIPT_NAME} -h for help." 1
+
+_check_extern_programs date head mktemp stat touch
+
+########
+# MAIN
+########
+file_or_dir="$1"
+destdir="$2"
+
+if [ -z "$destdir" ]; then
+    if [ -d "$file_or_dir" ]; then
+        # If input is a directory, append _maildir
+        base_dir="${file_or_dir%/}"
+        destdir="${base_dir}_maildir"
+    else
+        # If input is a file, use its parent directory
+        destdir="$(dirname "$file_or_dir")"
+    fi
+fi
+
+if [ ! -d "$destdir" ]
+then
+    mkdir -p "$destdir"
+    chown $USER:$GROUP "$destdir"
+fi
+
+if [ -d "$file_or_dir" ]
+then
+  find ${file_or_dir}/. -maxdepth 1 -type f | while read file; do
+    rename_file
+  done
+else
+  file=$file_or_dir
+  rename_file
+fi
+
+#EOF
