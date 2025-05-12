@@ -109,37 +109,6 @@ def compare_results(exp: str, branch1: str, branch2: str, cache_dir: Path) -> bo
         return True
 
 
-# def compare_results(exp: str, branch1: str, branch2: str, cache_dir: Path):
-#     file1 = cache_dir / branch1 / f"{exp}.csv"
-#     file2 = cache_dir / branch2 / f"{exp}.csv"
-
-#     if not file1.exists() or not file2.exists():
-#         print(f"❌ Missing result file(s) for comparison: {file1}, {file2}")
-#         return False
-
-#     df1 = pd.read_csv(file1)
-#     df2 = pd.read_csv(file2)
-
-#     if "time" in df1.columns and "time" in df2.columns:
-#         time1 = df1["time"].mean()
-#         time2 = df2["time"].mean()
-#         diff = time1 - time2
-#         trend = "increased" if diff > 0 else "decreased"
-#         print(f"⏱️ Mean time on '{branch1}': {time1:.4f}")
-#         print(f"⏱️ Mean time on '{branch2}': {time2:.4f}")
-#         print(f"📉 Mean time has {trend} by {abs(diff):.4f} seconds\n")
-
-#     df1 = df1.drop(columns=["time"], errors="ignore").sort_index(axis=1)
-#     df2 = df2.drop(columns=["time"], errors="ignore").sort_index(axis=1)
-
-#     if df1.equals(df2):
-#         print(f"[✅ MATCH] {exp}")
-#         return True
-#     else:
-#         print(f"[❌ MISMATCH] {exp}")
-#         return False
-
-
 def checkout_branch(branch: str):
     subprocess.run(["git", "checkout", branch], check=True)
 
