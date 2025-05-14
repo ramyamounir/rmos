@@ -1,54 +1,76 @@
 local dependencies = {
     "nvim-lua/plenary.nvim",
     "nvim-telescope/telescope.nvim",
+    { "mike-jl/harpoonEx", opts = { reload_on_dir_change = true } },
 }
 
 local function get_opts()
     local harpoon = require("harpoon")
+    harpoon:setup({})
 
-    vim.keymap.set("n", "<leader>a", function() harpoon:list():add() end)
-    vim.keymap.set("n", "<C-7>", function() harpoon:list():select(1) end)
-    vim.keymap.set("n", "<C-8>", function() harpoon:list():select(2) end)
-    vim.keymap.set("n", "<C-9>", function() harpoon:list():select(3) end)
+    -- load harpoonEx extension
+    local harpoonEx = require("harpoonEx")
+    harpoon:extend(harpoonEx.extend())
 
-    vim.keymap.set("n", "<C-S-P>", function() harpoon:list():prev() end)
-    vim.keymap.set("n", "<C-S-N>", function() harpoon:list():next() end)
+    -- highlight current file
+    local harpoon_ext = require("harpoon.extensions")
+    harpoon:extend(harpoon_ext.builtins.highlight_current_file())
 
-    -- basic telescope configuration
-    local conf = require("telescope.config").values
-    local function toggle_telescope(harpoon_files)
-        local file_paths = {}
-        for _, item in ipairs(harpoon_files.items) do
-            table.insert(file_paths, item.value)
-        end
+    local list = harpoon:list()
 
-        require("telescope.pickers").new({}, {
-            prompt_title = "Harpoon",
-            finder = require("telescope.finders").new_table({
-                results = file_paths,
-            }),
-            previewer = conf.file_previewer({}),
-            sorter = conf.generic_sorter({}),
-        }):find()
-    end
+    vim.keymap.set("n", "<leader>qq", function()
+        require("telescope").extensions.harpoonEx.harpoonEx({
+            -- Optional: modify mappings, default mappings:
+            attach_mappings = function(_, map)
+                local actions = require("telescope").extensions.harpoonEx.actions
+                map({ "i", "n" }, "<M-d>", actions.delete_mark)
+                map({ "i", "n" }, "<M-k>", actions.move_mark_up)
+                map({ "i", "n" }, "<M-j>", actions.move_mark_down)
+                return true
+            end,
+        })
+        return true
+    end, { desc = "Open harpoon window" })
 
-    vim.keymap.set("n", "<C-e>", function() toggle_telescope(harpoon:list()) end,
-        { desc = "Open harpoon window" })
+    vim.keymap.set("n", "<leader>qa", function()
+        list:add()
+    end, { desc = "Harpoon: Add file" })
 
-    local opts = {
-        global_settings = {
-            save_on_toggle = false,
-            save_on_change = true,
-            enter_on_sendcmd = false,
-            tmux_autoclose_windows = false,
-            excluded_filetypes = { "harpoon" },
-            markbranch = true,
-            tabline = false,
-            tabline_prefix = "  ",
-            tabline_suffix = "  ",
-        }
-    }
-    return opts
+    vim.keymap.set("n", "<leader>qd", function()
+        harpoonEx.delete(harpoon:list())
+    end, { desc = "Add current filte to Harpoon List" })
+
+    vim.keymap.set("n", "<S-Tab>", function()
+        harpoonEx.next_harpoon(harpoon:list(), true)
+    end, { desc = "Switch to previous buffer in Harpoon List" })
+    vim.keymap.set("n", "<Tab>", function()
+        harpoonEx.next_harpoon(harpoon:list(), false)
+    end, { desc = "Switch to next buffer in Harpoon List" })
+
+    vim.keymap.set("n", "<C-e>", function()
+        harpoonEx.telescope_live_grep(harpoon:list())
+    end, { desc = "Live grep harpoon files" })
+
+    -- 🔢 Quick access to first 3 files
+    vim.keymap.set("n", "<C-1>", function() list:select(1) end, { desc = "Harpoon: File 1" })
+    vim.keymap.set("n", "<C-2>", function() list:select(2) end, { desc = "Harpoon: File 2" })
+    vim.keymap.set("n", "<C-3>", function() list:select(3) end, { desc = "Harpoon: File 3" })
+
+
+    -- local opts = {
+    --     global_settings = {
+    --         save_on_toggle = false,
+    --         save_on_change = true,
+    --         enter_on_sendcmd = false,
+    --         tmux_autoclose_windows = false,
+    --         excluded_filetypes = { "harpoon" },
+    --         markbranch = true,
+    --         tabline = false,
+    --         tabline_prefix = "  ",
+    --         tabline_suffix = "  ",
+    --     }
+    -- }
+    -- return opts
 end
 
 return {
