@@ -1,0 +1,8 @@
+explicit_start = true
+indent_mapping = 4
+indent_offset = 4
+indent_sequence = 6
+whitelines = 1
+sequence_style = "keep_style"
+quote_basic_values = false
+preserve_quotes = true
