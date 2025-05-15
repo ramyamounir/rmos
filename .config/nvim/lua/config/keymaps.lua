@@ -9,6 +9,9 @@ keymap("", "<Space>", "<Nop>", opts)
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 
+-- Delete default lsp implementation keymap to use GoReplace keymaps instead
+vim.keymap.del('n', 'gri')
+
 -- Normal --
 -- Better window navigation
 keymap("n", "<C-h>", "<C-w>h", opts)
@@ -73,38 +76,8 @@ keymap("n", "<leader>e", ":Neotree toggle<cr>", opts)
 keymap('n', 'zR', [[<Cmd>lua require('ufo').openAllFolds()<CR>]], opts)
 keymap('n', 'zM', [[<Cmd>lua require('ufo').closeAllFolds()<CR>]], opts)
 
--- Iron
-keymap('n', '<Leader>rr', [[<cmd>IronRepl<CR>]], opts)
-keymap('n', '<Leader>rR', [[<cmd>IronRestart<CR>]], opts)
-
--- Go-replace-in in-house keymaps to circumvent an error from hell
-keymap("n", "griw", "viw\"_dP", opts)
-keymap("n", "griW", "viW\"_dP", opts)
-keymap("n", "grip", "vip\"_dP", opts)
-keymap("n", "grit", "vit\"_dP", opts)
-keymap("n", "gri(", "vi(\"_dP", opts)
-keymap("n", "gri)", "vi(\"_dP", opts)
-keymap("n", "gri[", "vi[\"_dP", opts)
-keymap("n", "gri]", "vi]\"_dP", opts)
-keymap("n", "gri{", "vi{\"_dP", opts)
-keymap("n", "gri}", "vi}\"_dP", opts)
-keymap("n", "gri<", "vi<\"_dP", opts)
-keymap("n", "gri>", "vi>\"_dP", opts)
-keymap("n", "gri'", "vi'\"_dP", opts)
-keymap("n", "gri\"", "vi\"\"_dP", opts)
-
 -- goto preview keymaps
 keymap("n", "gpd", [[:lua require("goto-preview").goto_preview_definition()<CR>]], opts)
 keymap("n", "gpD", [[:lua require('goto-preview').goto_preview_declaration()<CR>]], opts)
 keymap("n", "gpr", [[:lua require('goto-preview').goto_preview_references()<CR>]], opts)
 keymap("n", "<Esc>", [[:lua require("goto-preview").close_all_win()<CR>]], opts)
-
--- codecompanion keymaps
-keymap("n", "<leader>gg", [[:lua require("codecompanion").toggle()<CR>]], opts)
-keymap("n", "<leader>gn", [[:lua require("codecompanion").chat()<CR>]], opts)
-keymap("v", "<leader>ge", ":'<,'>CodeCompanion /explain<CR>", opts)
-keymap("v", "<leader>gf", ":'<,'>CodeCompanion /fix<CR>", opts)
-keymap("v", "<leader>gu", ":'<,'>CodeCompanion /tests<CR>", opts)
-keymap("v", "<leader>gc", ":'<,'>CodeCompanion /commit<CR>", opts)
-keymap("v", "<leader>gl", ":'<,'>CodeCompanion /send<CR>", opts)
-keymap("n", "<Leader>g-", [[:lua require("plugins.codecompanion.pickers").pick_chat()<CR>]], opts)

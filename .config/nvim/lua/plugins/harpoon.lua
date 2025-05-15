@@ -18,26 +18,28 @@ local function get_opts()
 
     local list = harpoon:list()
 
-    vim.keymap.set("n", "<leader>qq", function()
-        require("telescope").extensions.harpoonEx.harpoonEx({
-            -- Optional: modify mappings, default mappings:
+    vim.keymap.set("n", "<leader>r-", function()
+        local telescope = require("telescope")
+        telescope.extensions.harpoonEx.harpoonEx({
             attach_mappings = function(_, map)
-                local actions = require("telescope").extensions.harpoonEx.actions
-                map({ "i", "n" }, "<M-d>", actions.delete_mark)
-                map({ "i", "n" }, "<M-k>", actions.move_mark_up)
-                map({ "i", "n" }, "<M-j>", actions.move_mark_down)
+                local actions = telescope.extensions.harpoonEx.actions
+                map({ "i", "n" }, "<C-x>", actions.delete_mark)
+                map({ "i", "n" }, "<C-S-k>", actions.move_mark_up)
+                map({ "i", "n" }, "<C-S-j>", actions.move_mark_down)
                 return true
             end,
         })
         return true
     end, { desc = "Open harpoon window" })
 
-    vim.keymap.set("n", "<leader>qa", function()
+    vim.keymap.set("n", "<leader>rr", function()
         list:add()
+        vim.notify("File added to Harpoon list")
     end, { desc = "Harpoon: Add file" })
 
-    vim.keymap.set("n", "<leader>qd", function()
+    vim.keymap.set("n", "<leader>rx", function()
         harpoonEx.delete(harpoon:list())
+        vim.notify("File removed from Harpoon list")
     end, { desc = "Add current filte to Harpoon List" })
 
     vim.keymap.set("n", "<S-Tab>", function()
@@ -52,25 +54,9 @@ local function get_opts()
     end, { desc = "Live grep harpoon files" })
 
     -- 🔢 Quick access to first 3 files
-    vim.keymap.set("n", "<C-1>", function() list:select(1) end, { desc = "Harpoon: File 1" })
-    vim.keymap.set("n", "<C-2>", function() list:select(2) end, { desc = "Harpoon: File 2" })
-    vim.keymap.set("n", "<C-3>", function() list:select(3) end, { desc = "Harpoon: File 3" })
-
-
-    -- local opts = {
-    --     global_settings = {
-    --         save_on_toggle = false,
-    --         save_on_change = true,
-    --         enter_on_sendcmd = false,
-    --         tmux_autoclose_windows = false,
-    --         excluded_filetypes = { "harpoon" },
-    --         markbranch = true,
-    --         tabline = false,
-    --         tabline_prefix = "  ",
-    --         tabline_suffix = "  ",
-    --     }
-    -- }
-    -- return opts
+    vim.keymap.set("n", "<C-2>", function() list:select(1) end, { desc = "Harpoon: File 1" })
+    vim.keymap.set("n", "<C-3>", function() list:select(2) end, { desc = "Harpoon: File 2" })
+    vim.keymap.set("n", "<C-4>", function() list:select(3) end, { desc = "Harpoon: File 3" })
 end
 
 return {
