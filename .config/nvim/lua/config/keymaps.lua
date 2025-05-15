@@ -73,8 +73,8 @@ end, { desc = "Live grep in project root" })
 keymap("n", "<leader>e", ":Neotree toggle<cr>", opts)
 
 -- UFO
-keymap('n', 'zR', [[<Cmd>lua require('ufo').openAllFolds()<CR>]], opts)
-keymap('n', 'zM', [[<Cmd>lua require('ufo').closeAllFolds()<CR>]], opts)
+-- keymap('n', 'zR', [[<Cmd>lua require('ufo').openAllFolds()<CR>]], opts)
+-- keymap('n', 'zM', [[<Cmd>lua require('ufo').closeAllFolds()<CR>]], opts)
 
 -- goto preview keymaps
 keymap("n", "gpd", [[:lua require("goto-preview").goto_preview_definition()<CR>]], opts)

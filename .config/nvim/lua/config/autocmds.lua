@@ -59,3 +59,17 @@ vim.api.nvim_create_user_command("FormatToggle", function()
 end, {
     desc = "Toggle autoformat-on-save for the current buffer",
 })
+
+
+-- This fixes ufo buffer folds by reattaching to buffer on read
+vim.api.nvim_create_autocmd("BufReadPost", {
+    callback = function(args)
+        vim.defer_fn(function()
+            local ok, ufo = pcall(require, "ufo")
+            if ok then
+                ufo.detach(args.buf)
+                ufo.attach(args.buf)
+            end
+        end, 0)
+    end,
+})
