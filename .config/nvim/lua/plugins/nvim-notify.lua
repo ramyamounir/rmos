@@ -3,7 +3,8 @@ local opts = {
     render = "minimal",
     stages = "fade_in_slide_out",
     timeout = 1000,
-    top_down = false
+    top_down = false,
+    background_colour = '#000000'
 }
 
 return {
