@@ -40,7 +40,9 @@ local plugins = {
     PreparePackage("iamcco/markdown-preview.nvim", require("plugins.markdown-preview")),
     PreparePackage("MeanderingProgrammer/render-markdown.nvim", require("plugins.render-markdown")),
     PreparePackage("ibhagwan/fzf-lua", require("plugins.fzf")),
-    PreparePackage("ThePrimeagen/harpoon", require("plugins.harpoon")),
+    -- PreparePackage("ThePrimeagen/harpoon", require("plugins.harpoon")),
+    -- PreparePackage("MeanderingProgrammer/harpoon-core.nvim", require("plugins.harpoon-core")),
+    PreparePackage("ramyamounir/harpoon-core.nvim", require("plugins.harpoon-core")),
 
     -- coding
     PreparePackage("lervag/vimtex", require("plugins.vimtex")),
