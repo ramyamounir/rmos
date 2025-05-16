@@ -46,8 +46,8 @@ Host seedbox
     AddKeysToAgent yes
 
 Host margoz
-    HostName 162.241.24.41
-    User margozvi
+    HostName margozproduction.com
+    User ramy
     AddKeysToAgent yes
 
 Host lab
@@ -79,5 +79,10 @@ Host puppy
 Host github
     HostName github.com
     User ramyamounir
+    AddKeysToAgent yes
+
+Host margoz2
+    HostName 162.241.24.41
+    User margozvi
     AddKeysToAgent yes
 
