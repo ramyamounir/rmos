@@ -66,5 +66,6 @@ end
 
 return {
     dependencies = dependencies,
+    branch = "telescope_keybinding_support",
     opts = get_opts,
 }
