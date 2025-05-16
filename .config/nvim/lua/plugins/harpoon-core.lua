@@ -9,7 +9,7 @@ local function get_opts()
     telescope.load_extension('harpoon-core')
 
     vim.keymap.set("n", "<leader>r-", function()
-        local harpoon_core = require("telescope").extensions["harpoon-core"].marks
+        local harpoon_core = telescope.extensions["harpoon-core"].marks
         harpoon_core.picker({
             attach_mappings = function(_, map)
                 map({ "i", "n" }, "<C-x>", harpoon_core.delete)
@@ -37,10 +37,6 @@ local function get_opts()
         harpoon.nav_prev()
     end, { desc = "Switch to previous buffer in Harpoon List" })
 
-    -- vim.keymap.set("n", "<C-e>", function()
-    --     harpoonEx.telescope_live_grep(harpoon:list())
-    -- end, { desc = "Live grep harpoon files" })
-
     -- 🔢 Quick access to first 3 files
     vim.keymap.set("n", "<C-7>", function() harpoon.nav_file(1) end, { desc = "Harpoon: File 1" })
     vim.keymap.set("n", "<C-8>", function() harpoon.nav_file(2) end, { desc = "Harpoon: File 2" })
@@ -59,7 +55,7 @@ local function get_opts()
         -- Settings for popup window
         menu = { width = 60, height = 10 },
         -- Controls confirmation when deleting mark in telescope
-        delete_confirmation = true,
+        delete_confirmation = false,
     }
     return opts
 end
