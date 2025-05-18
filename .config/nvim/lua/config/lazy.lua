@@ -35,13 +35,12 @@ local plugins = {
     PreparePackage("nvim-telescope/telescope-ui-select.nvim", require("plugins.telescope-ui-select")),
     PreparePackage("nvim-tree/nvim-web-devicons", require("plugins.web-dev-icons")),
     PreparePackage("ellisonleao/gruvbox.nvim", require("plugins.gruvbox")),
+    -- PreparePackage("catppuccin/nvim", require("plugins.catppuccin")),
 
     -- editor
     PreparePackage("iamcco/markdown-preview.nvim", require("plugins.markdown-preview")),
     PreparePackage("MeanderingProgrammer/render-markdown.nvim", require("plugins.render-markdown")),
     PreparePackage("ibhagwan/fzf-lua", require("plugins.fzf")),
-    -- PreparePackage("ThePrimeagen/harpoon", require("plugins.harpoon")),
-    -- PreparePackage("MeanderingProgrammer/harpoon-core.nvim", require("plugins.harpoon-core")),
     PreparePackage("ramyamounir/harpoon-core.nvim", require("plugins.harpoon-core")),
 
     -- coding
@@ -76,6 +75,5 @@ local plugins = {
 
 return require("lazy").setup({
     spec = plugins,
-    install = { colorscheme = { "habamax" } },
     checker = { enabled = true }
 })

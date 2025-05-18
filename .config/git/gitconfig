@@ -41,6 +41,9 @@
 [push]
     autoSetupRemote = true
 
+[fetch]
+    prune = true
+
 [tag]
     gpgsign = true
 
