@@ -40,6 +40,17 @@ local dependencies = {
         },
     },
     {
+        "rcarriga/cmp-dap",
+        dependencies = { "hrsh7th/nvim-cmp" },
+        config = function()
+            require("cmp").setup.filetype({ "dap-repl", "dapui_watches", "dapui_hover" }, {
+                sources = {
+                    { name = "dap" }
+                }
+            })
+        end,
+    },
+    {
         "nvim-telescope/telescope-dap.nvim",
         config = function()
             require("telescope").load_extension("dap")
@@ -63,10 +74,8 @@ local function config()
             type = 'bashdb',
             request = 'launch',
             name = "Launch file",
-            showDebugOutput = true,
             pathBashdb = vim.fn.stdpath("data") .. '/mason/packages/bash-debug-adapter/extension/bashdb_dir/bashdb',
             pathBashdbLib = vim.fn.stdpath("data") .. '/mason/packages/bash-debug-adapter/extension/bashdb_dir',
-            trace = true,
             file = "${file}",
             program = "${file}",
             cwd = '${workspaceFolder}',
