@@ -198,6 +198,20 @@ local function config()
     vim.keymap.set("v", "<leader>ds", function()
         dap_python.debug_selection()
     end, { desc = "Debug selected code" })
+
+    -- move region to repl
+    vim.keymap.set("x", "<leader>dm", function()
+        local start_line = vim.fn.line("v")
+        local end_line = vim.fn.line(".")
+        -- Ensure start is before end
+        if start_line > end_line then
+            start_line, end_line = end_line, start_line
+        end
+        -- Get lines from buffer (0 = current buffer)
+        local lines = vim.api.nvim_buf_get_lines(0, start_line - 1, end_line, false)
+        require("dap").repl.open()
+        require("dap").repl.execute("\n" .. table.concat(lines, "\n"))
+    end)
 end
 
 
