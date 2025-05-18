@@ -57,6 +57,35 @@ local function config()
     local project_root = vim.env.PROJECT_ROOT or vim.fn.getcwd()
     require("dap.ext.vscode").load_launchjs(project_root .. "/launch.json", { python = { "python" } })
 
+    -- BASH DEBUGGER
+    dap.configurations.sh = {
+        {
+            type = 'bashdb',
+            request = 'launch',
+            name = "Launch file",
+            showDebugOutput = true,
+            pathBashdb = vim.fn.stdpath("data") .. '/mason/packages/bash-debug-adapter/extension/bashdb_dir/bashdb',
+            pathBashdbLib = vim.fn.stdpath("data") .. '/mason/packages/bash-debug-adapter/extension/bashdb_dir',
+            trace = true,
+            file = "${file}",
+            program = "${file}",
+            cwd = '${workspaceFolder}',
+            pathCat = "cat",
+            pathBash = "/bin/bash",
+            pathMkfifo = "mkfifo",
+            pathPkill = "pkill",
+            args = {},
+            env = {},
+            terminalKind = "integrated",
+        }
+    }
+    dap.adapters.bashdb = {
+        type = 'executable',
+        command = vim.fn.stdpath("data") .. '/mason/packages/bash-debug-adapter/bash-debug-adapter',
+        name = 'bashdb',
+    }
+
+    -- LUA DEBUGGER
     dap.configurations.lua = {
         {
             type = 'nlua',
