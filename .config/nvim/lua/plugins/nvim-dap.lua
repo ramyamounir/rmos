@@ -203,15 +203,29 @@ local function config()
     vim.keymap.set("x", "<leader>dm", function()
         local start_line = vim.fn.line("v")
         local end_line = vim.fn.line(".")
-        -- Ensure start is before end
         if start_line > end_line then
             start_line, end_line = end_line, start_line
         end
-        -- Get lines from buffer (0 = current buffer)
+
         local lines = vim.api.nvim_buf_get_lines(0, start_line - 1, end_line, false)
-        require("dap").repl.open()
-        require("dap").repl.execute("\n" .. table.concat(lines, "\n"))
-    end)
+        dap.repl.open()
+        dap.repl.execute("\n" .. table.concat(lines, "\n") .. "\n")
+
+        -- Exit visual mode
+        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "n", false)
+
+        -- Switch to DAP REPL and enter insert mode
+        vim.defer_fn(function()
+            for _, win in ipairs(vim.api.nvim_list_wins()) do
+                local buf = vim.api.nvim_win_get_buf(win)
+                if vim.bo[buf].filetype == "dap-repl" then
+                    vim.api.nvim_set_current_win(win)
+                    vim.api.nvim_feedkeys("i", "n", true)
+                    break
+                end
+            end
+        end, 100)
+    end, { desc = "Send selection to DAP REPL" })
 end
 
 
