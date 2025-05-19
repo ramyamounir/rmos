@@ -42,6 +42,7 @@ local plugins = {
     PreparePackage("MeanderingProgrammer/render-markdown.nvim", require("plugins.render-markdown")),
     PreparePackage("ibhagwan/fzf-lua", require("plugins.fzf")),
     PreparePackage("ramyamounir/harpoon-core.nvim", require("plugins.harpoon-core")),
+    PreparePackage("folke/flash.nvim", require("plugins.flash")),
 
     -- coding
     PreparePackage("lervag/vimtex", require("plugins.vimtex")),
