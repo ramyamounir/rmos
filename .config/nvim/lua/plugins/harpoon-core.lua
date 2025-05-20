@@ -9,15 +9,8 @@ local function get_opts()
     telescope.load_extension('harpoon-core')
 
     vim.keymap.set("n", "<leader>r-", function()
-        local harpoon_core = telescope.extensions["harpoon-core"].marks
-        harpoon_core.picker({
-            attach_mappings = function(_, map)
-                map({ "i", "n" }, "<C-x>", harpoon_core.delete)
-                map({ "i", "n" }, "<C-S-k>", harpoon_core.move_up)
-                map({ "i", "n" }, "<C-S-j>", harpoon_core.move_down)
-                return true
-            end,
-        })
+        telescope.extensions["harpoon-core"].marks()
+        -- harpoon.toggle_quick_menu()
     end, { desc = "Open Harpoon-core Telescope picker with custom mappings" })
 
     vim.keymap.set("n", "<leader>rr", function()
@@ -56,6 +49,12 @@ local function get_opts()
         menu = { width = 60, height = 10 },
         -- Controls confirmation when deleting mark in telescope
         delete_confirmation = false,
+        -- Telescope picker bindings
+        picker = {
+            delete = '<C-x>',
+            move_down = '<C-S-j>',
+            move_up = '<C-S-k>',
+        },
     }
     return opts
 end
