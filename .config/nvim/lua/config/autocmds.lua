@@ -27,26 +27,6 @@ vim.api.nvim_create_autocmd("VimEnter", {
     end,
 })
 
--- This is for iron to avoid marking the REPL as a buffer
-vim.api.nvim_create_autocmd({ "BufWinEnter", "TermOpen" }, {
-    pattern = "*",
-    callback = function(args)
-        local buf = args.buf
-        if not vim.api.nvim_buf_is_valid(buf) or not vim.api.nvim_buf_is_loaded(buf) then
-            return
-        end
-
-        local name = vim.api.nvim_buf_get_name(buf)
-        if name:match("iron") or vim.bo[buf].filetype == "iron" then
-            pcall(function()
-                vim.bo[buf].buftype = "nofile"
-                vim.bo[buf].bufhidden = "hide"
-                vim.bo[buf].swapfile = false
-            end)
-        end
-    end,
-})
-
 -- This toggles auto format for the current buffer
 vim.api.nvim_create_user_command("FormatToggle", function()
     if vim.b.disable_autoformat then
