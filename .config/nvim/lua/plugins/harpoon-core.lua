@@ -31,9 +31,12 @@ local function get_opts()
     end, { desc = "Switch to previous buffer in Harpoon List" })
 
     -- 🔢 Quick access to first 3 files
-    vim.keymap.set("n", "<C-7>", function() harpoon.nav_file(1) end, { desc = "Harpoon: File 1" })
-    vim.keymap.set("n", "<C-8>", function() harpoon.nav_file(2) end, { desc = "Harpoon: File 2" })
-    vim.keymap.set("n", "<C-9>", function() harpoon.nav_file(3) end, { desc = "Harpoon: File 3" })
+    vim.keymap.set("n", "<C-2>", function() harpoon.nav_file(1) end, { desc = "Harpoon: File 1" })
+    vim.keymap.set("n", "<C-3>", function() harpoon.nav_file(2) end, { desc = "Harpoon: File 2" })
+    vim.keymap.set("n", "<C-4>", function() harpoon.nav_file(3) end, { desc = "Harpoon: File 3" })
+    vim.keymap.set("n", "<C-7>", function() harpoon.nav_file(4) end, { desc = "Harpoon: File 4" })
+    vim.keymap.set("n", "<C-8>", function() harpoon.nav_file(5) end, { desc = "Harpoon: File 5" })
+    vim.keymap.set("n", "<C-9>", function() harpoon.nav_file(6) end, { desc = "Harpoon: File 6" })
 
     local opts = {
         -- Make existing window active rather than creating a new window
