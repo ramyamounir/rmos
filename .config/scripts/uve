@@ -52,8 +52,13 @@ case "$1" in
         echo "⚡ Activating environment '$PROJECT_ENV'..."
         source "$ENV_PATH/bin/activate"
 
-        echo "📦 Initializing uv project in current directory..."
-        uv init
+        if [ -f "pyproject.toml" ]; then
+            echo "📄 Found existing pyproject.toml — running 'uve sync' instead of 'uv init'..."
+            "$0" sync
+        else
+            echo "📦 Initializing uv project in current directory..."
+            uv init
+        fi
         ;;
     "ls" | "list")
         if [ -d "$UV_VENV_HOME" ]; then
