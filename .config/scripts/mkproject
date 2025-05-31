@@ -47,12 +47,6 @@ if [ "$PKG_MANAGER" = "uv" ]; then
 
         echo "⚙️ Running: uve init"
         uve init
-        source $UV_VENV_HOME/$PROJECT_ENV/bin/activate
-
-        if [ -f "uv.lock" ]; then
-            echo "🔄 uv.lock found — syncing environment with lockfile..."
-            uve sync
-        fi
 
         unset PROJECT_ENV
         unset UV_VENV_HOME
