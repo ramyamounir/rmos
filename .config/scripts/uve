@@ -2,73 +2,184 @@
 
 UV_VENV_HOME=${UV_VENV_HOME:-"$XDG_CACHE_HOME/uv/venv"}
 
-if [ -z "$1" ]; then
-    echo ""
-    echo -e "Virtual environment home (\$UV_VENV_HOME): $UV_VENV_HOME "
-    echo ""
-    echo -e "\tuve env [OPTIONS] ENVIRONMENT\t\tCreate virtual environment"
-    echo -e "\tuve a[ctivate] ENVIRONMENT\t\tActivate virtual environment"
-    echo -e "\tuve d[eactivate]\t\t\tDeactivate current virtual environment"
-    echo -e "\tuve ls\t\t\t\t\tList virtual environments"
-    echo -e "\tuve rm ENVIRONMENT\t\t\tRemove virtual environment"
-    echo -e "\tuve add PACKAGE...\t\t\tAdd packages to active environment"
-    echo -e "\tuve remove PACKAGE...\t\tRemove packages from active environment"
-    echo ""
-    exit 0
-fi
-
+require_project_env() {
+    if [ -z "$PROJECT_ENV" ]; then
+        echo "❌ Error: PROJECT_ENV is not set. Please define it before running this command."
+        echo "Example: export PROJECT_ENV=myenv"
+        exit 1
+    fi
+}
 case "$1" in
-    "env")
-        shift
-        if [ -z "$1" ]; then
-            echo "uve env [OPTIONS] ENV_NAME"
-        elif [ -d "$UV_VENV_HOME/$1" ]; then
-            echo "Environment already exists."
-        else
-            ENV_NAME="${!#}"
-            OPTIONS="${@:2:$#-2}"
+    "" | "help" | "-h" | "--help")
+        echo ""
+        echo "📦 uve — uv environment and project manager"
+        echo ""
+        echo "ENVIRONMENT:"
+        echo "  \$PROJECT_ENV  Name of the environment to create/manage"
+        echo ""
+        echo "USAGE:"
+        echo "  uve COMMAND [ARGS...]"
+        echo ""
+        echo "COMMANDS:"
+        echo "  init                        Create \$PROJECT_ENV environment, activate it, and init project"
+        echo "  ls    | list                List environments under \$UV_VENV_HOME (marks \$PROJECT_ENV)"
+        echo "  rmenv                       Remove the environment named \$PROJECT_ENV"
+        echo "  add PACKAGE [...]           Add package(s) to the active environment"
+        echo "  remove | rm PACKAGE [...]   Remove package(s) from the active environment"
+        echo "  sync                        Sync environment with uv.lock"
+        echo "  clean                       Remove files created by 'uve init' (.git, pyproject.toml, etc.)"
+        echo ""
+        echo "EXAMPLES:"
+        echo "  export PROJECT_ENV=myenv"
+        echo "  uve init"
+        echo "  source uve.sh activate"
+        echo "  uve add requests rich"
+        echo "  uve rm requests"
+        echo "  uve sync"
+        echo ""
+        ;;
+    "init")
+        require_project_env
+        ENV_PATH="$UV_VENV_HOME/$PROJECT_ENV"
 
-            uv venv $OPTIONS "$UV_VENV_HOME/$ENV_NAME"
-            echo "Or simply run: uve a $ENV_NAME"
-        fi
-        ;;
-    "a" | "activate")
-        shift
-        echo "$1"
-        echo "$UV_VENV_HOME/$1/bin/activate"
-        exit
-        if ! [ -d "$UV_VENV_HOME/$1" ]; then
-            echo "$1 does not exist."
-        elif [ -z "$1" ]; then
-            echo "source uve a[ctivate] ENV_NAME"
+        if [ -d "$ENV_PATH" ]; then
+            echo "⚠️ Environment '$PROJECT_ENV' already exists at $ENV_PATH"
         else
-            . "$UV_VENV_HOME/$1/bin/activate"
+            echo "🚧 Creating virtual environment at $ENV_PATH..."
+            uv venv "$ENV_PATH"
         fi
+
+        echo "⚡ Activating environment '$PROJECT_ENV'..."
+        source "$ENV_PATH/bin/activate"
+
+        echo "📦 Initializing uv project in current directory..."
+        uv init
         ;;
-    "ls")
+    "ls" | "list")
         if [ -d "$UV_VENV_HOME" ]; then
-            ls -l "$UV_VENV_HOME" | tail -n +2 | rev | cut -d ' ' -f 1 | rev
+            echo "📦 Available environments in $UV_VENV_HOME:"
+            for env in "$UV_VENV_HOME"/*; do
+                [ -d "$env" ] || continue
+                name=$(basename "$env")
+                if [ "$name" = "$PROJECT_ENV" ]; then
+                    echo "  👉 $name (PROJECT_ENV)"
+                else
+                    echo "     $name"
+                fi
+            done
+        else
+            echo "❌ No virtual environments found in $UV_VENV_HOME"
         fi
         ;;
-    "rm")
-        shift
-        if [ -z "$1" ]; then
-            echo "uve rm ENV_NAME"
+    "rmenv")
+        require_project_env
+        ENV_PATH="$UV_VENV_HOME/$PROJECT_ENV"
+
+        if [ -z "$PROJECT_ENV" ]; then
+            echo "❌ PROJECT_ENV is not set."
+            exit 1
+        elif [ ! -d "$ENV_PATH" ]; then
+            echo "❌ No environment named '$PROJECT_ENV' found at $ENV_PATH"
         else
-            if [ -d "$UV_VENV_HOME/$1" ]; then
-                rm -r "$UV_VENV_HOME/$1"
-                echo "Removed environment."
+            echo "⚠️ This will permanently delete the environment '$PROJECT_ENV' at:"
+            echo "   $ENV_PATH"
+            read -p "Are you sure you want to remove it? [y/N] " confirm_env
+            if [[ "$confirm_env" =~ ^[Yy]$ ]]; then
+                rm -rf "$ENV_PATH"
+                echo "🗑️ Removed environment '$PROJECT_ENV'."
+
+                read -p "Do you also want to clean up project files (pyproject.toml, .git, etc)? [y/N] " confirm_clean
+                if [[ "$confirm_clean" =~ ^[Yy]$ ]]; then
+                    echo "🧼 Calling 'uve clean'..."
+                    "$0" clean
+                else
+                    echo "✨ Skipped project cleanup."
+                fi
             else
-                echo "No such environment."
+                echo "❌ Aborted environment removal."
             fi
         fi
         ;;
     "add")
-        shift
-        uv add "$@" --active
+        require_project_env
+
+        if [ -z "$VIRTUAL_ENV" ]; then
+            echo "❌ No virtual environment is currently active."
+            echo "Please activate your environment before adding packages:"
+            echo "  source uve.sh activate"
+            exit 1
+        fi
+
+        if [ $# -lt 2 ]; then
+            echo "Usage: uve add <package> [package2 ...]"
+            exit 1
+        fi
+
+        echo "📦 Adding packages to environment '$PROJECT_ENV': ${@:2}"
+        uv add --active "${@:2}"
         ;;
-    "remove")
-        shift
-        uv remove "$@" --active
+    "remove" | "rm")
+        require_project_env
+
+        if [ -z "$VIRTUAL_ENV" ]; then
+            echo "❌ No virtual environment is currently active."
+            echo "Please activate your environment before removing packages:"
+            echo "  source uve.sh activate"
+            exit 1
+        fi
+
+        if [ $# -lt 2 ]; then
+            echo "Usage: uve remove <package> [package2 ...]"
+            exit 1
+        fi
+
+        echo "🗑️ Removing packages from environment '$PROJECT_ENV': ${@:2}"
+        uv remove --active "${@:2}"
+        ;;
+    "sync")
+        require_project_env
+
+        if [ -z "$VIRTUAL_ENV" ]; then
+            echo "❌ No virtual environment is currently active."
+            echo "Please activate your environment before syncing:"
+            echo "  source uve.sh activate"
+            exit 1
+        fi
+
+        if [ ! -f "uv.lock" ]; then
+            echo "⚠️ uv.lock not found in current directory. Did you forget to run 'uv lock'?"
+            exit 1
+        fi
+
+        echo "🔄 Syncing environment '$PROJECT_ENV' with uv.lock..."
+        uv sync --active
+        ;;
+    "clean")
+        require_project_env
+
+        echo "🧹 Cleaning up project files created by 'uve init'..."
+
+        files_to_remove=(
+            ".python-version"
+            ".gitignore"
+            "pyproject.toml"
+            "uv.lock"
+            "README.md"
+            "main.py"
+        )
+
+        for f in "${files_to_remove[@]}"; do
+            if [ -e "$f" ]; then
+                rm -rf "$f"
+                echo "  ✔️ Removed $f"
+            fi
+        done
+
+        if [ -d ".git" ]; then
+            rm -rf .git
+            echo "  ✔️ Removed .git directory"
+        fi
+
+        echo "✅ Project directory cleaned."
         ;;
 esac

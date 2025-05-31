@@ -4,15 +4,18 @@ local dependencies = {
 }
 
 local function get_opts()
-    require('ufo').setup({
+    local ufo = require('ufo')
+    ufo.setup({
         provider_selector = function(bufnr, filetype, buftype)
             return { 'treesitter', 'indent' }
         end
     })
 
-    vim.api.nvim_set_keymap('n', 'zR', [[<Cmd>lua require('ufo').openAllFolds()<CR>]], { noremap = true, silent = true })
-    vim.api.nvim_set_keymap('n', 'zM', [[<Cmd>lua require('ufo').closeAllFolds()<CR>]], { noremap = true, silent = true })
-
+    --keymaps
+    vim.keymap.set("n", "zm", function() ufo.closeAllFolds() end, { desc = "UFO close all folds" })
+    vim.keymap.set("n", "zM", function() ufo.openAllFolds() end, { desc = "UFO open all folds" })
+    vim.keymap.set("n", "]]", function() ufo.goNextClosedFold() end, { desc = "UFO go to next closed fold" })
+    vim.keymap.set("n", "[[", function() ufo.goPreviousClosedFold() end, { desc = "UFO go to previous closed fold" })
     vim.keymap.set('n', 'zr', function()
         require('ufo').detach()
         require('ufo').attach()

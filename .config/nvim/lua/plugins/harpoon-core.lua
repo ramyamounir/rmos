@@ -21,7 +21,7 @@ local function get_opts()
     vim.keymap.set("n", "<leader>rx", function()
         harpoon.rm_file()
         vim.notify("File removed from Harpoon list")
-    end, { desc = "Add current filte to Harpoon List" })
+    end, { desc = "Remove current file from Harpoon List" })
 
     vim.keymap.set("n", "<Tab>", function()
         harpoon.nav_next()

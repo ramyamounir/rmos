@@ -1,8 +1,3 @@
-require("config.options")  -- vim options
-require("config.autocmds") -- vim auto commands
-require("config.keymaps")  -- vim keymaps
-require("config.utils")    -- vim utils
-
 -- Bootstrap lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
@@ -23,55 +18,57 @@ vim.opt.rtp:prepend(lazypath)
 
 local plugins = {
     -- UI plugins
-    PreparePackage("akinsho/bufferline.nvim", require("plugins.bufferline")),
-    PreparePackage("lewis6991/gitsigns.nvim", require("plugins.gitsigns")),
-    PreparePackage("lukas-reineke/indent-blankline.nvim", require("plugins.indent-blankline")),
-    PreparePackage("nvim-lualine/lualine.nvim", require("plugins.lualine")),
-    PreparePackage("nvim-neo-tree/neo-tree.nvim", require("plugins.neo-tree")),
-    PreparePackage("folke/noice.nvim", require("plugins.noice")),
-    PreparePackage("nvim-treesitter/nvim-treesitter", require("plugins.nvim-treesitter")),
-    PreparePackage("rcarriga/nvim-notify", require("plugins.nvim-notify")),
-    PreparePackage("nvim-telescope/telescope.nvim", require("plugins.telescope")),
-    PreparePackage("nvim-telescope/telescope-ui-select.nvim", require("plugins.telescope-ui-select")),
-    PreparePackage("nvim-tree/nvim-web-devicons", require("plugins.web-dev-icons")),
-    PreparePackage("ellisonleao/gruvbox.nvim", require("plugins.gruvbox")),
-    -- PreparePackage("catppuccin/nvim", require("plugins.catppuccin")),
+    MergeTables("akinsho/bufferline.nvim", require("plugins.bufferline")),
+    MergeTables("lewis6991/gitsigns.nvim", require("plugins.gitsigns")),
+    MergeTables("lukas-reineke/indent-blankline.nvim", require("plugins.indent-blankline")),
+    MergeTables("nvim-lualine/lualine.nvim", require("plugins.lualine")),
+    MergeTables("nvim-neo-tree/neo-tree.nvim", require("plugins.neo-tree")),
+    MergeTables("folke/noice.nvim", require("plugins.noice")),
+    MergeTables("nvim-treesitter/nvim-treesitter", require("plugins.nvim-treesitter")),
+    MergeTables("rcarriga/nvim-notify", require("plugins.nvim-notify")),
+    MergeTables("nvim-telescope/telescope.nvim", require("plugins.telescope")),
+    MergeTables("nvim-telescope/telescope-ui-select.nvim", require("plugins.telescope-ui-select")),
+    MergeTables("nvim-tree/nvim-web-devicons", require("plugins.web-dev-icons")),
+    MergeTables("ellisonleao/gruvbox.nvim", require("plugins.gruvbox")),
 
     -- editor
-    PreparePackage("iamcco/markdown-preview.nvim", require("plugins.markdown-preview")),
-    PreparePackage("MeanderingProgrammer/render-markdown.nvim", require("plugins.render-markdown")),
-    PreparePackage("ibhagwan/fzf-lua", require("plugins.fzf")),
-    PreparePackage("MeanderingProgrammer/harpoon-core.nvim", require("plugins.harpoon-core")),
-    PreparePackage("folke/flash.nvim", require("plugins.flash")),
+    MergeTables("iamcco/markdown-preview.nvim", require("plugins.markdown-preview")),
+    MergeTables("MeanderingProgrammer/render-markdown.nvim", require("plugins.render-markdown")),
+    MergeTables("ibhagwan/fzf-lua", require("plugins.fzf")),
+    MergeTables("MeanderingProgrammer/harpoon-core.nvim", require("plugins.harpoon-core")),
+    MergeTables("folke/flash.nvim", require("plugins.flash")),
+    MergeTables("folke/twilight.nvim", require("plugins.twilight")),
+    MergeTables("jbyuki/instant.nvim", require("plugins.instant")),
 
     -- coding
-    PreparePackage("lervag/vimtex", require("plugins.vimtex")),
-    PreparePackage("hrsh7th/nvim-cmp", require("plugins.nvim-cmp")),
-    PreparePackage("saadparwaiz1/cmp_luasnip"),
-    PreparePackage("hrsh7th/cmp-buffer"),
-    PreparePackage("hrsh7th/cmp-path"),
-    PreparePackage("hrsh7th/cmp-nvim-lua"),
-    PreparePackage("hrsh7th/cmp-nvim-lsp"),
-    PreparePackage("mfussenegger/nvim-dap", require("plugins.nvim-dap")),
+    MergeTables("lervag/vimtex", require("plugins.vimtex")),
+    MergeTables("hrsh7th/nvim-cmp", require("plugins.nvim-cmp")),
+    MergeTables("saadparwaiz1/cmp_luasnip"),
+    MergeTables("hrsh7th/cmp-buffer"),
+    MergeTables("hrsh7th/cmp-path"),
+    MergeTables("hrsh7th/cmp-nvim-lua"),
+    MergeTables("hrsh7th/cmp-nvim-lsp"),
+    MergeTables("mfussenegger/nvim-dap", require("plugins.nvim-dap")),
 
     -- LSP
-    PreparePackage("williamboman/mason.nvim", require("plugins.mason")),
-    PreparePackage("williamboman/mason-lspconfig.nvim", require("plugins.mason-lspconfig")),
-    PreparePackage("neovim/nvim-lspconfig", require("plugins.nvim-lspconfig")),
-    PreparePackage("stevearc/conform.nvim", require("plugins.conform")),
-    PreparePackage("mfussenegger/nvim-lint"),
-    PreparePackage("rshkarin/mason-nvim-lint", require("plugins.mason-lintconfig")),
-    PreparePackage("Kurama622/llm.nvim", require("plugins.llm")),
+    MergeTables("williamboman/mason.nvim", require("plugins.mason")),
+    MergeTables("williamboman/mason-lspconfig.nvim", require("plugins.mason-lspconfig")),
+    MergeTables("neovim/nvim-lspconfig", require("plugins.nvim-lspconfig")),
+    MergeTables("stevearc/conform.nvim", require("plugins.conform")),
+    MergeTables("mfussenegger/nvim-lint"),
+    MergeTables("rshkarin/mason-nvim-lint", require("plugins.mason-lintconfig")),
+    MergeTables("Kurama622/llm.nvim", require("plugins.llm")),
 
     -- miscellaneous
-    PreparePackage("machakann/vim-sandwich", require("plugins.sandwich")),
-    PreparePackage("kevinhwang91/nvim-ufo", require("plugins.ufo")),
-    PreparePackage("vim-test/vim-test", require("plugins.vim-test")),
-    PreparePackage("rmagatti/goto-preview", require("plugins.goto-preview")),
-    PreparePackage("machakann/vim-highlightedyank"),
-    PreparePackage("vim-scripts/ReplaceWithRegister"),
-    PreparePackage("tpope/vim-commentary"),
-    PreparePackage("tpope/vim-repeat"),
+    MergeTables("machakann/vim-sandwich", require("plugins.sandwich")),
+    MergeTables("kevinhwang91/nvim-ufo", require("plugins.ufo")),
+    MergeTables("vim-test/vim-test", require("plugins.vim-test")),
+    MergeTables("rmagatti/goto-preview", require("plugins.goto-preview")),
+    MergeTables("machakann/vim-highlightedyank"),
+    MergeTables("vim-scripts/ReplaceWithRegister"),
+    MergeTables("tpope/vim-commentary"),
+    MergeTables("tpope/vim-repeat"),
+    MergeTables("folke/which-key.nvim", require("plugins.which-key")),
 }
 
 return require("lazy").setup({

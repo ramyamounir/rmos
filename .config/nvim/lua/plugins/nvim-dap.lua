@@ -107,7 +107,7 @@ local function config()
     end
     vim.keymap.set('n', '<leader>dL', function()
         require "osv".launch({ port = 8086 })
-    end, { noremap = true })
+    end, { desc = "Debug: Start Lua Server", noremap = true })
 
 
     -- dap.configurations.python = {
