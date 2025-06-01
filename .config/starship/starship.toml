@@ -2,16 +2,18 @@
 
 format = """
 [╭](fg:current_line)\
-$os\
+$hostname\
+$sudo\
 $directory\
 $git_branch\
 $git_status\
+$fill\
+$username\
 $fill\
 $conda\
 $python\
 $cmd_duration\
 $time\
-$username\
 $line_break\
 $character\
 """
@@ -35,9 +37,16 @@ red = '#F38BA8'
 yellow = '#F9E2AF'
 status = "#e23140"
 
-[os]
-format = '(fg:current_line)[](fg:red)[](fg:primary bg:red)[](fg:red)'
-disabled = true
+[sudo]
+format = '[$symbol]($style)'
+style = 'bold green'
+symbol ='🧙'
+disabled = false
+
+[hostname]
+format = '(fg:current_line)[](fg:red)[$hostname](fg:primary bg:red)[](fg:red)'
+ssh_only = true
+disabled = false
 
 [directory]
 format = '[─](fg:current_line)[](fg:pink)[󰷏 ](fg:primary bg:pink)[](fg:pink bg:box)[ $read_only$truncation_symbol$path](fg:foreground bg:box)[](fg:box)'
@@ -89,7 +98,8 @@ use_12hr = true
 disabled = true
 
 [username]
-format = '[─](fg:current_line)[](fg:yellow)[ ](fg:primary bg:yellow)[](fg:yellow bg:box)[ $user](fg:foreground bg:box)[](fg:box) '
+# format = '[─](fg:current_line)[](fg:yellow)[ ](fg:primary bg:yellow)[](fg:yellow bg:box)[ $user](fg:foreground bg:box)[](fg:box) '
+format = '[$user](bold green)'
 show_always = true
 disabled = true
 

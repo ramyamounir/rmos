@@ -9,7 +9,8 @@ source $XDG_CONFIG_HOME/shell/rc.sh
 
 source $XDG_CONFIG_HOME/zsh/aliases.zsh
 
-theme_shell "zsh";
-
-[ -t 0 ] && clear;
+if [ -t 0 ]; then
+    theme_shell "zsh";
+    clear;
+fi
 

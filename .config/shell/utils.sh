@@ -155,6 +155,7 @@ function theme_shell() {
 
     elif [[ "$WORKING_SHELL" = "bash" ]]; then
         theme_oh_my $WORKING_SHELL
+        command -v starship 2>&1 > /dev/null && eval "$(starship init bash)"
     fi
 
     unset WORKING_SHELL
