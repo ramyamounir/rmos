@@ -35,6 +35,7 @@
 !scripts/
 !shell/
 !ssh/
+!starship/
 !systemd/
 !terminal-colors.d
 !tmux/

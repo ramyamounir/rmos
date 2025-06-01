@@ -50,6 +50,7 @@ p,          ripgrep,                                               Faster grep p
 p,          rsync,                                                 ssh remote sync
 p,          sof-firmware,                                          sound card
 p,          speedtest-cli,                                         a CLI tool to test Internet speed
+p,          starship,                                              a blazing fast terminal prompt
 p,          system-config-printer,                                 printer configuration toolbox (GUI)
 p,          tldr,                                                  tldr manual pages
 p,          tmux,                                                  tmux session manager

@@ -132,42 +132,8 @@ function theme_oh_my() {
 
 # theme zsh with Zim
 function theme_zim() {
-    # settings corresponding to the packages in $ZIM_CONFIG_FILE
-    zstyle ':zim:input' double-dot-expand yes
-    zstyle ':zim:prompt-pwd:tail' length 10
-    zstyle ':autocomplete:history-search-backward:*' list-lines 16
-    zstyle ':autocompletion:*' expand 'no'
-    zstyle ':zim:completion' dumpfile ${XDG_DATA_HOME}/zsh/.zcompdump
-    zstyle ':completion::complete:*' cache-path ${XDG_CACHE_HOME}/zsh/zcompcache
-    zstyle ':completion:*' squeeze-slashes true
-    zstyle ':completion:*' complete-options true
-
     init-zim;
     source $ZIM_HOME/init.zsh
-
-    zstyle ':zim:prompt-pwd:fish-style' dir-length 0
-
-    function _prompt_eriner_status() {
-        RESET="%k%f"
-        YELLOW="%F{yellow}"
-        YELLOW_BG="%K{yellow}"
-        GREY_BG="%K{#272E33}"
-        GREY="%F{#272E33}"
-        BLUE_BG="%K{cyan}"
-
-        # item 1: shell depth
-        NUMBERS=("󰲠" "󰲢" "󰲤" "󰲦" "󰲨" "󰲪" "󰲬" "󰲮" "󰲰" "󰿬" "")
-        SHELL_DEPTH=${SHLVL:-0}
-        [[ $SHELL_DEPTH -gt 10 ]] && SHELL_DEPTH=11
-        SHELL_DEPTH="${GREY_BG}${YELLOW}▎${NUMBERS[$SHELL_DEPTH]}"
-
-        # item 2: conda environment
-        CONDA_ENV=$(! [[ -n $CONDA_PREFIX ]] && echo "" || basename $CONDA_PREFIX)
-        CONDA_ENV=$([[ -z $CONDA_ENV ]] && echo "" || echo "${YELLOW_BG}${GREY}${YELLOW_BG}${GREY}  $([[ "$CONDA_ENV" == "anaconda3" ]] && echo "" || echo "$CONDA_ENV ")"${GREY_BG}${YELLOW})
-
-        echo -en "${CONDA_ENV}${GREY_BG}${YELLOW} %n@%m ${BLUE_BG}${GREY}${RESET}"
-    }
-    PS1='$(_prompt_eriner_main)'
 }
 
 # custom autocompletes
@@ -178,55 +144,15 @@ function register_custom_autocompletes() {
     complete -W "$(rmos-help _autocomplete)" rmos-help
 }
 
-function custom_keybindings() {
-    # navigation shortcuts
-    bindkey "^[[1;5D" backward-word         # Control + left arrow: navigate to the beginning to the word
-    bindkey "^[[1;5C" forward-word          # Control + right arrow: navigate to the end of the word
-    bindkey "^H" backward-kill-word         # Control + backspace: delete the word before
-    bindkey "^[[3;5~" kill-word             # Control + delete: delete the word ahead
-    bindkey "^[[1;6D" beginning-of-line     # Control + Shift + left arrow: go to the beginning of the line
-    bindkey "^[[1;6C" end-of-line           # Control + Shift + right arrow: go to the end of the line
-
-    delete_from_cursor_to_end() {
-        zle kill-line
-    }
-    zle -N delete_from_cursor_to_end
-    bindkey '^[[3;6~' delete_from_cursor_to_end # Control + shift + delete: delete from cursor to the end of the line
-
-    # plugin shortcuts
-    if bindkey -l | grep menuselect 2>&1 > /dev/null; then
-        bindkey '^N' menu-select                # Control + N: next selection
-        bindkey              '^I'        menu-select
-        bindkey "$terminfo[kcbt]" reverse-menu-select
-        bindkey -M menuselect              '^I'         menu-complete
-        bindkey -M menuselect "$terminfo[kcbt]" reverse-menu-complete
-    else
-        bindkey '^N' menu-complete            # Control + N: next selection
-    fi
-    bindkey '^ ' autosuggest-accept
-}
-
 # theme shell
 function theme_shell() {
     WORKING_SHELL=$1
 
     if [[ "$WORKING_SHELL" = "zsh" ]]; then
-        if [[ -z $SHELL_PLUGIN_MANAGER ]]; then
-            SHELL_PLUGIN_MANAGER="zim"
-        fi
+        theme_zim
+        command -v starship 2>&1 > /dev/null && eval "$(starship init zsh)"
+        command -v zoxide 2>&1 > /dev/null && eval "$(zoxide init zsh)"
 
-        case $SHELL_PLUGIN_MANAGER in
-            "zim")
-                theme_zim
-                command -v zoxide 2>&1 > /dev/null && eval "$(zoxide init zsh)"
-                ;;
-            "ohmy")
-                theme_oh_my $WORKING_SHELL
-                command -v zoxide 2>&1 > /dev/null && eval "$(zoxide init bash)"
-                ;;
-        esac
-
-        custom_keybindings
     elif [[ "$WORKING_SHELL" = "bash" ]]; then
         theme_oh_my $WORKING_SHELL
     fi

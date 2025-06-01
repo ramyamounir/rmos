@@ -55,6 +55,7 @@ export XCOMPOSEFILE="$XDG_CONFIG_HOME/x11/XCompose"
 export XINITRC="$XDG_CONFIG_HOME/x11/xinitrc"
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 export ZIM_CONFIG_FILE="$ZDOTDIR/zimrc"
+export STARSHIP_CONFIG="$XDG_CONFIG_HOME/starship/starship.toml"
 
 # cache
 export CUDA_CACHE_PATH="$XDG_CACHE_HOME/nv"
@@ -62,6 +63,7 @@ export GOMODCACHE="$XDG_CACHE_HOME/go/mod"
 export PYTHON_EGG_CACHE="$XDG_CACHE_HOME/python-eggs"
 export PYTHONPYCACHEPREFIX="$XDG_CACHE_HOME/python"
 export TEXMFVAR="$XDG_CACHE_HOME/texlive/texmf-var"
+export STARSHIP_CACHE="$XDG_CACHE_HOME/starship/cache"
 
 # data
 export AWS_SHARED_CREDENTIALS_FILE="$XDG_DATA_HOME/aws/credentials"

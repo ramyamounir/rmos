@@ -16,6 +16,7 @@ general.live_config_reload = true
 
 [font]
     size = 15
+    glyph_offset.y = 1
 
     [font.bold]
         family = "SF Mono"
@@ -33,9 +34,6 @@ general.live_config_reload = true
         family = "SF Mono"
         style = "Regular"
 
-    [font.offset]
-        x = 0
-        y = 4
 
 [keyboard]
 
