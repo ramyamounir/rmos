@@ -21,7 +21,7 @@ function gpg_ssh_agent() {
         fi
         
         if command -v gpg-connect-agent > /dev/null 2>&1; then
-            gpg-connect-agent --quiet updatestartuptty /bye
+            gpg-connect-agent --quiet updatestartuptty /bye > /dev/null 2>&1
         fi
     fi
 }
