@@ -159,10 +159,10 @@ local function config()
     vim.api.nvim_set_hl(0, "DapBreakpointCondition", { fg = "#E5C07B" })
 
     -- These are listeners to open and close the debugger view on hooks
-    -- dap.listeners.before.attach["dap-view-config"] = function() dap_view.open() end
-    -- dap.listeners.before.launch["dap-view-config"] = function() dap_view.open() end
-    -- dap.listeners.before.event_terminated["dap-view-config"] = function() dap_view.close() end
-    -- dap.listeners.before.event_exited["dap-view-config"] = function() dap_view.close() end
+    dap.listeners.before.attach["dap-view-config"] = function() dap_view.open() end
+    dap.listeners.before.launch["dap-view-config"] = function() dap_view.open() end
+    dap.listeners.before.event_terminated["dap-view-config"] = function() dap_view.close() end
+    dap.listeners.before.event_exited["dap-view-config"] = function() dap_view.close() end
 
     -- Keymaps
     vim.keymap.set("n", "<Leader>dc", dap.continue, { desc = "Debug: Start/Continue" })

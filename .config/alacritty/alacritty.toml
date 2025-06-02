@@ -34,7 +34,6 @@ general.live_config_reload = true
         family = "SF Mono"
         style = "Regular"
 
-
 [keyboard]
 
     [[keyboard.bindings]]
