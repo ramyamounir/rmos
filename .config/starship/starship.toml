@@ -85,7 +85,10 @@ style = "bold green"
 ignore_base = false  # Set to true if you want to hide the base environment
 
 [python]
-format = '[─](fg:current_line)[](fg:green)[$symbol](fg:primary bg:green)[](fg:green bg:box)[ (${version} )(\($virtualenv\) )](fg:foreground bg:box)[](fg:box)'
+format = '[─](fg:current_line)[](fg:green)[$symbol](fg:primary bg:green)[](fg:green bg:box)[ ($virtualenv) ](fg:foreground bg:box)[](fg:box)'
+detect_extensions = []
+detect_files = []
+detect_folders = []
 symbol = ' '
 
 [cmd_duration]
