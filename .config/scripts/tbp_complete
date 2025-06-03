@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/zsh
 
 tbp_plot() {
   python "$HOME/tbp/tbp.monty/tools/plot/cli.py" "$@"
@@ -11,11 +11,19 @@ tbp_run() {
     exp="$1"
     shift
   else
-    exp=$(~/.config/scripts/tbp_experiments | fzf --prompt='Choose experiment: ')
-    [[ -z "$exp" ]] && return 1  # User cancelled
+    exp=$(~/.config/scripts/tbp_experiments | \
+      fzf --prompt='Choose experiment: ' \
+          --delimiter=':' \
+          --with-nth=1 \
+          --preview='echo Group: {2}' \
+          --preview-window=down:1:wrap)
+
+    [[ -z "$exp" ]] && return 1  # Cancelled
+    exp="${exp%%:*}"             # Extract only the experiment name
   fi
 
   python "$HOME/tbp/tbp.monty/benchmarks/run.py" -e "$exp" "$@"
+
 }
 
 
@@ -47,7 +55,6 @@ function _complete_tbp_run() {
   fi
 
   _describe 'experiment names' experiment_names
-
 }
 
 compdef _complete_plot_cli tbp_plot

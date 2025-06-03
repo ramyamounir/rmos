@@ -3,20 +3,23 @@
 import io
 import sys
 from contextlib import redirect_stdout
+from dataclasses import fields, is_dataclass
 from pathlib import Path
 
-# Suppress noisy output from other imports
-sys.path.insert(0, str(Path.home() / "tbp" / "tbp.monty"))
+# Add TBP path for import
+tbp_path = Path.home() / "tbp" / "tbp.monty"
+sys.path.insert(0, str(tbp_path))
 
-# Silence all stdout during import
-silent_buf = io.StringIO()
-with redirect_stdout(silent_buf):
+# Suppress all stdout during import
+with redirect_stdout(io.StringIO()):
     try:
-        from benchmarks.configs.names import NAMES
+        import benchmarks.configs.names as names_module
     except ImportError as e:
-        print(f"Failed to import names: {e}", file=sys.stderr)
+        print(f"Import failed: {e}", file=sys.stderr)
         sys.exit(1)
 
-# Print only experiment names, skip first two
-for name in NAMES:
-    print(name)
+# Detect all top-level dataclass types in names_module
+for name, obj in vars(names_module).items():
+    if isinstance(obj, type) and is_dataclass(obj):
+        for field in fields(obj):
+            print(f"{field.name}:{obj.__name__}")
