@@ -4,6 +4,21 @@ tbp_plot() {
   python "$HOME/tbp/tbp.monty/tools/plot/cli.py" "$@"
 }
 
+tbp_run() {
+  local exp
+
+  if (( $# >= 1 )); then
+    exp="$1"
+    shift
+  else
+    exp=$(~/.config/scripts/tbp_experiments | fzf --prompt='Choose experiment: ')
+    [[ -z "$exp" ]] && return 1  # User cancelled
+  fi
+
+  python "$HOME/tbp/tbp.monty/benchmarks/run.py" -e "$exp" "$@"
+}
+
+
 function _complete_plot_cli() {
   local plot_dir="$HOME/tbp/tbp.monty/tools/plot"
   local -a script_names
@@ -21,4 +36,19 @@ function _complete_plot_cli() {
   fi
 }
 
+function _complete_tbp_run() {
+  local script="$HOME/.config/scripts/tbp_experiments"
+  local -a experiment_names
+
+  if [[ -x "$script" ]]; then
+    experiment_names=(${(f)"$($script 2>/dev/null)"})
+  else
+    experiment_names=()
+  fi
+
+  _describe 'experiment names' experiment_names
+
+}
+
 compdef _complete_plot_cli tbp_plot
+compdef _complete_tbp_run tbp_run

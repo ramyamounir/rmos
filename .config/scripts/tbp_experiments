@@ -1,0 +1,22 @@
+#!/usr/bin/env python
+
+import io
+import sys
+from contextlib import redirect_stdout
+from pathlib import Path
+
+# Suppress noisy output from other imports
+sys.path.insert(0, str(Path.home() / "tbp" / "tbp.monty"))
+
+# Silence all stdout during import
+silent_buf = io.StringIO()
+with redirect_stdout(silent_buf):
+    try:
+        from benchmarks.configs.names import NAMES
+    except ImportError as e:
+        print(f"Failed to import names: {e}", file=sys.stderr)
+        sys.exit(1)
+
+# Print only experiment names, skip first two
+for name in NAMES:
+    print(name)
