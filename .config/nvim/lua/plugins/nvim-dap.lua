@@ -10,6 +10,7 @@ local dependencies = {
     },
     {
         "igorlfs/nvim-dap-view",
+        commit = "960e219c",
         opts = {
             winbar = {
                 show = true,
