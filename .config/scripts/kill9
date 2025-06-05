@@ -1,0 +1,10 @@
+#!/bin/zsh
+
+alacritty -e sh -c '
+  pid=$(ps -eo pid,cmd --sort=-%mem | fzf --header="Select a process to kill" --preview="echo {}" | awk "{print \$1}")
+  if [ -n "$pid" ]; then
+    echo "Running: kill -9 $pid"
+    kill -9 "$pid"
+    read -p "Press enter to close..."
+  fi
+'
