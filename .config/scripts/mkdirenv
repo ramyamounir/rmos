@@ -1,0 +1,54 @@
+#!/usr/bin/env zsh
+
+mkdirenv() {
+  local envrc_path=".envrc"
+  local project_root="$PWD"
+  local env_type
+  local project_env
+  local uv_venv_home="${XDG_CACHE_HOME:-$HOME/.cache}/uv/venv"
+  local conda_home="${XDG_DATA_HOME:-$HOME/.local/share}/anaconda3"
+
+  # Confirm overwrite if .envrc already exists
+  if [[ -f "$envrc_path" ]]; then
+    read "overwrite?'.envrc already exists. Overwrite? [y/N] '" 
+    [[ "$overwrite" != [yY] ]] && echo "Aborted." && return 1
+  fi
+
+  # Choose environment type
+  env_type=$(printf "uv\nconda" | fzf --prompt="Choose environment type: ") || return 1
+
+  if [[ "$env_type" == "uv" ]]; then
+    project_env=$(find "$uv_venv_home" -maxdepth 1 -type d -printf "%f\n" | fzf --prompt="Choose UV env: ") || return 1
+
+    cat > "$envrc_path" <<EOF
+export PROJECT_ROOT="$project_root"
+export PROJECT_ENV="$project_env"
+export UV_VENV_HOME=$uv_venv_home
+source \$UV_VENV_HOME/\$PROJECT_ENV/bin/activate
+EOF
+
+  elif [[ "$env_type" == "conda" ]]; then
+    project_env=$(conda env list | awk '{print $1}' | grep -vE '^(#|base)$' | fzf --prompt="Choose Conda env: ") || return 1
+
+    cat > "$envrc_path" <<EOF
+export PROJECT_ROOT="$project_root"
+export PROJECT_ENV="$project_env"
+source "$conda_home/etc/profile.d/conda.sh"
+conda activate "\$PROJECT_ENV"
+EOF
+
+  else
+    echo "Invalid choice."
+    return 1
+  fi
+
+  echo ".envrc created with $env_type environment '$project_env'"
+
+  if command -v direnv >/dev/null; then
+    direnv allow
+  else
+    echo "⚠️  direnv is not installed or not in PATH."
+  fi
+}
+
+mkdirenv
