@@ -166,6 +166,7 @@ local function config()
 
     -- Keymaps
     vim.keymap.set("n", "<Leader>dc", dap.continue, { desc = "Debug: Start/Continue" })
+    vim.keymap.set("n", "<Leader>dC", dap.run_to_cursor, { desc = "Debug: Run to cursor" })
     vim.keymap.set("n", "<Leader>do", dap.step_over, { desc = "Debug: Step Over" })
     vim.keymap.set("n", "<Leader>di", dap.step_into, { desc = "Debug: Step Into" })
     vim.keymap.set("n", "<Leader>dO", dap.step_out, { desc = "Debug: Step Out" })
