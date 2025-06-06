@@ -8,7 +8,7 @@ local pyright_configs = {
         python = {
             analysis = {
                 -- ignore all files for analysis to execusively use Ruff for linting
-                -- ignore = { '*' },
+                ignore = { '*' },
                 -- typeCheckingMode = 'on',
             }
         }
