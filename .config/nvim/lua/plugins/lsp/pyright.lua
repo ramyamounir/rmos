@@ -1,3 +1,4 @@
+-- https://github.com/microsoft/pyright/blob/main/docs/settings.md
 local pyright_configs = {
     settings = {
         pyright = {
@@ -6,13 +7,12 @@ local pyright_configs = {
         },
         python = {
             analysis = {
-                -- typeCheckingMode = 'off'
                 -- ignore all files for analysis to execusively use Ruff for linting
-                ignore = { '*' },
+                -- ignore = { '*' },
+                -- typeCheckingMode = 'on',
             }
         }
     }
 }
 
 return pyright_configs
- 
