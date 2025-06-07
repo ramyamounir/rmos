@@ -10,6 +10,7 @@ local opts = {
         "markdown",
         "markdown_inline",
         "python",
+        "dap_repl",
         "query",
         "vim",
         "yaml",

@@ -53,10 +53,10 @@ local plugins = {
     -- LSP
     MergeTables("williamboman/mason.nvim", require("plugins.mason")),
     MergeTables("williamboman/mason-lspconfig.nvim", require("plugins.mason-lspconfig")),
+    MergeTables("rshkarin/mason-nvim-lint", require("plugins.mason-lintconfig")),
     MergeTables("neovim/nvim-lspconfig", require("plugins.nvim-lspconfig")),
     MergeTables("stevearc/conform.nvim", require("plugins.conform")),
     MergeTables("mfussenegger/nvim-lint"),
-    MergeTables("rshkarin/mason-nvim-lint", require("plugins.mason-lintconfig")),
     MergeTables("Kurama622/llm.nvim", require("plugins.llm")),
 
     -- miscellaneous

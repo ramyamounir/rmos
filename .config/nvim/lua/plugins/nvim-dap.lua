@@ -51,6 +51,13 @@ local dependencies = {
         end,
     },
     {
+        "LiadOz/nvim-dap-repl-highlights",
+        dependencies = { "nvim-treesitter/nvim-treesitter" },
+        config = function()
+            require("nvim-dap-repl-highlights").setup()
+        end,
+    },
+    {
         "nvim-telescope/telescope-dap.nvim",
         config = function()
             require("telescope").load_extension("dap")
