@@ -13,7 +13,9 @@ $fill\
 $conda\
 $python\
 $cmd_duration\
+$direnv\
 $time\
+$localip\
 $line_break\
 $character\
 """
@@ -58,7 +60,8 @@ truncate_to_repo = false
 
 [git_branch]
 format = '[─](fg:current_line)[](fg:green)[$symbol](fg:primary bg:green)[](fg:green bg:box)[ $branch](fg:foreground bg:box)'
-symbol = ' '
+# symbol = '  '
+symbol = ' '
 
 [git_status]
 format = '[$all_status](fg:green bg:box)[](fg:box)'
@@ -78,11 +81,28 @@ behind = ' ⇣${count}'
 symbol = '─'
 style = 'fg:current_line'
 
+[direnv]
+format = '[─](fg:current_line)[](fg:blue)[🧬](fg:primary bg:blue)[](fg:blue)'
+style = 'bold blue'
+disabled = false
+
 [conda]
-format = '[─](fg:current_line)[](fg:cyan)[$symbol](fg:primary bg:cyan)[](fg:cyan bg:box)[ $environment](fg:foreground bg:box)[](fg:box)'
-symbol = "🅒"
-style = "bold green"
+format = '[─](fg:current_line)[](fg:yellow)[$symbol](fg:primary bg:yellow)[](fg:yellow bg:box)[ $environment](fg:foreground bg:box)[](fg:box)'
+# symbol = "󱔎 🅒"
+symbol = " "
 ignore_base = false  # Set to true if you want to hide the base environment
+
+[custom.docker]
+description = "Shows the docker symbol if the current directory has Dockerfile or docker-compose.yml files"
+command = "echo 🐳"
+files = ["Dockerfile", "docker-compose.yml", "docker-compose.yaml"]
+when = """ command -v docker &> /dev/null; exit (echo $?); """
+prefix = "on "
+
+[localip]
+ssh_only = false
+format = '[─](fg:current_line)[$localipv4](bold red)'
+disabled = true
 
 [python]
 format = '[─](fg:current_line)[](fg:green)[$symbol](fg:primary bg:green)[](fg:green bg:box)[ ($virtualenv) ](fg:foreground bg:box)[](fg:box)'
