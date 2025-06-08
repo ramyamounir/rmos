@@ -1,0 +1,45 @@
+#!/bin/bash
+
+DMENU_OPTIONS=$(dwm -m)
+BOOKMARKS_FILE="$HOME/.config/bookmarks/bookmarks.txt"
+TERMINAL=${TERMINAL:-alacritty}
+
+mkdir -p "$(dirname "$BOOKMARKS_FILE")"
+touch "$BOOKMARKS_FILE"
+
+# Show bookmarks list with [add] and [remove] at the top
+CHOICE=$(
+  (printf "[add]\n[remove]\n"; cut -d '|' -f1 "$BOOKMARKS_FILE") |
+  dmenu $DMENU_OPTIONS -i -p "Bookmarks:"
+)
+
+case "$CHOICE" in
+  "[add]")
+    TEMPFILE=$(mktemp)
+    $TERMINAL -e bash -c "
+      echo 'Enter bookmark name:'; read NAME
+      echo 'Enter bookmark URL:'; read URL
+      echo \"\$NAME|\$URL\" > \"$TEMPFILE\"
+    "
+    if [ -s "$TEMPFILE" ]; then
+      cat "$TEMPFILE" >> "$BOOKMARKS_FILE"
+    fi
+    rm "$TEMPFILE"
+    ;;
+
+  "[remove]")
+    NAME=$(cut -d '|' -f1 "$BOOKMARKS_FILE" | dmenu $DMENU_OPTIONS -i -p "Remove bookmark:")
+    if [ -n "$NAME" ]; then
+      awk -F'|' -v name="$NAME" '$1 != name' "$BOOKMARKS_FILE" > "$BOOKMARKS_FILE.tmp" && mv "$BOOKMARKS_FILE.tmp" "$BOOKMARKS_FILE"
+    fi
+    ;;
+
+  "")
+    exit 0  # ESC pressed
+    ;;
+
+  *)
+    URL=$(awk -F'|' -v name="$CHOICE" '$1 == name {print $2}' "$BOOKMARKS_FILE")
+    [ -n "$URL" ] && "$BROWSER" "$URL" &
+    ;;
+esac
