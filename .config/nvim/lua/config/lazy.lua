@@ -39,6 +39,8 @@ local plugins = {
     MergeTables("folke/flash.nvim", require("plugins.flash")),
     MergeTables("folke/twilight.nvim", require("plugins.twilight")),
     MergeTables("jbyuki/instant.nvim", require("plugins.instant")),
+    MergeTables("Vigemus/iron.nvim", require("plugins.iron")),
+
 
     -- coding
     MergeTables("lervag/vimtex", require("plugins.vimtex")),

@@ -12,7 +12,16 @@ local function config(plugins, opts)
             scratch_repl = true,
             repl_definition = {
                 python = {
-                    command = { "python" },
+                    command = {
+                        "ipython",
+                        "-i",
+                        "--quiet",
+                        "--no-banner",
+                        "--no-tip",
+                        "--no-autoindent",
+                        "--no-confirm-exit",
+                        vim.fn.stdpath("config") .. "/lua/plugins/mason/dap/repl/ipython.py"
+                    },
                     format = common.bracketed_paste_python,
                 },
                 -- sh = {
@@ -25,19 +34,17 @@ local function config(plugins, opts)
                 },
             },
             repl_open_cmd = view.split.vertical.botright(50),
-            -- repl_open_cmd = view.right(80),
         },
         repl_filetype = function(bufnr, ft)
             return ft
         end,
         keymaps = {
-            send_motion = "<Leader>ic",
-            visual_send = "<Leader>il",
-            send_line = "<Leader>il",
-            send_file = "<Leader>if",
-            -- send_mark = "<Leader>im",
-            exit = "<Leader>iq",
-            clear = "<Leader>ix",
+            send_motion = "<Leader>vc",
+            visual_send = "<Leader>vl",
+            send_line = "<Leader>vl",
+            send_file = "<Leader>vf",
+            exit = "<Leader>vq",
+            clear = "<Leader>vx",
         },
         highlight = {
             italic = true,
