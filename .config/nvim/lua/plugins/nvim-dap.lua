@@ -205,12 +205,6 @@ local function config()
     vim.keymap.set("n", "<leader>dt", function()
         dap_python.test_method()
     end, { desc = "Debug test method under cursor" })
-    vim.keymap.set("n", "<leader>dT", function()
-        dap_python.test_class()
-    end, { desc = "Debug test class under cursor" })
-    vim.keymap.set("v", "<leader>ds", function()
-        dap_python.debug_selection()
-    end, { desc = "Debug selected code" })
 
     -- move region to repl
     vim.keymap.set("x", "<leader>dm", function()

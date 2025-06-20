@@ -9,6 +9,7 @@ end
 
 local keys = {
     { "<leader>tn", "<cmd>TestNearest<CR>", desc = "Test Nearest" },
+    { "<leader>tc", "<cmd>TestClass<CR>",   desc = "Test Class" },
     { "<leader>tf", "<cmd>TestFile<CR>",    desc = "Test File" },
     { "<leader>ts", "<cmd>TestSuite<CR>",   desc = "Test Suite" },
     { "<leader>tl", "<cmd>TestLast<CR>",    desc = "Test Last" },
