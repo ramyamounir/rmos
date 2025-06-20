@@ -71,6 +71,11 @@ local function config()
     local dap_view = require("dap-view")
 
     dap_python.test_runner = "pytest"
+    dap_python.test_runners.pytest = function(classnames, methodname)
+        local path = vim.fn.expand('%:p')
+        local test_path = table.concat(vim.iter({ path, classnames, methodname }):flatten(2):totable(), '::')
+        return 'pytest', { '-s', '-n', '1', test_path } -- Enable single worker for debugging (more efficient)
+    end
 
     local project_root = vim.env.PROJECT_ROOT or vim.fn.getcwd()
     require("dap.ext.vscode").load_launchjs(project_root .. "/launch.json", { python = { "python" } })
