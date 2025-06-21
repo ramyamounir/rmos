@@ -1,4 +1,4 @@
-command: "wandb offline && python benchmarks/run.py -e {exp}"
+command: "python benchmarks/run.py -e {exp}"
 
 paths:
     results_cache: /home/ramy/tbp/results/monty/projects/benchmarks_comparisons
@@ -9,12 +9,12 @@ branches:
     - name: "main"
       rerun: false
 
-    - name: "restructure_update_evidence"
-      rerun: true
-
-experiments:
-    - name: "randrot_noise_10distinctobj_dist_agent"
+    - name: "evidence_slope_tracker"
       rerun: false
 
-    - name: "randrot_noise_10distinctobj_surf_agent"
+experiments:
+    - name: "unsupervised_inference_distinctobj_dist_agent"
+      rerun: true
+
+    - name: "unsupervised_inference_distinctobj_surf_agent"
       rerun: false
