@@ -59,3 +59,5 @@ function _complete_tbp_run() {
 
 compdef _complete_plot_cli tbp_plot
 compdef _complete_tbp_run tbp_run
+alias off_tbp_run='WANDB_MODE="offline" tbp_run'
+alias on_tbp_run='WANDB_MODE="online" tbp_run'

@@ -1,0 +1,141 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "python",
+            "request": "launch",
+            "name": "Launch Monty Experiment",
+            "program": "${env:PROJECT_ROOT}/benchmarks/run.py",
+            "args": [
+                "-e",
+                "${input:experimentName}"
+            ],
+            "console": "integratedTerminal"
+        },
+        {
+            "type": "python",
+            "request": "launch",
+            "name": "Pick Benchmark Experiment",
+            "program": "${env:PROJECT_ROOT}/benchmarks/run.py",
+            "args": [
+                "-e",
+                "${input:BenchmarkNameDropdown}"
+            ],
+            "console": "integratedTerminal"
+        },
+        {
+            "type": "python",
+            "request": "launch",
+            "name": "Pick Unsupervised Experiment",
+            "program": "${env:PROJECT_ROOT}/benchmarks/run.py",
+            "args": [
+                "-e",
+                "${input:UnsupervisedNameDropdown}"
+            ],
+            "console": "integratedTerminal"
+        },
+        {
+            "type": "python",
+            "request": "launch",
+            "name": "Pick Plot Script",
+            "program": "${env:PROJECT_ROOT}/tools/plot/cli.py",
+            "args": [
+                "${input:PlotNameDropdown}",
+                "/home/ramy/tbp/results/monty/projects/evidence_eval_runs/logs/${input:LogDirDropdown}"
+            ],
+            "console": "integratedTerminal"
+        },
+        {
+            "type": "python",
+            "request": "launch",
+            "name": "Pick Everything is Awesome Experiment",
+            "program": "${env:PROJECT_ROOT}/benchmarks/run.py",
+            "args": [
+                "-e",
+                "${input:AwesomeNameDropdown}"
+            ],
+            "console": "integratedTerminal"
+        }
+    ],
+    "inputs": [
+        {
+            "id": "experimentName",
+            "type": "promptString",
+            "description": "Enter experiment name (-e)",
+            "default": "base_config_10distinctobj_dist_agent"
+        },
+        {
+            "id": "BenchmarkNameDropdown",
+            "type": "pickString",
+            "description": "Choose Benchmark experiment (-e)",
+            "default": "base_config_10distinctobj_dist_agent",
+            "options": [
+                "base_config_10distinctobj_dist_agent",
+                "base_config_10distinctobj_surf_agent",
+                "randrot_noise_10distinctobj_dist_agent",
+                "randrot_noise_10distinctobj_dist_on_distm",
+                "randrot_noise_10distinctobj_surf_agent",
+                "randrot_10distinctobj_surf_agent",
+                "randrot_noise_10distinctobj_5lms_dist_agent",
+                "base_10simobj_surf_agent",
+                "randrot_noise_10simobj_surf_agent",
+                "randrot_noise_10simobj_dist_agent",
+                "randomrot_rawnoise_10distinctobj_surf_agent",
+                "base_10multi_distinctobj_dist_agent",
+                "surf_agent_unsupervised_10distinctobj",
+                "surf_agent_unsupervised_10distinctobj_noise",
+                "surf_agent_unsupervised_10simobj",
+                "base_77obj_dist_agent",
+                "base_77obj_surf_agent",
+                "randrot_noise_77obj_surf_agent",
+                "randrot_noise_77obj_dist_agent",
+                "randrot_noise_77obj_5lms_dist_agent"
+            ]
+        },
+        {
+            "id": "UnsupervisedNameDropdown",
+            "type": "pickString",
+            "description": "Choose Unsupervised experiment (-e)",
+            "default": "unsupervised_inference_distinctobj_surf_agent",
+            "options": [
+                "unsupervised_inference_distinctobj_surf_agent",
+                "unsupervised_inference_distinctobj_dist_agent"
+            ]
+        },
+        {
+            "id": "AwesomeNameDropdown",
+            "type": "pickString",
+            "description": "Choose Everything is Awesome experiment (-e)",
+            "default": "unsupervised_inference_distinctobj_surf_agent",
+            "options": [
+                "everything_is_awesome_train",
+                "everything_is_awesome_eval"
+            ]
+        },
+        {
+            "id": "PlotNameDropdown",
+            "type": "pickString",
+            "description": "Choose Plot Script",
+            "default": "objects_evidence_over_time",
+            "options": [
+                "correct_object_hits_per_object",
+                "objects_evidence_over_time",
+                "pose_error_over_time"
+            ]
+        },
+        {
+            "id": "LogDirDropdown",
+            "type": "pickString",
+            "description": "Choose Experiment Log",
+            "default": "unsupervised_inference_distinctobj_dist_agent",
+            "options": [
+                "base_config_10distinctobj_dist_agent",
+                "base_config_10distinctobj_surf_agent",
+                "randrot_noise_10distinctobj_dist_agent",
+                "randrot_noise_10distinctobj_surf_agent",
+                "unsupervised_inference_distinctobj_dist_agent",
+                "unsupervised_inference_distinctobj_surf_agent"
+            ]
+        }
+    ]
+}
