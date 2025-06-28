@@ -28,6 +28,13 @@ tbp_run() {
   python "$HOME/tbp/tbp.monty/benchmarks/run.py" -e "$exp" "$@"
 }
 
+tbp_run_parallel() {
+  local exp
+  exp="$(_get_experiment_name)" || return 1
+
+  python "$HOME/tbp/tbp.monty/benchmarks/run_parallel.py" -e "$exp" "$@"
+}
+
 
 function _complete_plot_cli() {
   local plot_dir="$HOME/tbp/tbp.monty/tools/plot"
@@ -45,3 +52,6 @@ compdef _complete_plot_cli tbp_plot
 
 alias off_tbp_run='WANDB_MODE="offline" tbp_run'
 alias on_tbp_run='WANDB_MODE="online" tbp_run'
+
+alias off_tbp_run_parallel='WANDB_MODE="offline" tbp_run_parallel'
+alias on_tbp_run_parallel='WANDB_MODE="online" tbp_run_parallel'
