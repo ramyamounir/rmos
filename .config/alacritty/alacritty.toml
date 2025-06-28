@@ -101,8 +101,6 @@ general.live_config_reload = true
         mods = "Alt"
         command = { program = "terminal_root" }
 
-
-
 [selection]
     save_to_clipboard = true
 

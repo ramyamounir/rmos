@@ -1,29 +1,31 @@
 #!/usr/bin/zsh
 
+TBP_SET_SCRIPT="$HOME/.config/scripts/tbp_set_experiment"
+
+_get_experiment_name() {
+  if [[ -n "$EXPERIMENT_NAME" ]]; then
+    echo "$EXPERIMENT_NAME"
+  else
+    echo "EXPERIMENT_NAME is not set. Running tbp_set_experiment..." >&2
+    local chosen
+    chosen="$("$TBP_SET_SCRIPT")" || return 1
+    echo "$chosen"
+  fi
+}
+
 tbp_plot() {
-  python "$HOME/tbp/tbp.monty/tools/plot/cli.py" "$@"
+  local exp
+  exp="$(_get_experiment_name)" || return 1
+
+  local log_dir="$HOME/tbp/results/monty/projects/evidence_eval_runs/logs/$exp"
+  python "$HOME/tbp/tbp.monty/tools/plot/cli.py" "$1" "$log_dir" "${(@)@[2,-1]}"
 }
 
 tbp_run() {
   local exp
-
-  if (( $# >= 1 )); then
-    exp="$1"
-    shift
-  else
-    exp=$(~/.config/scripts/tbp_experiments | \
-      fzf --prompt='Choose experiment: ' \
-          --delimiter=':' \
-          --with-nth=1 \
-          --preview='echo Group: {2}' \
-          --preview-window=down:1:wrap)
-
-    [[ -z "$exp" ]] && return 1  # Cancelled
-    exp="${exp%%:*}"             # Extract only the experiment name
-  fi
+  exp="$(_get_experiment_name)" || return 1
 
   python "$HOME/tbp/tbp.monty/benchmarks/run.py" -e "$exp" "$@"
-
 }
 
 
@@ -36,28 +38,10 @@ function _complete_plot_cli() {
 
   if (( CURRENT == 2 )); then
     _describe 'script names' script_names
-  elif (( CURRENT == 3 )); then
-    local log_root="$HOME/tbp/results/monty/projects/evidence_eval_runs/logs"
-    local -a exp_paths
-    exp_paths=(${(f)"$(find "$log_root" -maxdepth 1 -mindepth 1 -type d)"})
-    _values 'experiment paths' "${exp_paths[@]}"
   fi
-}
-
-function _complete_tbp_run() {
-  local script="$HOME/.config/scripts/tbp_experiments"
-  local -a experiment_names
-
-  if [[ -x "$script" ]]; then
-    experiment_names=(${(f)"$($script 2>/dev/null)"})
-  else
-    experiment_names=()
-  fi
-
-  _describe 'experiment names' experiment_names
 }
 
 compdef _complete_plot_cli tbp_plot
-compdef _complete_tbp_run tbp_run
+
 alias off_tbp_run='WANDB_MODE="offline" tbp_run'
 alias on_tbp_run='WANDB_MODE="online" tbp_run'

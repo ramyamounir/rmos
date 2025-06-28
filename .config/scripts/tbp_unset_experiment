@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+ENV_FILE="${PROJECT_ROOT}/.envrc"
+
+# If the file doesn't exist, there's nothing to do
+if [[ ! -f "$ENV_FILE" ]]; then
+  echo ".envrc does not exist. Nothing to unset."
+  exit 0
+fi
+
+# Remove the line that sets EXPERIMENT_NAME
+if grep -q "^export EXPERIMENT_NAME=" "$ENV_FILE"; then
+  sed -i "/^export EXPERIMENT_NAME=/d" "$ENV_FILE"
+fi
+
+# Apply the change
+direnv allow "$ENV_FILE"

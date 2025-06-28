@@ -116,6 +116,6 @@ return {
     dependencies = dependencies,
     opts = opts,
     keys = {
-        {"<leader>e", "<cmd>Neotree toggle<cr>", "n", desc="NeoTree"}
+        { "<leader>n", "<cmd>Neotree toggle<cr>", "n", desc = "NeoTree" }
     }
 }

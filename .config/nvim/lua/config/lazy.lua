@@ -71,6 +71,7 @@ local plugins = {
     MergeTables("tpope/vim-commentary"),
     MergeTables("tpope/vim-repeat"),
     MergeTables("folke/which-key.nvim", require("plugins.which-key")),
+    MergeTables("NotAShelf/direnv.nvim", require("plugins.direnv")),
 }
 
 return require("lazy").setup({
