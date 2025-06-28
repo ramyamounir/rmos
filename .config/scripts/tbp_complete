@@ -1,12 +1,12 @@
 #!/usr/bin/zsh
 
-TBP_SET_SCRIPT="$HOME/.config/scripts/tbp_set_experiment"
+TBP_SET_SCRIPT="$HOME/.config/scripts/tbp_set"
 
 _get_experiment_name() {
   if [[ -n "$EXPERIMENT_NAME" ]]; then
     echo "$EXPERIMENT_NAME"
   else
-    echo "EXPERIMENT_NAME is not set. Running tbp_set_experiment..." >&2
+    echo "EXPERIMENT_NAME is not set. Running tbp_set ..." >&2
     local chosen
     chosen="$("$TBP_SET_SCRIPT")" || return 1
     echo "$chosen"
