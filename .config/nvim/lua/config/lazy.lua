@@ -30,6 +30,7 @@ local plugins = {
     MergeTables("nvim-telescope/telescope-ui-select.nvim", require("plugins.telescope-ui-select")),
     MergeTables("nvim-tree/nvim-web-devicons", require("plugins.web-dev-icons")),
     MergeTables("ellisonleao/gruvbox.nvim", require("plugins.gruvbox")),
+    MergeTables("linrongbin16/gitlinker.nvim", require("plugins.gitlinker")),
 
     -- editor
     MergeTables("iamcco/markdown-preview.nvim", require("plugins.markdown-preview")),
