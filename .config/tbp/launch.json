@@ -59,7 +59,7 @@
             "description": "Choose Plot Script",
             "default": "objects_evidence_over_time",
             "options": [
-                "correct_object_hits_per_object",
+                "correct_percentage_per_episode",
                 "objects_evidence_over_time",
                 "pose_error_over_time"
             ]
