@@ -10,7 +10,8 @@
                 "-e",
                 "${input:experimentName}"
             ],
-            "console": "integratedTerminal"
+            "console": "integratedTerminal",
+            "justMyCode": "false"
         },
         {
             "type": "python",
@@ -21,7 +22,8 @@
                 "-e",
                 "${env:EXPERIMENT_NAME}"
             ],
-            "console": "integratedTerminal"
+            "console": "integratedTerminal",
+            "justMyCode": "false"
         },
         {
             "type": "python",
@@ -32,7 +34,8 @@
                 "${input:PlotNameDropdown}",
                 "${env:HOME}/tbp/results/monty/projects/evidence_eval_runs/logs/${env:EXPERIMENT_NAME}"
             ],
-            "console": "integratedTerminal"
+            "console": "integratedTerminal",
+            "justMyCode": "false"
         },
         {
             "type": "python",
@@ -43,7 +46,8 @@
                 "-e",
                 "${env:EXPERIMENT_NAME}"
             ],
-            "console": "integratedTerminal"
+            "console": "integratedTerminal",
+            "justMyCode": "false"
         }
     ],
     "inputs": [
