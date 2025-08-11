@@ -65,7 +65,10 @@
             "options": [
                 "correct_percentage_per_episode",
                 "objects_evidence_over_time",
-                "pose_error_over_time"
+                "interactive_objects_evidence_over_time",
+                "interactive_evidence_slope_and_pose_error_correlation",
+                "pose_error_over_time",
+                "hypothesis_out_of_frame"
             ]
         }
     ]

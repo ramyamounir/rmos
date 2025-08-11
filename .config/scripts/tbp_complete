@@ -18,26 +18,26 @@ tbp_plot() {
   exp="$(_get_experiment_name)" || return 1
 
   local log_dir="$HOME/tbp/results/monty/projects/evidence_eval_runs/logs/$exp"
-  python "$HOME/tbp/tbp.monty/tools/plot/cli.py" "$1" "$log_dir" "${(@)@[2,-1]}"
+  python "$PROJECT_ROOT/tools/plot/cli.py" "$1" "$log_dir" "${(@)@[2,-1]}"
 }
 
 tbp_run() {
   local exp
   exp="$(_get_experiment_name)" || return 1
 
-  python "$HOME/tbp/tbp.monty/benchmarks/run.py" -e "$exp" "$@"
+  python "$PROJECT_ROOT/benchmarks/run.py" -e "$exp" "$@"
 }
 
 tbp_run_parallel() {
   local exp
   exp="$(_get_experiment_name)" || return 1
 
-  python "$HOME/tbp/tbp.monty/benchmarks/run_parallel.py" -e "$exp" "$@"
+  python "$PROJECT_ROOT/benchmarks/run_parallel.py" -e "$exp" "$@"
 }
 
 
 function _complete_plot_cli() {
-  local plot_dir="$HOME/tbp/tbp.monty/tools/plot"
+  local plot_dir="$PROJECT_ROOT/tools/plot"
   local -a script_names
   script_names=(${(f)"$(find "$plot_dir" -maxdepth 1 -type f -name '*.py' \
       ! -name '__init__.py' ! -name 'cli.py' \
