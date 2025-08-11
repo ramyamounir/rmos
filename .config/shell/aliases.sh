@@ -22,6 +22,7 @@ alias tb='tensorboard --samples_per_plugin="images=0" --logdir'
 
 ### GIT ###
 alias glg='git-igitt'
+alias gig='gitingest -e *.lock -o - | xclip -selection clipboard'
 
 ### NGROK ###
 alias ngbot='aaa; python ~/apps/ngrok-bot.py; d'
