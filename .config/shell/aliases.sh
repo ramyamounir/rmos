@@ -4,6 +4,7 @@
 alias lsl='ls -lh'
 alias c='clear'
 alias lsa='ls -alh'
+alias zz='cd ${PROJECT_ROOT}'
 alias ipe='curl ipinfo.io/ip;echo ""'
 alias ipi="ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1'"
 alias psg='ps -eaf | grep -P'
