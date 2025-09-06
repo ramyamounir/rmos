@@ -10,11 +10,10 @@ $git_status\
 $fill\
 $username\
 $fill\
-${env_var.EXPERIMENT_NAME}\
 $conda\
 $python\
 $cmd_duration\
-$direnv\
+${env_var.CTX_ACTIVE}\
 $time\
 $localip\
 $line_break\
@@ -87,9 +86,15 @@ format = '[─](fg:current_line)[](fg:blue)[🧬](fg:primary bg:blue)[](fg
 style = 'bold blue'
 disabled = false
 
+[env_var.CTX_ACTIVE]
+variable = "CTX_ACTIVE"
+format = '[─](fg:current_line)[](fg:cyan)[🧬](fg:primary bg:cyan)[](fg:cyan bg:box)'
+disabled = false
+
 [env_var.EXPERIMENT_NAME]
 variable = "EXPERIMENT_NAME"
 format = '[─](fg:current_line)[](fg:cyan)[🧪](fg:primary bg:cyan)[](fg:cyan bg:box)[ $env_value](fg:foreground bg:box)[](fg:box)'
+disabled = true
 
 [conda]
 format = '[─](fg:current_line)[](fg:yellow)[$symbol](fg:primary bg:yellow)[](fg:yellow bg:box)[ $environment](fg:foreground bg:box)[](fg:box)'

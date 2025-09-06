@@ -1,0 +1,17 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "python",
+            "request": "launch",
+            "name": "Run Set Plot",
+            "program": "${env:PROJECT_ROOT}/src/tbp/plot/cli.py",
+            "args": [
+                "${env:PLOT_NAME}",
+                "${env:RESULTS_DIR}"
+            ],
+            "console": "integratedTerminal",
+            "justMyCode": "false"
+        }
+    ]
+}

@@ -1,0 +1,12 @@
+{
+    "tbp.monty": {
+        "EXPERIMENT_NAME": "tbp_experiment_picker"
+    },
+    "feat.dynamic_resizing": {
+        "EXPERIMENT_NAME": "tbp_experiment_picker"
+    },
+    "tbp.plot": {
+        "RESULTS_DIR": "tbp_results_picker",
+        "PLOT_NAME": "tbp_plot_picker"
+    }
+}

@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Optional override; otherwise use the default path
+BASE_DIR="${RESULTS_BASE_OVERRIDE:-$HOME/tbp/results/monty/projects/evidence_eval_runs/logs}"
+
+if [[ ! -d "$BASE_DIR" ]]; then
+  echo "Base results directory not found: $BASE_DIR" >&2
+  exit 1
+fi
+
+# Collect immediate subdirectories’ basenames (fast, no find)
+shopt -s nullglob
+entries=()
+for d in "$BASE_DIR"/*/; do
+  # Skip if it's not a dir for any reason
+  [[ -d "$d" ]] || continue
+  entries+=("$(basename -- "$d")")
+done
+shopt -u nullglob
+
+# Nothing to pick
+if [[ ${#entries[@]} -eq 0 ]]; then
+  echo "No subdirectories found under: $BASE_DIR" >&2
+  exit 1
+fi
+
+# Let user pick; show a simple preview of contents
+choice="$(printf '%s\n' "${entries[@]}" | fzf \
+  --prompt='Results dir: ' \
+  --height=60% \
+  --no-multi \
+  --preview="printf '%s\n' '$BASE_DIR'/{}; ls -1A '$BASE_DIR'/{} | head -50" \
+  --preview-window='down:10:wrap'
+)"
+
+# User cancelled
+[[ -n "$choice" ]] || exit 1
+
+# Output the FULL path so tbp_set can write it directly into your env file
+printf '%s\n' "$BASE_DIR/$choice"

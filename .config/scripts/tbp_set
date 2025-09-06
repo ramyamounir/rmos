@@ -1,34 +1,47 @@
-#!/usr/bin/env bash
-
+#!/usr/bin/env zsh
 set -euo pipefail
 
-ENV_FILE="${PROJECT_ROOT}/.envrc"
-EXPERIMENT_SCRIPT="$HOME/.config/scripts/tbp_experiments"
+source "$HOME/.config/scripts/tbp_common.zsh"
 
-# Ensure the experiment listing script exists
-if [[ ! -x "$EXPERIMENT_SCRIPT" ]]; then
-  echo "Error: Cannot find tbp_experiments at $EXPERIMENT_SCRIPT"
+repo="$(tbp_repo_key)"
+vars_json="$(json_get_repo "$repo" || true)"
+if [[ -z "$vars_json" ]]; then
+  print -u2 -- "No config found for repo '$repo' in $TBP_ENVMAP"
   exit 1
 fi
 
-# Get experiment choice via fzf
-CHOICE="$("$EXPERIMENT_SCRIPT" | fzf --prompt='Select experiment: ' --delimiter=':' --with-nth=1 --preview='echo Group: {2}' --preview-window=down:1:wrap)"
-[[ -z "$CHOICE" ]] && exit 0
+# Convert JSON object to lines VAR=picker_name
+var_lines=("${(@f)$(python - <<'PY' "$vars_json"
+import json, sys
+obj = json.loads(sys.argv[1])
+for k,v in obj.items():
+    print(f"{k}={v}")
+PY
+)}")
 
-# Extract experiment name before colon
-EXPERIMENT_NAME="${CHOICE%%:*}"
+typeset -A selections
+for line in "${var_lines[@]}"; do
+  var="${line%%=*}"
+  picker_name="${line#*=}"
+  picker_path="$(tbp_picker_path "$picker_name")"
 
-# Create .envrc if it doesn't exist
-touch "$ENV_FILE"
+  if [[ ! -x "$picker_path" ]]; then
+    print -u2 -- "Picker not executable for $var: $picker_path"
+    exit 1
+  fi
 
-# If the variable exists, replace it; otherwise, append it
-if grep -q "^export EXPERIMENT_NAME=" "$ENV_FILE"; then
-  sed -i "s|^export EXPERIMENT_NAME=.*|export EXPERIMENT_NAME=${EXPERIMENT_NAME}|" "$ENV_FILE"
-else
-  echo "export EXPERIMENT_NAME=${EXPERIMENT_NAME}" >> "$ENV_FILE"
-fi
+  if ! value="$(PROJECT_ROOT="$PROJECT_ROOT" "$picker_path")"; then
+    print -u2 -- "Selection cancelled or failed for $var. Aborting."
+    exit 1
+  fi
+  selections[$var]="$value"
+done
 
-# Trigger direnv to apply changes
-direnv allow "$ENV_FILE"
+for var value in "${(@kv)selections}"; do
+  envrc_set "$var" "$value"
+done
 
-echo "$EXPERIMENT_NAME"
+# Single status flag for prompt usage
+envrc_set "CTX_ACTIVE" "1"
+
+direnv_apply

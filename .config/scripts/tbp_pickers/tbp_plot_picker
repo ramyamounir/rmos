@@ -1,0 +1,113 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+: "${PROJECT_ROOT:?PROJECT_ROOT is not set}"
+
+if ! command -v fzf >/dev/null 2>&1; then
+  echo "fzf is required but not found in PATH." >&2
+  exit 1
+fi
+
+# Build "name<TAB>description" list without importing modules.
+TSV="$(
+  PYTHONWARNINGS=ignore python -S - "$PROJECT_ROOT" <<'PY'
+import ast
+import sys
+import pathlib
+
+project_root = pathlib.Path(sys.argv[1])
+
+# Candidate plot dirs: support src/ layout and nested matches
+candidates = []
+for p in (
+    project_root / "src" / "tbp" / "plot" / "plots",
+    project_root / "tbp" / "plot" / "plots",
+):
+    if p.is_dir():
+        candidates.append(p)
+for p in project_root.rglob("tbp/plot/plots"):
+    if p.is_dir() and p not in candidates:
+        candidates.append(p)
+
+def first_string(call: ast.Call):
+    # First positional string, else first keyword string (any kw name)
+    for a in call.args:
+        if isinstance(a, ast.Constant) and isinstance(a.value, str):
+            return a.value
+    for kw in call.keywords or []:
+        v = kw.value
+        if isinstance(v, ast.Constant) and isinstance(v.value, str):
+            return v.value
+    return None
+
+def description_string(call: ast.Call, name_taken: str | None):
+    # Prefer description=<str>
+    for kw in call.keywords or []:
+        if kw.arg == "description" and isinstance(kw.value, ast.Constant) and isinstance(kw.value.value, str):
+            return kw.value.value
+    # Else, first string literal after the name we consumed
+    found_name = name_taken is None
+    seq = list(call.args) + [kw.value for kw in (call.keywords or [])]
+    for node in seq:
+        if isinstance(node, ast.Constant) and isinstance(node.value, str):
+            if not found_name:
+                if node.value == name_taken:
+                    found_name = True
+                continue
+            return node.value
+    return ""
+
+def is_register_call(node: ast.AST) -> bool:
+    if not isinstance(node, ast.Call):
+        return False
+    f = node.func
+    return (isinstance(f, ast.Name) and f.id == "register") or (isinstance(f, ast.Attribute) and f.attr == "register")
+
+items = {}
+for plots_dir in candidates:
+    for path in plots_dir.rglob("*.py"):
+        try:
+            src = path.read_text(encoding="utf-8")
+            tree = ast.parse(src, filename=str(path))
+        except Exception:
+            continue
+
+        for node in ast.walk(tree):
+            if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
+                for dec in node.decorator_list or []:
+                    if isinstance(dec, ast.Call) and is_register_call(dec):
+                        name = first_string(dec)
+                        if not (isinstance(name, str) and name):
+                            continue
+                        desc = description_string(dec, name) or ""
+                        desc = " ".join(desc.split())  # one line
+                        if name not in items:
+                            items[name] = desc
+
+for name in sorted(items):
+    print(f"{name}\t{items[name]}")
+PY
+)"
+
+# Nothing found
+if [[ -z "$TSV" ]]; then
+  printf 'No plots discovered via @register decorators under:\n  %s\n  %s\n' \
+    "$PROJECT_ROOT/src/tbp/plot/plots" "$PROJECT_ROOT/tbp/plot/plots" >&2
+  exit 1
+fi
+
+choice="$(printf '%s\n' "$TSV" | fzf \
+  --prompt='Plot: ' \
+  --delimiter=$'\t' \
+  --with-nth=1 \
+  --no-multi \
+  --height=60% \
+  --preview='printf "%s\n" {2}' \
+  --preview-window='down:5:wrap'
+)"
+
+# User cancelled
+[[ -n "$choice" ]] || exit 1
+
+# Output only the plot name (first column)
+printf '%s\n' "${choice%%$'\t'*}"

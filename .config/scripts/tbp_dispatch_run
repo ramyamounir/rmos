@@ -1,0 +1,22 @@
+#!/usr/bin/env zsh
+set -euo pipefail
+
+source "$HOME/.config/scripts/tbp_common.zsh"
+
+# Determine the invoked name, e.g., "tbp_run" or "off_tbp_run"
+cmdname="$(basename -- "$0")"
+repo="$(tbp_repo_key)"
+
+# Look up the command template for (repo, cmdname)
+if ! tmpl="$(runmap_get_cmd "$repo" "$cmdname" 2>/dev/null)"; then
+  print -u2 -- "No run command mapped for '$cmdname' in repo '$repo' (runmap: $TBP_RUNMAP)."
+  exit 1
+fi
+
+# Render placeholders from env (PROJECT_ROOT, EXPERIMENT_NAME, PLOT_NAME, RESULTS_DIR, etc.)
+rendered="$(render_template "$tmpl")"
+
+# Final command = rendered template + any extra args user passed
+# We pass them as-is after a -- to avoid accidental template concatenation issues
+# shellcheck disable=SC2086
+exec sh -c "$rendered \"\$@\"" -- "$@"

@@ -1,0 +1,29 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "python",
+            "request": "launch",
+            "name": "Launch Monty Experiment",
+            "program": "${env:PROJECT_ROOT}/benchmarks/run.py",
+            "args": [
+                "-e",
+                "${input:experimentName}"
+            ],
+            "console": "integratedTerminal",
+            "justMyCode": "false"
+        },
+        {
+            "type": "python",
+            "request": "launch",
+            "name": "Run Set Experiment",
+            "program": "${env:PROJECT_ROOT}/benchmarks/run.py",
+            "args": [
+                "-e",
+                "${env:EXPERIMENT_NAME}"
+            ],
+            "console": "integratedTerminal",
+            "justMyCode": "false"
+        }
+    ]
+}

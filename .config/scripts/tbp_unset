@@ -1,19 +1,27 @@
-#!/usr/bin/env bash
-
+#!/usr/bin/env zsh
 set -euo pipefail
 
-ENV_FILE="${PROJECT_ROOT}/.envrc"
+source "$HOME/.config/scripts/tbp_common.zsh"
 
-# If the file doesn't exist, there's nothing to do
-if [[ ! -f "$ENV_FILE" ]]; then
-  echo ".envrc does not exist. Nothing to unset."
-  exit 0
+repo="$(tbp_repo_key)"
+vars_json="$(json_get_repo "$repo" || true)"
+
+if [[ -z "$vars_json" ]]; then
+  print -u2 -- "No config for '$repo' in $TBP_ENVMAP. Nothing to unset."
+else
+  var_names=("${(@f)$(python - <<'PY' "$vars_json"
+import json, sys
+obj = json.loads(sys.argv[1])
+for k in obj.keys():
+    print(k)
+PY
+)}")
+  for v in "${var_names[@]}"; do
+    envrc_unset "$v"
+  done
 fi
 
-# Remove the line that sets EXPERIMENT_NAME
-if grep -q "^export EXPERIMENT_NAME=" "$ENV_FILE"; then
-  sed -i "/^export EXPERIMENT_NAME=/d" "$ENV_FILE"
-fi
+envrc_unset "CTX_ACTIVE"
 
-# Apply the change
-direnv allow "$ENV_FILE"
+direnv_apply
+
