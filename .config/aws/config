@@ -1,0 +1,8 @@
+[sso-session thousandbrains]
+sso_region = us-east-2
+sso_start_url = https://thousandbrains.awsapps.com/start
+
+[profile tbp-experiments]
+sso_session = thousandbrains
+sso_account_id = 559050232152
+sso_role_name = AmazonEC2FullAccess
