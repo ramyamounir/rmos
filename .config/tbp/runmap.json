@@ -3,6 +3,10 @@
         "tbp_run": "{PY} {PROJECT_ROOT}/benchmarks/run.py -e {EXPERIMENT_NAME}",
         "tbp_run_parallel": "{PY} {PROJECT_ROOT}/benchmarks/run_parallel.py -e {EXPERIMENT_NAME}"
     },
+    "feat.dynamic_resizing": {
+        "tbp_run": "{PY} {PROJECT_ROOT}/benchmarks/run.py -e {EXPERIMENT_NAME}",
+        "tbp_run_parallel": "{PY} {PROJECT_ROOT}/benchmarks/run_parallel.py -e {EXPERIMENT_NAME}"
+    },
     "tbp.plot": {
         "tbp_run": "{PY} {PROJECT_ROOT}/src/tbp/plot/cli.py {PLOT_NAME} {RESULTS_DIR}"
     }
