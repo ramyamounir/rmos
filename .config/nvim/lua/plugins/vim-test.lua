@@ -5,6 +5,8 @@ local function config()
     vim.g["test#python#pytest#options"] = "--pdb"
     -- vim.g["test#neovim#term_position"] = "botright 10split"
     vim.g["test#neovim#term_position"] = "vert rightbelow 40vsplit"
+
+    vim.g["test#python#pytest#executable"] = "direnv exec . pytest"
 end
 
 local keys = {
