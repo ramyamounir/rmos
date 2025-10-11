@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Choices to show in fzf
+choices=(
+  "REPO -> REPO"
+  "REPO -> WANDB"
+  "WANDB -> REPO"
+  "WANDB -> WANDB"
+)
+
+# Map choice -> filename
+declare -A MAP
+MAP["REPO -> REPO"]="configs_repo_repo.yaml"
+MAP["REPO -> WANDB"]="configs_repo_wandb.yaml"
+MAP["WANDB -> REPO"]="configs_wandb_repo.yaml"
+MAP["WANDB -> WANDB"]="configs_wandb_wandb.yaml"
+
+# Build the menu
+menu_input="$(printf '%s\n' "${choices[@]}")"
+
+# Run fzf
+choice="$(
+  printf '%s\n' "${choices[@]}" | fzf \
+    --prompt='Comparison: ' \
+    --no-multi \
+    --preview '
+f=""; case {} in
+  "REPO -> REPO")   f=configs_repo_repo.yaml ;;
+  "REPO -> WANDB")  f=configs_repo_wandb.yaml ;;
+  "WANDB -> REPO")  f=configs_wandb_repo.yaml ;;
+  "WANDB -> WANDB") f=configs_wandb_wandb.yaml ;;
+esac
+out="$f"
+printf "Will return:\n  %s\n\n" "$out"
+' \
+    --preview-window='down:12:wrap'
+)"
+
+# User cancelled
+[[ -n "$choice" ]] || exit 1
+
+# Resolve filename from selection
+filename="${MAP[$choice]}"
+
+# Output
+printf '%s\n' "$filename"

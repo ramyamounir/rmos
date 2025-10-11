@@ -9,5 +9,9 @@
     },
     "tbp.plot": {
         "tbp_run": "{PY} {PROJECT_ROOT}/src/tbp/plot/cli.py {PLOT_NAME} {RESULTS_DIR}"
+    },
+    "tbp.benchmarks": {
+        "tbp_run": "{PY} {PROJECT_ROOT}/compare_benchmarks.py --config configs/{BENCHMARKS_CONFIG} --mode table",
+        "tbp_run_parallel": "{PY} {PROJECT_ROOT}/compare_benchmarks.py --config configs/{BENCHMARKS_CONFIG} --mode plot"
     }
 }

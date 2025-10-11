@@ -8,5 +8,8 @@
     "tbp.plot": {
         "RESULTS_DIR": "tbp_results_picker",
         "PLOT_NAME": "tbp_plot_picker"
+    },
+    "tbp.benchmarks": {
+        "BENCHMARKS_CONFIG": "tbp_benchmarks_picker"
     }
 }
