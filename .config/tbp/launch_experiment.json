@@ -24,6 +24,18 @@
             ],
             "console": "integratedTerminal",
             "justMyCode": "false"
+        },
+        {
+            "type": "python",
+            "request": "launch",
+            "name": "Run Set Experiment in Parallel",
+            "program": "${env:PROJECT_ROOT}/benchmarks/run_parallel.py",
+            "args": [
+                "-e",
+                "${env:EXPERIMENT_NAME}"
+            ],
+            "console": "integratedTerminal",
+            "justMyCode": "false"
         }
     ]
 }
