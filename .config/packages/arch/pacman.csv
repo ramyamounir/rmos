@@ -25,6 +25,7 @@ p,          fzf,                                                   fuzzy search
 p,          github-cli,                                            github cli
 p,          gptfdisk,                                              Disc partitioning tool for GPT format
 p,          htop,                                                  process viewer
+p,          jq,                                                    JSON CLI reader
 p,          lf,                                                    CLI file explorer
 p,          lolcat,                                                Colourise terminal text
 p,          lvm2,                                                  Logical volume manager
