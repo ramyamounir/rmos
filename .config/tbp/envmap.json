@@ -10,6 +10,7 @@
         "PLOT_NAME": "tbp_plot_picker"
     },
     "tbp.benchmarks": {
-        "BENCHMARKS_CONFIG": "tbp_benchmarks_picker"
+        "BASELINE": "tbp_benchmarks_picker",
+        "PROPOSED": "tbp_benchmarks_picker"
     }
 }

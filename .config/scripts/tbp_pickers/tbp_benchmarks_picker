@@ -1,47 +1,100 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Choices to show in fzf
-choices=(
-  "REPO -> REPO"
-  "REPO -> WANDB"
-  "WANDB -> REPO"
-  "WANDB -> WANDB"
-)
+# pick_side_value_simple.sh
+# Prints exactly one thing to stdout:
+#   - repo: the selected key from ~/.config/tbp/runmap.json
+#   - wandb: the selected CSV basename from ~/tbp/tbp.benchmarks/wandb_files/
 
-# Map choice -> filename
-declare -A MAP
-MAP["REPO -> REPO"]="configs_repo_repo.yaml"
-MAP["REPO -> WANDB"]="configs_repo_wandb.yaml"
-MAP["WANDB -> REPO"]="configs_wandb_repo.yaml"
-MAP["WANDB -> WANDB"]="configs_wandb_wandb.yaml"
+command -v jq  >/dev/null 2>&1 || { echo "jq is required" >&2; exit 2; }
+command -v fzf >/dev/null 2>&1 || { echo "fzf is required" >&2; exit 2; }
 
-# Build the menu
-menu_input="$(printf '%s\n' "${choices[@]}")"
+RUNMAP_JSON="${HOME}/.config/tbp/runmap.json"
+WANDB_DIR="${HOME}/tbp/tbp.benchmarks/wandb_files"
 
-# Run fzf
-choice="$(
-  printf '%s\n' "${choices[@]}" | fzf \
-    --prompt='Comparison: ' \
-    --no-multi \
-    --preview '
-f=""; case {} in
-  "REPO -> REPO")   f=configs_repo_repo.yaml ;;
-  "REPO -> WANDB")  f=configs_repo_wandb.yaml ;;
-  "WANDB -> REPO")  f=configs_wandb_repo.yaml ;;
-  "WANDB -> WANDB") f=configs_wandb_wandb.yaml ;;
-esac
-out="$f"
-printf "Will return:\n  %s\n\n" "$out"
-' \
-    --preview-window='down:12:wrap'
-)"
+# Step 1: select type
+type_choice="$(printf '%s\n' repo wandb | fzf --prompt='Type (repo|wandb): ' --no-multi)"
+[ -n "$type_choice" ] || exit 1
 
-# User cancelled
-[[ -n "$choice" ]] || exit 1
+if [ "$type_choice" = "repo" ]; then
+  [ -f "$RUNMAP_JSON" ] || { echo "Missing: $RUNMAP_JSON" >&2; exit 2; }
 
-# Resolve filename from selection
-filename="${MAP[$choice]}"
+  # options = top-level keys
+  mapfile -t options < <(jq -r 'keys[]' "$RUNMAP_JSON")
+  [ ${#options[@]} -gt 0 ] || { echo "No keys in $RUNMAP_JSON" >&2; exit 2; }
 
-# Output
-printf '%s\n' "$filename"
+  # Preview: show folder contents at $HOME/tbp/<key>
+  # NOTE: fzf already single-quotes {}, so don't wrap it again.
+  preview_repo='
+key={}
+dir="$HOME/tbp/$key"
+if [ -d "$dir" ]; then
+  printf "Path: %s\n\n" "$dir"
+  # show a concise listing (first 60 lines)
+  ls -lA -- "$dir" 2>/dev/null | head -n 60
+else
+  printf "Directory not found:\n  %s\n" "$dir"
+fi
+'
+
+  choice="$(
+    printf '%s\n' "${options[@]}" | fzf \
+      --prompt='Repo key: ' \
+      --no-multi \
+      --preview "$preview_repo" \
+      --preview-window='down:18'
+  )"
+  [ -n "$choice" ] || exit 1
+
+  printf '%s\n' "$choice"
+  exit 0
+fi
+
+if [ "$type_choice" = "wandb" ]; then
+  [ -d "$WANDB_DIR" ] || { echo "Missing dir: $WANDB_DIR" >&2; exit 2; }
+
+  shopt -s nullglob
+  files=( "$WANDB_DIR"/*.csv )
+  shopt -u nullglob
+  [ ${#files[@]} -gt 0 ] || { echo "No CSVs in $WANDB_DIR" >&2; exit 2; }
+
+  mapfile -t basenames < <(for f in "${files[@]}"; do basename -- "$f"; done | sort)
+
+  # Preview: pretty-print CSV if possible
+  preview_wandb='
+bn={}
+dir="${PREVIEW_WANDB_DIR}"
+full="${dir}/${bn}"
+if [ -f "$full" ]; then
+  rows="$(wc -l < "$full" 2>/dev/null || echo "?")"
+  if stat --version >/dev/null 2>&1; then size="$(stat -c%s "$full")"; else size="$(stat -f%z "$full")"; fi
+  printf "File: %s\nRows: %s  Size: %s bytes\n\n" "$full" "$rows" "$size"
+  if command -v csvlook >/dev/null 2>&1; then
+    head -n 40 -- "$full" | csvlook -I
+  elif command -v mlr >/dev/null 2>&1; then
+    head -n 40 -- "$full" | mlr --icsv --opprint cat
+  else
+    head -n 40 -- "$full" | sed "s/\r$//" | column -s, -t
+  fi
+else
+  printf "Not found: %s\n" "$full"
+fi
+'
+
+  choice="$(
+    printf '%s\n' "${basenames[@]}" | \
+    PREVIEW_WANDB_DIR="$WANDB_DIR" \
+    fzf \
+      --prompt='WANDB csv: ' \
+      --no-multi \
+      --preview "$preview_wandb" \
+      --preview-window='down:20'
+  )"
+  [ -n "$choice" ] || exit 1
+
+  printf '%s\n' "$choice"
+  exit 0
+fi
+
+echo "Unknown type: $type_choice" >&2
+exit 2
