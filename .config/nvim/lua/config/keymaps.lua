@@ -60,3 +60,8 @@ vim.keymap.set({ "n", "i", "v", "t" }, "<C-'>", function()
         detach = true,
     })
 end, { desc = "Open lazygit" })
+
+-- Scripts
+vim.keymap.set("n", "<leader>dj", function()
+    require("scripts.json_dap_explorer").pick_and_debug()
+end, { desc = "Pick JSON and debug (nvim-dap)" })
