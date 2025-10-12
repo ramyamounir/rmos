@@ -14,6 +14,7 @@ p,          bore,                                                  Tunnel
 p,          bpytop,                                                Better htop
 p,          certbot,                                               SSL certification tool
 p,          certbot-nginx,                                         certbot plugin for nginx
+p,          csvlens,                                               CSV viewer in the CLI
 p,          dua-cli,                                               Better du (disc usage)
 p,          duf,                                                   Better df 
 p,          direnv,                                                directory specific environment variables
