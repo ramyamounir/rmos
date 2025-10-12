@@ -60,6 +60,11 @@ vim.keymap.set({ "n", "i", "v", "t" }, "<C-'>", function()
         detach = true,
     })
 end, { desc = "Open lazygit" })
+vim.keymap.set({ "n", "i", "v", "t" }, "<C-/>",
+    function()
+        vim.cmd("botright 70split | terminal csvlens " .. vim.fn.fnameescape(vim.fn.expand("%:p"))); vim.cmd(
+            "startinsert")
+    end, { desc = "Open current file in csvlens" })
 
 -- Scripts
 vim.keymap.set("n", "<leader>dj", function()
