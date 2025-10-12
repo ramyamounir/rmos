@@ -1,0 +1,4 @@
+export PROJECT_ROOT="/home/ramy/tbp/tbp.plot"
+export PROJECT_ENV="tbp.plot"
+export UV_VENV_HOME=/home/ramy/.local/cache/uv/venv
+source $UV_VENV_HOME/$PROJECT_ENV/bin/activate

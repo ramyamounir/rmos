@@ -3,7 +3,7 @@ set -euo pipefail
 
 : "${PROJECT_ROOT:?PROJECT_ROOT is not set}"
 
-EXPERIMENT_SCRIPT="$HOME/.config/scripts/tbp_pickers/tbp_experiments"
+EXPERIMENT_SCRIPT="$HOME/.config/scripts/tbp/pickers/tbp_experiments"
 if [[ ! -x "$EXPERIMENT_SCRIPT" ]]; then
   echo "Missing experiment lister at $EXPERIMENT_SCRIPT" >&2
   exit 1

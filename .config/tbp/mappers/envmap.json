@@ -6,8 +6,8 @@
         "EXPERIMENT_NAME": "tbp_experiment_picker"
     },
     "tbp.plot": {
-        "RESULTS_DIR": "tbp_results_picker",
-        "PLOT_NAME": "tbp_plot_picker"
+        "PLOT_NAME": "tbp_plot_picker",
+        "RESULTS_DIR": "tbp_results_picker"
     },
     "tbp.benchmarks": {
         "BASELINE": "tbp_benchmarks_picker",

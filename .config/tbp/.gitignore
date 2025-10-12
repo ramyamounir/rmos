@@ -1,8 +1,1 @@
-*
-
-!.gitignore
-!compare_configs.yaml
-!launch_experiment.json
-!launch_plot.json
-!runmap.json
-!envmap.json
+!*

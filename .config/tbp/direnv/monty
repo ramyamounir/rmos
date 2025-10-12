@@ -1,0 +1,11 @@
+export WANDB_DIR="/home/ramy/tbp/"
+export MONTY_DATA="/home/ramy/tbp/data/"
+export WANDB_MODE="disabled"
+export PROJECT_ROOT="/home/ramy/tbp/tbp.monty/"
+export GIT_ROOT="/home/ramy/tbp/tbp.monty/"
+export PROJECT_ENV="tbp.monty"
+
+if [ -n "$PROJECT_ENV" ]; then
+    source "$HOME/.local/data/anaconda3/etc/profile.d/conda.sh"
+    conda activate "$PROJECT_ENV"
+fi

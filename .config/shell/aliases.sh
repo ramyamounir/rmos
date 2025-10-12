@@ -34,6 +34,18 @@ alias ngp='~/apps/ngrok http'
 ### RMOS ###
 alias rmos="git --git-dir $HOME/.rmos --work-tree $HOME"
 
+### TBP ###
+alias tr='tbp_run'
+alias tR='tbp_run_parallel'
+alias ts='tbp_set'
+alias tS='tbp_unset'
+alias tt='tbp_show'
+
+alias off_tr='WANDB_MODE="offline" tbp_run'
+alias on_tr='WANDB_MODE="online" tbp_run'
+alias off_tR='WANDB_MODE="offline" tbp_run_parallel'
+alias on_tR='WANDB_MODE="online" tbp_run_parallel'
+
 # miscellaneous
 function u1() {
     rmos pull;

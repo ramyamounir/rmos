@@ -3,9 +3,9 @@
 : "${PROJECT_ROOT:?PROJECT_ROOT is not set}"
 
 TBP_ENVRC="$PROJECT_ROOT/.envrc"
-TBP_ENVMAP="${TBP_ENVMAP:-$HOME/.config/tbp/envmap.json}"
-TBP_RUNMAP="${TBP_RUNMAP:-$HOME/.config/tbp/runmap.json}"
-TBP_PICKERS_DIR="${TBP_PICKERS_DIR:-$HOME/.config/scripts/tbp_pickers}"
+TBP_ENVMAP="${TBP_ENVMAP:-$HOME/.config/tbp/mappers/envmap.json}"
+TBP_RUNMAP="${TBP_RUNMAP:-$HOME/.config/tbp/mappers/runmap.json}"
+TBP_PICKERS_DIR="${TBP_PICKERS_DIR:-$HOME/.config/scripts/tbp/pickers}"
 
 tbp_repo_key() {
   if [[ -n "${TBP_REPO:-}" ]]; then

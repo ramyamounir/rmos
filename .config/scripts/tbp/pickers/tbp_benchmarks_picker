@@ -9,7 +9,7 @@ set -euo pipefail
 command -v jq  >/dev/null 2>&1 || { echo "jq is required" >&2; exit 2; }
 command -v fzf >/dev/null 2>&1 || { echo "fzf is required" >&2; exit 2; }
 
-RUNMAP_JSON="${HOME}/.config/tbp/runmap.json"
+RUNMAP_JSON="${HOME}/.config/tbp/mappers/runmap.json"
 WANDB_DIR="${HOME}/tbp/tbp.benchmarks/wandb_files"
 
 # Step 1: select type

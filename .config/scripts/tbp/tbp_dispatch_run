@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 set -euo pipefail
 
-source "$HOME/.config/scripts/tbp_common.zsh"
+source "$HOME/.config/scripts/tbp/tbp_common.zsh"
 
 # Determine the invoked name, e.g., "tbp_run" or "off_tbp_run"
 cmdname="$(basename -- "$0")"

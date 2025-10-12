@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # Reuse helpers & paths
-source "$HOME/.config/scripts/tbp_common.zsh"
+source "$HOME/.config/scripts/tbp/tbp_common.zsh"
 
 ENV_FILE="$TBP_ENVRC"
 repo="$(tbp_repo_key)"

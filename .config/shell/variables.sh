@@ -22,6 +22,7 @@ export PATH=$(echo $(cat << EOV
     $XDG_CONFIG_HOME/scripts:
     $XDG_CONFIG_HOME/scripts/dwmblocks:
     $XDG_CONFIG_HOME/scripts/dmenu:
+    $XDG_CONFIG_HOME/scripts/tbp:
     $PATH
 EOV
 ) | tr -d ' ')

@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 set -euo pipefail
 
-source "$HOME/.config/scripts/tbp_common.zsh"
+source "$HOME/.config/scripts/tbp/tbp_common.zsh"
 
 repo="$(tbp_repo_key)"
 vars_json="$(json_get_repo "$repo" || true)"
