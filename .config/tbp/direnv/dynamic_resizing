@@ -3,7 +3,7 @@ export MONTY_DATA="/home/ramy/tbp/data/"
 export WANDB_MODE="disabled"
 export PROJECT_ROOT="/home/ramy/tbp/feat.dynamic_resizing/"
 export GIT_ROOT="/home/ramy/tbp/feat.dynamic_resizing/"
-export PROJECT_ENV="dynamic_resizing"
+export PROJECT_ENV="feat.dynamic_resizing"
 
 if [ -n "$PROJECT_ENV" ]; then
     source "$HOME/.local/data/anaconda3/etc/profile.d/conda.sh"
