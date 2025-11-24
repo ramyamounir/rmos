@@ -1,36 +1,49 @@
 #!/usr/bin/env python
 
-import io
 import os
 import sys
-from contextlib import redirect_stdout
-from dataclasses import fields, is_dataclass
 from pathlib import Path
 
-# Read TBP path from environment variable
-tbp_path_env = os.environ.get("PROJECT_ROOT")
-if not tbp_path_env:
-    print("Error: PROJECT_ROOT environment variable is not set.", file=sys.stderr)
-    sys.exit(1)
 
-tbp_path = Path(tbp_path_env)
-if not tbp_path.exists():
-    print(f"Error: TBP path does not exist: {tbp_path}", file=sys.stderr)
-    sys.exit(1)
+def main() -> int:
+    project_root = os.environ.get("PROJECT_ROOT")
+    if not project_root:
+        print("Error: PROJECT_ROOT environment variable is not set.", file=sys.stderr)
+        return 1
 
-# Add TBP path for import
-sys.path.insert(0, str(tbp_path))
+    project_root_path = Path(project_root)
+    if not project_root_path.exists():
+        print(
+            f"Error: PROJECT_ROOT does not exist: {project_root_path}", file=sys.stderr
+        )
+        return 1
 
-# Suppress all stdout during import
-with redirect_stdout(io.StringIO()):
-    try:
-        import benchmarks.configs.names as names_module
-    except ImportError as e:
-        print(f"Import failed: {e}", file=sys.stderr)
-        sys.exit(1)
+    experiment_conf_dir = project_root_path / "conf" / "experiment"
+    if not experiment_conf_dir.is_dir():
+        print(
+            f"Error: experiment config dir does not exist: {experiment_conf_dir}",
+            file=sys.stderr,
+        )
+        return 1
 
-# Detect all top-level dataclass types in names_module
-for name, obj in vars(names_module).items():
-    if isinstance(obj, type) and is_dataclass(obj):
-        for field in fields(obj):
-            print(f"{field.name}:{obj.__name__}")
+    # Only pick regular files with `.yaml` extension directly under conf/experiment
+    yaml_paths = sorted(p for p in experiment_conf_dir.glob("*.yaml") if p.is_file())
+
+    if not yaml_paths:
+        print(
+            f"Warning: no .yaml configs found in {experiment_conf_dir}", file=sys.stderr
+        )
+        return 0
+
+    for cfg in yaml_paths:
+        # Use the stem as the experiment name (e.g. foo_bar.yaml -> foo_bar)
+        name = cfg.stem
+        # Second column is "group" just to keep your existing fzf preview happy
+        group = cfg.parent.name  # will be "experiment"
+        print(f"{name}:{group}")
+
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

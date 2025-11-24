@@ -5,10 +5,9 @@
             "type": "python",
             "request": "launch",
             "name": "Launch Monty Experiment",
-            "program": "${env:PROJECT_ROOT}/benchmarks/run.py",
+            "program": "${env:PROJECT_ROOT}/run.py",
             "args": [
-                "-e",
-                "${input:experimentName}"
+                "experiment=${input:experimentName}"
             ],
             "console": "integratedTerminal",
             "justMyCode": "false"
@@ -17,10 +16,9 @@
             "type": "python",
             "request": "launch",
             "name": "Run Set Experiment",
-            "program": "${env:PROJECT_ROOT}/benchmarks/run.py",
+            "program": "${env:PROJECT_ROOT}/run.py",
             "args": [
-                "-e",
-                "${env:EXPERIMENT_NAME}"
+                "experiment=${env:EXPERIMENT_NAME}"
             ],
             "console": "integratedTerminal",
             "justMyCode": "false"
@@ -29,10 +27,9 @@
             "type": "python",
             "request": "launch",
             "name": "Run Set Experiment in Parallel",
-            "program": "${env:PROJECT_ROOT}/benchmarks/run_parallel.py",
+            "program": "${env:PROJECT_ROOT}/run_parallel.py",
             "args": [
-                "-e",
-                "${env:EXPERIMENT_NAME}"
+                "experiment=${env:EXPERIMENT_NAME}"
             ],
             "console": "integratedTerminal",
             "justMyCode": "false"
