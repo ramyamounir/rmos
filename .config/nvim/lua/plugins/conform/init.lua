@@ -117,7 +117,7 @@ local opts = {
         },
         yamlfix = {
             command = "yamlfix",
-            args = { "--config-file=" .. vim.env.XDG_CONFIG_HOME .. "/nvim/lua/plugins/formatters/yaml.toml", "$FILENAME" },
+            args = { "--config-file=" .. vim.env.XDG_CONFIG_HOME .. "/nvim/lua/plugins/conform/yaml.toml", "$FILENAME" },
             stdin = false
         }
     },
