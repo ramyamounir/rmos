@@ -12,10 +12,10 @@ vim.api.nvim_create_autocmd("TermOpen", {
 })
 
 -- set tabspace to 4 for yaml files
-vim.api.nvim_create_autocmd("FileType", {
-    pattern = "yaml",
-    command = "setlocal shiftwidth=4 tabstop=4 expandtab",
-})
+-- vim.api.nvim_create_autocmd("FileType", {
+--     pattern = "yaml",
+--     command = "setlocal shiftwidth=4 tabstop=4 expandtab",
+-- })
 
 -- VimEnter autocommand
 vim.api.nvim_create_autocmd("VimEnter", {

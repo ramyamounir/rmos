@@ -62,7 +62,7 @@ local opts = {
         json = { "fixjson" },
         tex = { "latex", "latexindent", stop_after_first = false },
         sh = { "shshfmt" },
-        yaml = { "yamlfix" },
+        -- yaml = { "yamlfix" },
         zsh = { "shfmt" }
     },
     formatters = {
