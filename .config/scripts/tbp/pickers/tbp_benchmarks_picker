@@ -3,8 +3,8 @@ set -euo pipefail
 
 # pick_side_value_simple.sh
 # Prints exactly one thing to stdout:
-#   - repo: the selected key from ~/.config/tbp/runmap.json
-#   - wandb: the selected CSV basename from ~/tbp/tbp.benchmarks/wandb_files/
+#   - repo: the FULL PATH to the selected repo folder under ~/tbp/<key>
+#   - wandb: the FULL PATH to the selected CSV under ~/tbp/tbp.benchmarks/wandb_files/<file>.csv
 
 command -v jq  >/dev/null 2>&1 || { echo "jq is required" >&2; exit 2; }
 command -v fzf >/dev/null 2>&1 || { echo "fzf is required" >&2; exit 2; }
@@ -24,13 +24,12 @@ if [ "$type_choice" = "repo" ]; then
   [ ${#options[@]} -gt 0 ] || { echo "No keys in $RUNMAP_JSON" >&2; exit 2; }
 
   # Preview: show folder contents at $HOME/tbp/<key>
-  # NOTE: fzf already single-quotes {}, so don't wrap it again.
   preview_repo='
 key={}
 dir="$HOME/tbp/$key"
+printf "Will return: %s\n\n" "$dir"
 if [ -d "$dir" ]; then
   printf "Path: %s\n\n" "$dir"
-  # show a concise listing (first 60 lines)
   ls -lA -- "$dir" 2>/dev/null | head -n 60
 else
   printf "Directory not found:\n  %s\n" "$dir"
@@ -46,7 +45,8 @@ fi
   )"
   [ -n "$choice" ] || exit 1
 
-  printf '%s\n' "$choice"
+  # Return FULL PATH, not the key.
+  printf '%s\n' "$HOME/tbp/$choice"
   exit 0
 fi
 
@@ -65,6 +65,7 @@ if [ "$type_choice" = "wandb" ]; then
 bn={}
 dir="${PREVIEW_WANDB_DIR}"
 full="${dir}/${bn}"
+printf "Will return: %s\n\n" "$full"
 if [ -f "$full" ]; then
   rows="$(wc -l < "$full" 2>/dev/null || echo "?")"
   if stat --version >/dev/null 2>&1; then size="$(stat -c%s "$full")"; else size="$(stat -f%z "$full")"; fi
@@ -92,7 +93,8 @@ fi
   )"
   [ -n "$choice" ] || exit 1
 
-  printf '%s\n' "$choice"
+  # Return FULL PATH, not just the basename.
+  printf '%s\n' "$WANDB_DIR/$choice"
   exit 0
 fi
 

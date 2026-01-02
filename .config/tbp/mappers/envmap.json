@@ -10,7 +10,7 @@
         "RESULTS_DIR": "tbp_results_picker"
     },
     "tbp.benchmarks": {
-        "BASELINE": "tbp_benchmarks_picker",
-        "PROPOSED": "tbp_benchmarks_picker"
+        "BASELINE_PATH": "tbp_benchmarks_picker",
+        "PROPOSED_PATH": "tbp_benchmarks_picker"
     }
 }
