@@ -23,10 +23,10 @@ local function get_opts()
         vim.notify("File removed from Harpoon list")
     end, { desc = "Remove current file from Harpoon List" })
 
-    vim.keymap.set("n", "<Tab>", function()
+    vim.keymap.set("n", "<leader>ro", function()
         harpoon.nav_next()
     end, { desc = "Switch to next buffer in Harpoon List" })
-    vim.keymap.set("n", "<S-Tab>", function()
+    vim.keymap.set("n", "<leader>ri", function()
         harpoon.nav_prev()
     end, { desc = "Switch to previous buffer in Harpoon List" })
 
