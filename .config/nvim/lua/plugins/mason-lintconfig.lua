@@ -12,7 +12,9 @@ local LintingFormattingServers = {
 
 local opts = {
     -- ensure_installed = LintingFormattingServers,
-    automatic_installation = true,
+    automatic_installation = {
+        exclude = { "inko", "clj-kondo", "janet", "ruby" },
+    },
 }
 
 return {

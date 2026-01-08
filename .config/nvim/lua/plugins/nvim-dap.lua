@@ -29,7 +29,7 @@ local dependencies = {
                 },
             },
             windows = {
-                height = 12,
+                size = 0.35,
                 terminal = {
                     position = "right",
                     start_hidden = false,
