@@ -70,3 +70,6 @@ vim.keymap.set({ "n", "i", "v", "t" }, "<C-/>",
 vim.keymap.set("n", "<leader>dj", function()
     require("scripts.json_dap_explorer").pick_and_debug()
 end, { desc = "Pick JSON and debug (nvim-dap)" })
+
+-- Environment reload
+vim.keymap.set("n", "<Leader>ea", "<cmd>ReloadEnv<cr>", { desc = "Reload environment and DAP launch.json" })

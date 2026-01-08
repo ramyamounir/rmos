@@ -53,3 +53,10 @@ vim.api.nvim_create_autocmd("BufReadPost", {
         end, 0)
     end,
 })
+
+-- Reload direnv environment and DAP launch.json
+vim.api.nvim_create_user_command("ReloadEnv", function()
+    vim.cmd("Direnv allow")
+    require("dap.ext.vscode").load_launchjs(vim.fn.expand("$PROJECT_ROOT/launch.json"))
+    vim.notify("Environment and launch.json reloaded", vim.log.levels.INFO)
+end, { desc = "Reload environment and DAP launch.json" })

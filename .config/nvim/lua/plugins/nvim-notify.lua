@@ -1,5 +1,5 @@
 local opts = {
-    level = 1,
+    level = 2,
     render = "minimal",
     stages = "fade_in_slide_out",
     timeout = 1000,
