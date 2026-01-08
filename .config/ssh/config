@@ -46,7 +46,7 @@ Host seedbox
     AddKeysToAgent yes
 
 Host margoz
-    HostName margozproduction.com
+    HostName sshx.margozproduction.com
     User ramy
     AddKeysToAgent yes
 
