@@ -32,7 +32,6 @@ local dependencies = {
                 size = 0.35,
                 terminal = {
                     position = "right",
-                    start_hidden = false,
                     hide = {},
                 },
             },
