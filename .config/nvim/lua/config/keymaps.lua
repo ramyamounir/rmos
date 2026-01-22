@@ -73,3 +73,33 @@ end, { desc = "Pick JSON and debug (nvim-dap)" })
 
 -- Environment reload
 vim.keymap.set("n", "<Leader>ea", "<cmd>ReloadEnv<cr>", { desc = "Reload environment and DAP launch.json" })
+
+-- Copy file reference in Claude Code format: @path:#L1-L2
+vim.keymap.set('v', '<leader>lc', function()
+    -- Get current visual selection (not marks)
+    local start_line = vim.fn.line("v")
+    local end_line = vim.fn.line(".")
+
+    -- Ensure start <= end (cursor could be at either end)
+    if start_line > end_line then
+        start_line, end_line = end_line, start_line
+    end
+
+    local filepath = vim.fn.expand('%:p')
+
+    -- Search upward for .claude directory
+    local claude_dir = vim.fn.finddir('.claude', vim.fn.expand('%:p:h') .. ';')
+    local root
+
+    if claude_dir ~= '' then
+        root = vim.fn.fnamemodify(claude_dir, ':p:h:h')
+    end
+
+    if root and filepath:sub(1, #root) == root then
+        filepath = filepath:sub(#root + 2)
+    end
+
+    local ref = string.format('@%s:#L%d-L%d', filepath, start_line, end_line)
+    vim.fn.setreg('+', ref)
+    print('Copied: ' .. ref)
+end, { desc = 'Copy file reference for Claude Code' })
