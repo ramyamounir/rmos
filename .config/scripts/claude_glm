@@ -1,0 +1,14 @@
+#!/usr/bin/sh
+# Claude Code routed to Z.AI (GLM) via Anthropic-compatible endpoint
+
+export ANTHROPIC_BASE_URL="https://api.z.ai/api/anthropic"
+export ANTHROPIC_AUTH_TOKEN="${ZAI_API_KEY:?Set ZAI_API_KEY first}"
+# Important in some setups: ensure API_KEY doesn't override AUTH_TOKEN
+export ANTHROPIC_API_KEY=""
+
+# Optional: map Claude Code aliases -> GLM models (Z.AI recommendation)
+export ANTHROPIC_DEFAULT_OPUS_MODEL="glm-4.7"
+export ANTHROPIC_DEFAULT_SONNET_MODEL="glm-4.7"
+export ANTHROPIC_DEFAULT_HAIKU_MODEL="glm-4.5-air"
+
+exec claude "$@"

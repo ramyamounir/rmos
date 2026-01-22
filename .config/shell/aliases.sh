@@ -46,6 +46,10 @@ alias on_tr='WANDB_MODE="online" tbp_run'
 alias off_tR='WANDB_MODE="offline" tbp_run_parallel'
 alias on_tR='WANDB_MODE="online" tbp_run_parallel'
 
+### Claude ###
+alias cc='claude_code'
+alias cg='claude_glm'
+
 # miscellaneous
 function u1() {
     rmos pull;
