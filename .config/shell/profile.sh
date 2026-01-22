@@ -2,8 +2,8 @@
 
 source $HOME/.config/shell/variables.sh
 
-# if non-interactive session, exit
-! [ -t 0 ] && exit 0
+# if non-interactive session, skip interactive setup
+! [ -t 0 ] && return 0
 
 source $XDG_CONFIG_HOME/shell/utils.sh
 source $XDG_CONFIG_HOME/shell/aliases.sh
