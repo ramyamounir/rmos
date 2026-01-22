@@ -1,6 +1,9 @@
 -- lua/scripts/json_dap_explorer.lua
 local M = {}
 
+-- Directory containing the loader scripts
+local script_dir = vim.fn.fnamemodify(debug.getinfo(1, "S").source:sub(2), ":h")
+
 local function open_dap_view()
     -- If you use nvim-dap-view:
     if pcall(vim.cmd, "DapViewOpen") then return end
@@ -20,62 +23,37 @@ local function ensure_python_adapter()
     }
 end
 
-local function write_temp_loader(json_path)
-    local cache_dir = vim.fn.stdpath("cache")
-    local tmp_py = cache_dir .. "/json_dap_debug.py"
-    local py = ([[
-import json, pathlib, debugpy
-from json import JSONDecodeError
-
-def load_json_smart(path):
-    """Load normal JSON or newline-delimited JSON (one JSON per line)."""
-    with open(path, "r", encoding="utf-8") as f:
-        try:
-            # Normal single JSON object or array
-            return json.load(f)
-        except JSONDecodeError:
-            # Fallback to per-line JSON
-            f.seek(0)
-            objs = []
-            as_dict = {}
-            count = 0
-            for _, line in enumerate(f):
-                line = line.strip()
-                if not line:
-                    continue
-                obj = json.loads(line)
-                objs.append(obj)
-                if isinstance(obj, dict) and len(obj) == 1:
-                    # Mirror your chunked style: store the inner value under the line index
-                    (k, v), = obj.items()
-                    as_dict[k] = v
-                    count += 1
-            if count == len(objs) and count > 0:
-                return as_dict
-            return objs
-
-p = pathlib.Path(r"%s")
-data = load_json_smart(str(p))
-
-debugpy.breakpoint()
-
-# Helpful summary for the console
-print(f"[json-dap] Loaded: {p} type={type(data).__name__} size={len(data)}")
-]]):format(json_path)
-
-    vim.fn.writefile(vim.split(py, "\n"), tmp_py)
-    return tmp_py
+local function get_loader_for_extension(ext)
+    local loaders = {
+        json = script_dir .. "/json_loader.py",
+        pt = script_dir .. "/pt_loader.py",
+    }
+    return loaders[ext]
 end
 
-local function debug_json_file(json_path)
+local function debug_data_file(file_path)
     ensure_python_adapter()
+
+    local ext = vim.fn.fnamemodify(file_path, ":e")
+    local loader = get_loader_for_extension(ext)
+
+    if not loader then
+        vim.notify("Unsupported file type: " .. ext, vim.log.levels.ERROR)
+        return
+    end
+
+    if vim.fn.filereadable(loader) ~= 1 then
+        vim.notify("Loader script not found: " .. loader, vim.log.levels.ERROR)
+        return
+    end
+
     local dap = require("dap")
-    local program = write_temp_loader(json_path)
     dap.run({
         type = "python",
         request = "launch",
-        name = "Debug JSON: " .. vim.fn.fnamemodify(json_path, ":t"),
-        program = program,
+        name = "Debug: " .. vim.fn.fnamemodify(file_path, ":t"),
+        program = loader,
+        args = { file_path },
         console = "integratedTerminal",
         justMyCode = false,
         cwd = vim.fn.getcwd(),
@@ -96,43 +74,25 @@ function M.pick_and_debug(opts)
     local actions = require("telescope.actions")
     local action_state = require("telescope.actions.state")
 
-    -- Build file list: prefer `fd`, else use plenary’s file finder
-    local entries
+    local cwd = opts.cwd or vim.loop.cwd()
+    local finder
+
     if vim.fn.executable("fd") == 1 then
-        local cmd = { "fd", "--type", "f", "--extension", "json", "." }
-        entries = function(prompt, process_result, _)
-            local Job = require("plenary.job")
-            Job:new({
-                command = cmd[1],
-                args = { unpack(cmd, 2) },
-                cwd = opts.cwd or vim.loop.cwd(),
-                on_exit = function(j)
-                    for _, line in ipairs(j:result()) do
-                        if prompt == nil or prompt == "" or line:lower():find(prompt:lower(), 1, true) then
-                            process_result({
-                                value = line,
-                                path = (opts.cwd or vim.loop.cwd()) .. "/" .. line,
-                                ordinal =
-                                    line,
-                                display = line
-                            })
-                        end
-                    end
-                end,
-            }):start()
-        end
+        finder = finders.new_oneshot_job(
+            { "fd", "--type", "f", "-e", "json", "-e", "pt", "." },
+            { cwd = cwd }
+        )
     else
-        -- Fallback: use Telescope’s builtin file finder and filter in previewer
-        entries = require("telescope.finders").new_oneshot_job(
-            { "sh", "-c", [[find . -type f -name "*.json" | sed 's#^\./##']] },
-            { cwd = opts.cwd or vim.loop.cwd() }
+        finder = finders.new_oneshot_job(
+            { "find", ".", "-type", "f", "(", "-name", "*.json", "-o", "-name", "*.pt", ")" },
+            { cwd = cwd }
         )
     end
 
     pickers
         .new(opts, {
-            prompt_title = "Pick a JSON file to debug",
-            finder = (type(entries) == "function") and { results = {}, fn_command = entries } or entries,
+            prompt_title = "Pick a data file to debug (json/pt)",
+            finder = finder,
             sorter = conf.generic_sorter(opts),
             previewer = conf.file_previewer(opts),
             attach_mappings = function(prompt_bufnr, _)
@@ -140,11 +100,13 @@ function M.pick_and_debug(opts)
                     local entry = action_state.get_selected_entry()
                     actions.close(prompt_bufnr)
                     local path = entry.path or entry.value or entry[1]
-                    debug_json_file(path)
+                    -- Make path absolute if relative
+                    if not path:match("^/") then
+                        path = cwd .. "/" .. path
+                    end
+                    debug_data_file(path)
                 end
-                -- Replace default select action so it doesn't open a buffer
                 actions.select_default:replace(run_debug)
-                -- Optional: also map <C-x> and <C-v> to same behavior
                 vim.keymap.set({ "i", "n" }, "<C-x>", run_debug, { buffer = prompt_bufnr })
                 vim.keymap.set({ "i", "n" }, "<C-v>", run_debug, { buffer = prompt_bufnr })
                 return true
