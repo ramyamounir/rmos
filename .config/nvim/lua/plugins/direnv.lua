@@ -1,7 +1,7 @@
 return {
     config = function()
         require("direnv").setup({
-            autoload_direnv = true,
+            autoload_direnv = false,
             keybindings = {
                 allow = false,
                 deny = false,
