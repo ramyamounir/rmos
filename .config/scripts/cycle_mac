@@ -1,0 +1,84 @@
+#!/bin/bash
+
+source "$HOME/.local/data/.env"
+
+CON_NAME="Wired connection 1" # Run 'nmcli connection show' to find yours
+INTERFACE="enp6s0"            # Run 'ip link' to find your interface name
+CHECK_HOST="8.8.8.8"
+CHECK_TIMEOUT=5
+MAX_RECONNECT_ATTEMPTS=10
+RECONNECT_WAIT=10
+
+# Logging
+LOG_FILE="$HOME/.local/logs/cycle_mac.log"
+
+log() {
+    echo "$(date '+%Y-%m-%d %H:%M:%S') - $1" | tee -a "$LOG_FILE"
+}
+
+check_internet() {
+    ping -c 1 -W "$CHECK_TIMEOUT" "$CHECK_HOST" >/dev/null 2>&1
+}
+
+get_public_ip() {
+    curl -s --max-time 10 ifconfig.me || curl -s --max-time 10 icanhazip.com || echo "unknown"
+}
+
+get_current_mac() {
+    ip link show "$INTERFACE" | awk '/ether/ {print $2}'
+}
+
+send_discord_message() {
+    local message="$1"
+    curl -s -H "Content-Type: application/json" \
+        -d "{\"content\": \"$message\"}" \
+        "$DISCORD_WEBHOOK_URL"
+}
+
+# Main logic
+if check_internet; then
+    # Internet is working, exit silently
+    exit 0
+fi
+
+log "Internet connectivity lost. Starting recovery..."
+
+# Randomize MAC and reconnect
+log "Randomizing MAC address and reconnecting..."
+nmcli connection down "$CON_NAME" >>"$LOG_FILE" || true
+nmcli connection modify "$CON_NAME" ethernet.cloned-mac-address random
+sleep 2
+nmcli connection up "$CON_NAME" >>"$LOG_FILE"
+
+# Wait for internet to recover
+attempt=1
+while [ $attempt -le $MAX_RECONNECT_ATTEMPTS ]; do
+    log "Checking connectivity (attempt $attempt/$MAX_RECONNECT_ATTEMPTS)..."
+
+    if check_internet; then
+        NEW_IP=$(get_public_ip)
+        NEW_MAC=$(get_current_mac)
+        log "Internet recovered! New IP: $NEW_IP, New MAC: $NEW_MAC"
+
+        # Lock in the working MAC address so it persists across reboots
+        log "Locking MAC address $NEW_MAC as fixed..."
+        nmcli connection modify "$CON_NAME" ethernet.cloned-mac-address "$NEW_MAC"
+        log "MAC address locked."
+
+        # Send Discord notification
+        HOSTNAME=$(hostname)
+        TIMESTAMP=$(date '+%Y-%m-%d %H:%M:%S')
+        MESSAGE="🔄 **Network Reconnected**\n\n🖥️ Host: \`$HOSTNAME\`\n🌐 New IP: \`$NEW_IP\`\n🔒 MAC Locked: \`$NEW_MAC\`\n⏰ Time: $TIMESTAMP"
+
+        send_discord_message "$MESSAGE"
+        log "Discord notification sent."
+        exit 0
+    fi
+
+    sleep "$RECONNECT_WAIT"
+    ((attempt++))
+done
+
+# Failed to recover
+log "ERROR: Failed to recover internet after $MAX_RECONNECT_ATTEMPTS attempts"
+exit 1

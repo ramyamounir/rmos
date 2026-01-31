@@ -1,0 +1,6 @@
+[Unit]
+Description=Check internet connectivity and cycle MAC if needed
+
+[Service]
+Type=oneshot
+ExecStart=%h/.config/scripts/cycle_mac
