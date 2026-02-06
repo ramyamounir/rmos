@@ -1,0 +1,10 @@
+#!/bin/sh
+
+# Screenshot to clipboard script for pasting into apps like Claude Code.
+# Requires maim, xdotool, and xclip.
+
+case "$(printf "a selected area\\ncurrent window\\nfull screen" | dmenu -l 3 -i -p "Screenshot to clipboard:")" in
+	"a selected area") maim -o -s | xclip -selection clipboard -t image/png ;;
+	"current window") maim -o -i "$(xdotool getactivewindow)" | xclip -selection clipboard -t image/png ;;
+	"full screen") maim -o | xclip -selection clipboard -t image/png ;;
+esac
